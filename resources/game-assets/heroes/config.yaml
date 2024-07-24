@@ -1,0 +1,3 @@
+heroes:
+  - path: "/first"
+    name: "Hero 1"
