@@ -10,9 +10,17 @@ int main(int argc,char ** argv){
      * @todo Supprimer le test
      */
     {
-        void* tillsConfig = loadConfig(RESSOURCES_PATH"/game-assets/tills/config.yaml",loadTillsConfig);
+        TillsConfig* tillsConfig = (TillsConfig*) loadConfig(RESSOURCES_PATH"/game-assets/tills/config.yaml",loadTillsConfig);
 
         if(tillsConfig != NULL){
+            for(int i = 0; i < tillsConfig->countOfTills; i++)
+                printf("Id: %s - Description : %s - Type : %d - Rotation : %d\n",
+                    tillsConfig->map[i].id,
+                    tillsConfig->map[i].description,
+                    tillsConfig->map[i].type,
+                    tillsConfig->map[i].rotation
+                );
+
             printf("Chargement de configuration réussi");
             free(tillsConfig);
         }

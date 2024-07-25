@@ -2,28 +2,48 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <string.h>
+
+/**
+ * @brief Libère les ressources de la boucle de traitement avant de quitter
+ */
+#define FREE_RESOURCES_AND_QUIT free(config->map);\
+    free(config);\
+    yaml_token_delete(&readToken);\
+    return NULL;
 
 void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
     assert(parser != NULL && "Le parser fourni pour la lecture de configuration des tills est NULL");
     assert(parentConfigPath != NULL && "Le chemin parent fourni pour la lecture de configuration des tills est NULL");
 
     // allocation de base de la configuration
-    TillsConfig config = malloc(sizeof(ImageConfig));
+    TillsConfig* config = malloc(sizeof(TillsConfig)); 
 
     if(config == NULL){
-        fputs("Echec d'allocation de la configuration des tills",stderr);
+        fputs("Echec d'allocation de la configuration des tills\n",stderr);
+        return NULL;
+    }
+
+    config->countOfTills = 0;
+
+    // allocation de base de la map
+    config->map = malloc(sizeof(ImageConfig));
+
+    if(config->map == NULL){
+        fputs("Echec d'allocation de la map des tills\n",stderr);
+        free(config);
         return NULL;
     }
 
     // parsing du fichier
     yaml_token_t readToken;
     bool stop = false;
+    bool nextIsKey = false;
 
     while(!stop){
         if(!yaml_parser_scan(parser,&readToken)){
-            // libération des ressources d'erreur
-            yaml_token_delete(&readToken);
-            return NULL;
+            fputs("Echec de lecture de token lors du parsing de configuration de tills\n",stderr);
+            FREE_RESOURCES_AND_QUIT
         }
 
         switch(readToken.type){
@@ -31,14 +51,42 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
                 stop = true;
             ; break;
 
+            case YAML_KEY_TOKEN:
+                nextIsKey = true;
+            break;
+
             case YAML_SCALAR_TOKEN:
-                printf("Cle: %s\n",readToken.data.scalar.value);
+                if(nextIsKey){
+                    // aggrandissement de l'espace alloué
+                    config->countOfTills++;
+
+                    void* tmpAddress = realloc(config->map,sizeof(ImageConfig) * config->countOfTills);
+
+                    if(tmpAddress == NULL){
+                        fputs("Echec de reallocation d'adresse lors du parsing de configuration de tills\n",stderr);
+                        FREE_RESOURCES_AND_QUIT;
+                    }
+
+                    // création de la configuration
+                    config->map = tmpAddress;
+                    ImageConfig createdImage = createImageFromConfig(parser);
+                    
+                    if(createdImage.errorState){
+                        fputs("Echec de parsing de la configuration d'image lors du parsing de configuration de tills\n",stderr);
+                        FREE_RESOURCES_AND_QUIT;
+                    }
+
+                    strncpy(createdImage.id,readToken.data.scalar.value,sizeof(char) * SUPPOSED_ID_MAX_LEN);
+                    memcpy(config->map + (atoi(createdImage.id) - 1),&createdImage,sizeof(ImageConfig));
+
+                    // attente de la clé suivante
+                    nextIsKey = false;
+                }
             ;
         }
+    
+        yaml_token_delete(&readToken);
     }
-
-    // libération des ressources
-    yaml_token_delete(&readToken);
 
     return config;
 }

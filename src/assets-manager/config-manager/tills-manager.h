@@ -4,9 +4,23 @@
     #include "./image-config-manager.h"
 
     /**
-     * @brief Configuration des tills. Tableau indicé par l'id converti en entier
+     * @brief Configuration des tills. Tableau indicé par l'id converti en entier - 1. Il est conseillé d'utiliser les fonctions d'accès
      */
-    typedef ImageConfig* TillsConfig;
+    typedef ImageConfig* TillsMap;
+
+    /**
+     * @brief Configuration de tills
+     */
+    typedef struct{ 
+        /**
+         * @brief Nombre d'éléments dans la map
+         */
+        int countOfTills;
+        /**
+         * @brief Nombre de tills
+         */
+        TillsMap map;
+    }TillsConfig;
 
     /**
      * @brief Charge la configuration des tuiles de jeux

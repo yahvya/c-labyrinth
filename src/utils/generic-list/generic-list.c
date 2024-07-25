@@ -19,7 +19,7 @@ bool listAppend(GenericList* listManager,void* data){
     GenericListItem* newItemAddress = malloc(sizeof(struct GenericListItem));
 
     if(newItemAddress == NULL){
-        fputs("Echec d'allocation d'un élément de liste générique",stderr);
+        fputs("Echec d'allocation d'un élément de liste générique\n",stderr);
         listManager->errorState = true;
         return false;
     }
@@ -43,7 +43,7 @@ bool listPrepend(GenericList* listManager,void* data){
     GenericListItem* newItemAddress = malloc(sizeof(struct GenericListItem));
 
     if(newItemAddress == NULL){
-        fputs("Echec d'allocation d'un élément de liste générique",stderr);
+        fputs("Echec d'allocation d'un élément de liste générique\n",stderr);
         listManager->errorState = true;
         return false;
     }

@@ -3,14 +3,15 @@
     /**
      * @brief Longueur supposée d'une description d'élément
      */
-    #define SUPPOSED_DESCRIPTION_MAX_LEN 200
+    #define SUPPOSED_DESCRIPTION_MAX_LEN 300
     
     /**
      * @brief Longueur supposée d'un id d'élément
      */
-    #define SUPPOSED_ID_MAX_LEN 100
+    #define SUPPOSED_ID_MAX_LEN 15
 
     #include "../../utils/generic-list/generic-list.h"
+    #include <yaml.h>
 
     typedef enum{
         /**
@@ -58,4 +59,12 @@
          */
         bool errorState;
     }ImageConfig;
+
+    /**
+     * @brief Crée une configuration d'image à partir de la configuration
+     * @param parser élément parser
+     * @return la configuration crée
+     * @attention vérifier l'état d'erreur avant toute utilisation
+     */
+    ImageConfig createImageFromConfig(yaml_parser_t* parser);
 #endif

@@ -5,7 +5,7 @@ init:
 
 # build du projet
 build:
-	cd build && cmake .. && make
+	cd build && cmake .. && make && clear
 
 # lancement du projet
 launch: build
