@@ -18,6 +18,8 @@
 
 ## Configuration
 
+> Les ids d'association sont au possible, des entiers ordonnées à intervalle de 1, partant de 1 à X
+
 ### Type d'assets:
 
     - 1 : Image fixe

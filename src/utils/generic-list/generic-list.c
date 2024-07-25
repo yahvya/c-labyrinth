@@ -1,0 +1,81 @@
+#include "./generic-list.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+GenericList newGenericList(){
+    return (GenericList) {
+        .items = NULL,
+        .listStart = NULL,
+        .listEnd = NULL,
+        .errorState = false
+    };
+}
+
+bool listAppend(GenericList* listManager,void* data){
+    assert(listManager != NULL && "Le gestionnaire de liste fourni est NULL");
+
+    // création de l'item
+    GenericListItem* newItemAddress = malloc(sizeof(struct GenericListItem));
+
+    if(newItemAddress == NULL){
+        fputs("Echec d'allocation d'un élément de liste générique",stderr);
+        listManager->errorState = true;
+        return false;
+    }
+
+    newItemAddress->data = data;
+    newItemAddress->nextItem = NULL;
+
+    // ajout comme élément de fin de liste sinon ajout comme seul élément de liste
+    if(listManager->listEnd != NULL){
+        listManager->listEnd->nextItem = newItemAddress;
+        listManager->listEnd = newItemAddress;
+    }
+    else
+        listManager->items = listManager->listStart = listManager->listEnd = newItemAddress;
+}
+
+bool listPrepend(GenericList* listManager,void* data){
+    assert(listManager != NULL && "Le gestionnaire de liste fourni est NULL");
+    
+    // création de l'item
+    GenericListItem* newItemAddress = malloc(sizeof(struct GenericListItem));
+
+    if(newItemAddress == NULL){
+        fputs("Echec d'allocation d'un élément de liste générique",stderr);
+        listManager->errorState = true;
+        return false;
+    }
+
+    newItemAddress->data = data;
+    newItemAddress->nextItem = listManager->items;
+
+    // ajout de l'item dans la liste et marquage comme début de liste
+    listManager->items = newItemAddress;
+    listManager->listStart = newItemAddress;
+
+    // si premier élément alors marqué également comme dernier
+    if(listManager->listEnd == NULL)
+        listManager->listEnd = newItemAddress;
+}
+
+/**
+ * @brief Libérateur interne d'allocation de liste
+ */
+void internalFree(GenericListItem* item){
+    if(item == NULL)
+        return;
+
+    if(item->nextItem != NULL)
+        internalFree(item->nextItem);
+
+    free(item);
+}
+
+void freeGenericList(GenericList* list){
+    internalFree(list->items);
+
+    list->items = list->listEnd = list->listStart = NULL;
+    list->errorState = false;
+}
