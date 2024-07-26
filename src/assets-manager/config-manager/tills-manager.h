@@ -29,4 +29,11 @@
      * @return TillsConfig la structure des tuiles ou null en cas
      */
     void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath);
+
+    /**
+     * @brief Libère les ressources de la configuration
+     * @param config la configuration
+     * @param freeContainer si true libère également la configuration pasée
+     */
+    void freeTillsConfig(TillsConfig* config,bool freeContainer);
 #endif

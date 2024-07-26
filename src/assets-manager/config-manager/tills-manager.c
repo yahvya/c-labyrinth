@@ -90,3 +90,13 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
 
     return config;
 }
+
+void freeTillsConfig(TillsConfig* config,bool freeContainer){
+    for(int i = 0; i < config->countOfTills; i++)
+        freeImageConfig(config->map + i,false);
+
+    free(config->map);
+
+    if(freeContainer)
+        free(config);
+}

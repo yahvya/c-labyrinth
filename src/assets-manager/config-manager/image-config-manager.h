@@ -68,4 +68,11 @@
      * @attention vérifier l'état d'erreur avant toute utilisation
      */
     ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath);
+
+    /**
+     * @brief Libère les ressources de la configuration
+     * @param config la configuration
+     * @param freeContainer si true libère le conteneur fourni
+     */
+    void freeImageConfig(ImageConfig* config,bool freeContainer);
 #endif

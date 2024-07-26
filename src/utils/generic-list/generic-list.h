@@ -76,6 +76,7 @@
     /**
      * @brief Désaloue le contenu de la liste. La liste est re initialisé et est utilisable par les fonctions de liste
      * @param list la liste
+     * @param freeContaineData si true libère la valeur contenue
      */
-    void freeGenericList(GenericList* list);
+    void freeGenericList(GenericList* list,bool freeContainedData);
 #endif

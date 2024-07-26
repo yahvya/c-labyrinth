@@ -3,7 +3,7 @@
     /**
      * @brief Chemin racine du dossier ressource
      */
-    #define RESSOURCES_PATH "resources"
+    #define RESOURCES_PATH "./resources"
 
     /**
      * @brief Longueur maximale supposée d'un chemin

@@ -72,18 +72,22 @@ bool listPrepend(GenericList* listManager,void* data){
 /**
  * @brief Libérateur interne d'allocation de liste
  * @param item l'élément à libérer
+ * @param freeContainedData si true libère la donnée contenue
  */
-void internalFree(GenericListItem* item){
+void internalFree(GenericListItem* item,bool freeContainedData){
     if(item == NULL)
         return;
 
     if(item->nextItem != NULL)
-        internalFree(item->nextItem);
+        internalFree(item->nextItem,freeContainedData);
+
+    if(freeContainedData)
+        free(item->data);
 
     free(item);
 }
 
-void freeGenericList(GenericList* list){
-    internalFree(list->items);
+void freeGenericList(GenericList* list,bool freeContainedData){
+    internalFree(list->items,freeContainedData);
     newGenericListFrom(list);
 }
