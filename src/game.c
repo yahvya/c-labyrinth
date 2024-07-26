@@ -1,5 +1,5 @@
 #include "./assets-manager/config-manager/config-manager.h"
-#include "./assets-manager/assets.h"
+#include "./assets-manager/assets/assets.h"
 #include "./assets-manager/config-manager/tills-manager.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,15 +13,22 @@ int main(int argc,char ** argv){
         TillsConfig* tillsConfig = (TillsConfig*) loadConfig(RESSOURCES_PATH"/game-assets/tills/config.yaml",loadTillsConfig);
 
         if(tillsConfig != NULL){
-            for(int i = 0; i < tillsConfig->countOfTills; i++)
-                printf("Id: %s - Description : %s - Type : %d - Rotation : %d\n",
+            for(int i = 0; i < tillsConfig->countOfTills; i++){
+                printf("\nId: %s - Description : %s - Type : %d - Rotation : %d\n",
                     tillsConfig->map[i].id,
                     tillsConfig->map[i].description,
                     tillsConfig->map[i].type,
                     tillsConfig->map[i].rotation
                 );
 
-            printf("Chargement de configuration réussi");
+                while(tillsConfig->map[i].paths.items != NULL){
+                    printf("\n\tChemin: %s",(char*) tillsConfig->map[i].paths.items->data);
+
+                    tillsConfig->map[i].paths.items = tillsConfig->map[i].paths.items->nextItem;
+                }
+            }
+
+            // printf("Chargement de configuration réussi");
             free(tillsConfig);
         }
         else

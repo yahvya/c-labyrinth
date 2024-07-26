@@ -1,23 +1,24 @@
 #include "./image-config-manager.h"
 #include <string.h>
+#include <assert.h>
 
 /**
- * @brief Charge la configuration de chemins lors du parsing
- * @param inConfig la configuration dans laquelle placer le résultat
- * @param parser le parser
- * @return si l'élément à bien été chargé
+ * @brief Assertions sur les fonctions de chargement
  */
-bool loadPath(ImageConfig* inConfig,yaml_parser_t* parser){
-    return true;
-}
+#define LOAD_FUNCTIONS_GUARD assert(inConfig != NULL && "La configuration d'image à remplir fournie est NULL");\
+    assert(parser != NULL && "Le parser fourni est NULL");\
+    assert(parentDirPath != NULL && "Le chemin de dossier fourni est NULL");
 
 /**
- * @brief Charge la configuration de description lors du parsing
+ * @brief Charge la configuration de chemins sous forme statique
  * @param inConfig la configuration dans laquelle placer le résultat
  * @param parser le parser
+ *  * @param parentDirPath chemin du dossier parent de la configuration
  * @return si l'élément à bien été chargé
  */
-bool loadDescription(ImageConfig* inConfig,yaml_parser_t* parser){
+bool loadStaticPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPath){
+    LOAD_FUNCTIONS_GUARD
+
     yaml_token_t token;
     bool stop = false;
     bool nextIsValue = false;
@@ -37,7 +38,95 @@ bool loadDescription(ImageConfig* inConfig,yaml_parser_t* parser){
 
             case YAML_SCALAR_TOKEN:
                 if(nextIsValue){
-                    strncpy(inConfig->description,token.data.scalar.value,sizeof(char) * SUPPOSED_DESCRIPTION_MAX_LEN);
+                    stop = true;
+
+                    // ajout du chemin
+                    int len = strlen(parentDirPath);
+                    char* path = calloc(
+                        (token.data.scalar.length / sizeof(char)) + (sizeof(char) * len),
+                        sizeof(char)
+                    );
+
+                    if(path == NULL)
+                        break;
+
+                    strncpy(path,parentDirPath,sizeof(char) * len);
+                    strncat(path,token.data.scalar.value,token.data.scalar.length);
+
+                    if(listAppend(&inConfig->paths,path) ){
+                        yaml_token_delete(&token);
+                        return true;
+                    }
+                    else
+                        stop = true;
+                }
+            ; break;
+        }
+
+        yaml_token_delete(&token);
+    }
+
+    return false;
+}
+
+/**
+ * @brief Charge la configuration de chemins sous forme de liste
+ * @param inConfig la configuration dans laquelle placer le résultat
+ * @param parser le parser
+ *  * @param parentDirPath chemin du dossier parent de la configuration
+ * @return si l'élément à bien été chargé
+ */
+bool loadListPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPath){
+    LOAD_FUNCTIONS_GUARD
+
+    return false;
+}
+
+/**
+ * @brief Charge la configuration de chemins lors du parsing
+ * @param inConfig la configuration dans laquelle placer le résultat
+ * @param parser le parser
+ *  * @param parentDirPath chemin du dossier parent de la configuration
+ * @return si l'élément à bien été chargé
+ */
+bool loadPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPath){
+    LOAD_FUNCTIONS_GUARD
+
+    newGenericListFrom(&inConfig->paths);
+
+    return inConfig->type == STATIC ? loadStaticPath(inConfig,parser,parentDirPath) : loadListPath(inConfig,parser,parentDirPath);
+}
+
+/**
+ * @brief Charge la configuration de description lors du parsing
+ * @param inConfig la configuration dans laquelle placer le résultat
+ * @param parser le parser
+ *  * @param parentDirPath chemin du dossier parent de la configuration
+ * @return si l'élément à bien été chargé
+ */
+bool loadDescription(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPath){
+    LOAD_FUNCTIONS_GUARD
+
+    yaml_token_t token;
+    bool stop = false;
+    bool nextIsValue = false;
+
+    while(!stop){
+        if(!yaml_parser_scan(parser,&token))
+            return false;
+
+        switch(token.type){
+            case YAML_DOCUMENT_END_TOKEN:
+                stop = true;
+            ; break;
+
+            case YAML_VALUE_TOKEN:
+                nextIsValue = true;
+            ; break;
+
+            case YAML_SCALAR_TOKEN:
+                if(nextIsValue){
+                    strncpy(inConfig->description,token.data.scalar.value,sizeof(char) * (SUPPOSED_DESCRIPTION_MAX_LEN - 1));
                     yaml_token_delete(&token);
                     return true;
                 }
@@ -54,9 +143,12 @@ bool loadDescription(ImageConfig* inConfig,yaml_parser_t* parser){
  * @brief Charge la configuration de type lors du parsing
  * @param inConfig la configuration dans laquelle placer le résultat
  * @param parser le parser
+ *  * @param parentDirPath chemin du dossier parent de la configuration
  * @return si l'élément à bien été chargé
  */
-bool loadType(ImageConfig* inConfig,yaml_parser_t* parser){
+bool loadType(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPath){
+    LOAD_FUNCTIONS_GUARD
+
     yaml_token_t token;
     bool stop = false;
     bool nextIsValue = false;
@@ -93,9 +185,12 @@ bool loadType(ImageConfig* inConfig,yaml_parser_t* parser){
  * @brief Charge la configuration de rotation lors du parsing
  * @param inConfig la configuration dans laquelle placer le résultat
  * @param parser le parser
+ * @param parentDirPath chemin du dossier parent de la configuration
  * @return si l'élément à bien été chargé
  */
-bool loadRotation(ImageConfig* inConfig,yaml_parser_t* parser){
+bool loadRotation(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPath){
+    LOAD_FUNCTIONS_GUARD
+
     yaml_token_t token;
     bool stop = false;
     bool nextIsValue = false;
@@ -128,7 +223,10 @@ bool loadRotation(ImageConfig* inConfig,yaml_parser_t* parser){
     return false;  
 }
 
-ImageConfig createImageFromConfig(yaml_parser_t* parser){
+ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
+    assert(parser != NULL && "Le parser fourni est NULL");
+    assert(parentDirPath != NULL && "Le chemin parent fourni est NULL");
+
     ImageConfig config = {.errorState = true};
     int countOfElementsToLoad = 4;
     bool nextIsKey = false;
@@ -154,7 +252,7 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser){
                     nextIsKey = false;
 
                     // vérification de l'élément de comparaison à charger
-                    bool (*loadFunction)(ImageConfig*,yaml_parser_t*) = NULL;
+                    bool (*loadFunction)(ImageConfig*,yaml_parser_t*,char*) = NULL;
 
                     if(strcmp(token.data.scalar.value,"path") == 0)
                         loadFunction = loadPath;
@@ -169,7 +267,7 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser){
                         break;
 
                     // chargement de l'élément
-                    if(!loadFunction(&config,parser)){
+                    if(!loadFunction(&config,parser,parentDirPath)){
                         stop = true;
                         break;
                     }

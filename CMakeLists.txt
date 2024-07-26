@@ -11,7 +11,8 @@ add_subdirectory("libs/libyaml")
 
 add_executable(game 
     src/game.c
-    src/assets-manager/assets.h
+    src/assets-manager/assets/assets.h
+    src/assets-manager/assets/assets.c
     src/assets-manager/config-manager/config-manager.c
     src/assets-manager/config-manager/config-manager.h
     src/assets-manager/config-manager/tills-manager.c

@@ -1,5 +1,5 @@
 #include "./config-manager.h"
-#include "../assets.h"
+#include "../assets/assets.h"
 #include <assert.h>
 #include <stdio.h>
 
@@ -26,7 +26,10 @@ void* loadConfig(char* path,void* (*treatmentFunction)(yaml_parser_t*,char*)){
     yaml_parser_set_input_file(&parser,configFile);
 
     // parsing
-    void* treatmentResult = treatmentFunction(&parser,path);
+    char dirPath[SUPPOSED_PATH_MAX_LEN];
+    extractDirPathFrom(path,dirPath,sizeof(char) * SUPPOSED_PATH_MAX_LEN);
+
+    void* treatmentResult = treatmentFunction(&parser,dirPath);
 
     // libération des ressources
     yaml_parser_delete(&parser);

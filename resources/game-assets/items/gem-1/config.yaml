@@ -1,3 +1,4 @@
+type: 2
 path: [
   "/images/1.png",
   "/images/2.png",
@@ -12,7 +13,6 @@ path: [
   "/images/11.png",
   "/images/12.png",
   "/images/13.png",
-],
-type: 2
+]
 rotation: 1
 description: "Gemme niveau 1"

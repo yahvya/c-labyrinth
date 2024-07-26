@@ -50,6 +50,12 @@
     GenericList newGenericList();
 
     /**
+     * @brief Initalise le contenu d'une liste comme nouvelle
+     * @param list la liste
+     */
+    void newGenericListFrom(GenericList* list);
+
+    /**
      * @brief Ajoute un item en fin de liste
      * @param listManager Gestionnaire de liste dans lequel ajouter
      * @param data donnée à ajouter

@@ -69,14 +69,14 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
 
                     // création de la configuration
                     config->map = tmpAddress;
-                    ImageConfig createdImage = createImageFromConfig(parser);
+                    ImageConfig createdImage = createImageFromConfig(parser,parentConfigPath);
                     
                     if(createdImage.errorState){
                         fputs("Echec de parsing de la configuration d'image lors du parsing de configuration de tills\n",stderr);
                         FREE_RESOURCES_AND_QUIT;
                     }
 
-                    strncpy(createdImage.id,readToken.data.scalar.value,sizeof(char) * SUPPOSED_ID_MAX_LEN);
+                    strncpy(createdImage.id,readToken.data.scalar.value,sizeof(char) * (SUPPOSED_ID_MAX_LEN - 1));
                     memcpy(config->map + (atoi(createdImage.id) - 1),&createdImage,sizeof(ImageConfig));
 
                     // attente de la clé suivante

@@ -13,7 +13,7 @@
     #include "../../utils/generic-list/generic-list.h"
     #include <yaml.h>
 
-    typedef enum{
+        typedef enum{
         /**
          * @brief Image fixe
          */
@@ -63,8 +63,9 @@
     /**
      * @brief Crée une configuration d'image à partir de la configuration
      * @param parser élément parser
+     * @param parentDirPath chemin du dossier parent de la configuration
      * @return la configuration crée
      * @attention vérifier l'état d'erreur avant toute utilisation
      */
-    ImageConfig createImageFromConfig(yaml_parser_t* parser);
+    ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath);
 #endif

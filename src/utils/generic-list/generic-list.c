@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <assert.h>
 
+void newGenericListFrom(GenericList* list){
+    list->items = list->listStart = list->listEnd = NULL;
+    list->errorState = false;
+}
+
 GenericList newGenericList(){
     return (GenericList) {
         .items = NULL,
@@ -34,6 +39,8 @@ bool listAppend(GenericList* listManager,void* data){
     }
     else
         listManager->items = listManager->listStart = listManager->listEnd = newItemAddress;
+
+    return true;
 }
 
 bool listPrepend(GenericList* listManager,void* data){
@@ -58,10 +65,13 @@ bool listPrepend(GenericList* listManager,void* data){
     // si premier élément alors marqué également comme dernier
     if(listManager->listEnd == NULL)
         listManager->listEnd = newItemAddress;
+
+    return true;
 }
 
 /**
  * @brief Libérateur interne d'allocation de liste
+ * @param item l'élément à libérer
  */
 void internalFree(GenericListItem* item){
     if(item == NULL)
@@ -75,7 +85,5 @@ void internalFree(GenericListItem* item){
 
 void freeGenericList(GenericList* list){
     internalFree(list->items);
-
-    list->items = list->listEnd = list->listStart = NULL;
-    list->errorState = false;
+    newGenericListFrom(list);
 }

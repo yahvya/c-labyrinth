@@ -1,4 +1,5 @@
 front-walk:
+  type: 2
   path: [
     "/images/front-walk/1.png",
     "/images/front-walk/2.png",
@@ -16,9 +17,9 @@ front-walk:
     "/images/front-walk/14.png"
   ]
   description: "Marche vers le bas"
-  type: 2
   rotation: 1
 right-walk:
+  type: 2
   path: [
     "/images/right-walk/1.png",
     "/images/right-walk/2.png",
@@ -36,9 +37,9 @@ right-walk:
     "/images/right-walk/14.png"
   ]
   description: "Marche vers la droite"
-  type: 2
   rotation: 1
 left-walk:
+  type: 2
   path: [
     "/images/left-walk/1.png",
     "/images/left-walk/2.png",
@@ -56,9 +57,9 @@ left-walk:
     "/images/left-walk/14.png"
   ]
   description: "Marche vers la gauche"
-  type: 2
   rotation: 1
 back-walk:
+  type: 2
   path: [
     "/images/back-walk/1.png",
     "/images/back-walk/2.png",
@@ -76,5 +77,4 @@ back-walk:
     "/images/back-walk/14.png"
   ]
   description: "Marche vers le haut"
-  type: 2
   rotation: 1
