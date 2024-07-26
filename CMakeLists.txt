@@ -8,6 +8,7 @@ project(c_labyrinth
 add_compile_options(-UNDEBUG)
 
 add_subdirectory("libs/libyaml")
+add_subdirectory("libs/custom-color")
 
 add_executable(game 
     src/game.c
@@ -23,7 +24,10 @@ add_executable(game
     src/utils/generic-list/generic-list.h
 )
 
-target_link_libraries(game yaml)
+target_link_libraries(game 
+    yaml
+    custom_color    
+)
 
 add_custom_command(
     TARGET game PRE_BUILD

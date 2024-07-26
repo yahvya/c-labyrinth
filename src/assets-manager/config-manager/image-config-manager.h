@@ -75,4 +75,11 @@
      * @param freeContainer si true libère le conteneur fourni
      */
     void freeImageConfig(ImageConfig* config,bool freeContainer);
+
+    /**
+     * @brief Affiche le détails de la configuration
+     * @param config configuration
+     * @param toPrintBefore Chaine à afficher avant chaque ligne de configuration
+     */
+    void printImageConfig(ImageConfig* config,char* toPrintBefore);
 #endif

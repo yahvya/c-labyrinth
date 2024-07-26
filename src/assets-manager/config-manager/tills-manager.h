@@ -36,4 +36,11 @@
      * @param freeContainer si true libère également la configuration pasée
      */
     void freeTillsConfig(TillsConfig* config,bool freeContainer);
+
+    /**
+     * @brief Affiche le détails de la configuration
+     * @param config configuration
+     * @param toPrintBefore Chaine à afficher avant chaque ligne de configuration
+     */
+    void printTillsConfig(TillsConfig* config,char* toPrintBefore);
 #endif

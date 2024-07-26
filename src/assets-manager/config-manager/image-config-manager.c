@@ -1,6 +1,7 @@
 #include "./image-config-manager.h"
 #include <string.h>
 #include <assert.h>
+#include "custom-color.h"
 
 /**
  * @brief Assertions sur les fonctions de chargement
@@ -8,6 +9,11 @@
 #define LOAD_FUNCTIONS_GUARD assert(inConfig != NULL && "La configuration d'image à remplir fournie est NULL");\
     assert(parser != NULL && "Le parser fourni est NULL");\
     assert(parentDirPath != NULL && "Le chemin de dossier fourni est NULL");
+
+/**
+ * @brief Ternaire de choix de l'affichage
+ */
+#define TO_PRINT toPrintBefore == NULL ? "" : toPrintBefore
 
 /**
  * @brief Charge la configuration de chemins sous forme statique
@@ -363,4 +369,22 @@ void freeImageConfig(ImageConfig* config,bool freeContainer){
     
     if(freeContainer)
         free(config);
+}
+
+void printImageConfig(ImageConfig* config,char* toPrintBefore){
+    printf(CC_BBLUE"\n%sConfiguration d'image :"CC_RESET,TO_PRINT);
+    printf(CC_BWHITE"\n%s\tId: "CC_RESET"%s",TO_PRINT,config->id);
+    printf(CC_BWHITE"\n%s\tType: "CC_RESET"%d",TO_PRINT,config->type);
+    printf(CC_BWHITE"\n%s\tDescription: "CC_RESET"%s",TO_PRINT,config->description);
+    printf(CC_BWHITE"\n%s\tRotation: "CC_RESET"%d",TO_PRINT,config->rotation);
+    printf(CC_BWHITE"\n%s\tContient une erreur: "CC_RESET"%s",TO_PRINT,config->errorState ? "Oui" : "Non");
+    printf(CC_BWHITE"\n%s\tListe des chemins: "CC_RESET,TO_PRINT);
+
+    while(config->paths.items != NULL){
+        printf("\n%s\t\t=> %s",TO_PRINT,(char*) config->paths.items->data);
+
+        config->paths.items = config->paths.items->nextItem;
+    }
+
+    config->paths.items = config->paths.listStart;
 }

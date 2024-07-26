@@ -8,6 +8,7 @@
 void testTillsConfig(){
     TillsConfig* tillsConfig = (TillsConfig*) loadConfig(RESOURCES_PATH"/game-assets/tills/config.yaml",loadTillsConfig);
 
+    printTillsConfig(tillsConfig,NULL);
     freeTillsConfig(tillsConfig,true);
 
     printf("\nok");
