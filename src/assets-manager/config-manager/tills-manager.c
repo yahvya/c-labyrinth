@@ -120,6 +120,7 @@ void printTillsConfig(TillsConfig* config,char* toPrintBefore){
     printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
 
     char spaceBuffer[SPACE_BUFFER_SIZE];
+    memset(spaceBuffer,0,sizeof(char) * SPACE_BUFFER_SIZE);
 
     if(toPrintBefore != NULL)
         strcpy(spaceBuffer,toPrintBefore);

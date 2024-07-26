@@ -27,6 +27,7 @@ void* loadConfig(char* path,void* (*treatmentFunction)(yaml_parser_t*,char*)){
 
     // parsing
     char dirPath[SUPPOSED_PATH_MAX_LEN];
+    memset(dirPath,0,sizeof(char) * SUPPOSED_PATH_MAX_LEN);
     extractDirPathFrom(path,dirPath,sizeof(char) * SUPPOSED_PATH_MAX_LEN);
 
     void* treatmentResult = treatmentFunction(&parser,dirPath);

@@ -53,7 +53,7 @@ bool loadStaticPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirP
                     // ajout du chemin par copie du chemin parent + chemin image
                     int len = strlen(parentDirPath);
                     char* path = calloc(
-                        (token.data.scalar.length / sizeof(char)) + (sizeof(char) * len),
+                        (token.data.scalar.length / sizeof(char)) + (sizeof(char) * len) + 1,
                         sizeof(char)
                     );
 
@@ -121,7 +121,7 @@ bool loadListPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPat
                 // ajout du chemin par copie du chemin parent + chemin image
                 int len = strlen(parentDirPath);
                 char* path = calloc(
-                    (token.data.scalar.length / sizeof(char)) + (sizeof(char) * len),
+                    (token.data.scalar.length / sizeof(char)) + (sizeof(char) * len) + 1,
                     sizeof(char)
                 );
 
@@ -306,10 +306,13 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
     assert(parentDirPath != NULL && "Le chemin parent fourni est NULL");
 
     ImageConfig config = {.errorState = true};
+
+    memset(config.description,0,sizeof(char) * SUPPOSED_DESCRIPTION_MAX_LEN);
+    memset(config.id,0,sizeof(char) * SUPPOSED_ID_MAX_LEN);
+
     int countOfElementsToLoad = 4;
     bool nextIsKey = false;
     bool stop = false;
-
     yaml_token_t token;
 
     while(countOfElementsToLoad != 0 && !stop){
