@@ -24,7 +24,7 @@
         /**
          * @brief Clé max des actions ennemies
          */
-        ENNEMIES_MAX_FOR_ARRAY_KEYS
+        ENEMIES_MAX_FOR_ARRAY_KEYS
     }EnemyAction;
 
     /**
@@ -49,7 +49,7 @@
         /**
          * @brief Map des actions ennemies
          */
-        EnemyActionConfig actionsMap[ENNEMIES_MAX_FOR_ARRAY_KEYS];
+        EnemyActionConfig actionsMap[ENEMIES_MAX_FOR_ARRAY_KEYS];
 
         /**
          * @brief Nom de l'ennemie
@@ -89,4 +89,11 @@
      * @return la configuration ou null en cas d'échec
      */
     void* loadEnemies(yaml_parser_t* parser,char* parentDirPath);
+
+    /**
+     * @brief Recherche l'index une action ennemie à partir du nom
+     * @param name nom de l'action
+     * @return l'index de l'action ou -1 si non trouvé
+     */
+    EnemyAction getEnemyActionIndexFromName(char* name);
 #endif
