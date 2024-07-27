@@ -19,21 +19,20 @@
 /**
  * @brief Libère les ressources de la boucle de traitement avant de quitter
  */
-#define FREE_RESOURCES_AND_QUIT free(config->map);\
-    free(config);\
+#define FREE_RESOURCES_AND_QUIT freeTillsConfig(config,true);\
     yaml_token_delete(&readToken);\
     return NULL;
 
-void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
+void* loadTillsConfig(yaml_parser_t* parser,char* parentDirPath){
     assert(parser != NULL && "Le parser fourni pour la lecture de configuration des tills est NULL");
-    assert(parentConfigPath != NULL && "Le chemin parent fourni pour la lecture de configuration des tills est NULL");
-    assert(strlen(parentConfigPath) < SUPPOSED_PATH_MAX_LEN && "La longueur du chemin fourni est supérieur à celle supposée sur le chargement des items");
+    assert(parentDirPath != NULL && "Le chemin parent fourni pour la lecture de configuration des tills est NULL");
+    assert(strlen(parentDirPath) < SUPPOSED_PATH_MAX_LEN && "La longueur du chemin fourni est supérieur à celle supposée sur le chargement des items");
 
     // allocation de base de la configuration
     TillsConfig* config = malloc(sizeof(TillsConfig)); 
 
     if(config == NULL){
-        fputs("Echec d'allocation de la configuration des tills\n",stderr);
+        fputs("\nEchec d'allocation de la configuration des tills\n",stderr);
         return NULL;
     }
 
@@ -43,7 +42,7 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
     config->map = malloc(sizeof(ImageConfig));
 
     if(config->map == NULL){
-        fputs("Echec d'allocation de la map des tills\n",stderr);
+        fputs("\nEchec d'allocation de la map des tills\n",stderr);
         free(config);
         return NULL;
     }
@@ -54,7 +53,7 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
 
     while(true){
         if(!yaml_parser_scan(parser,&readToken)){
-            fputs("Echec de lecture de token lors du parsing de configuration de tills\n",stderr);
+            fputs("\nEchec de lecture de token lors du parsing de configuration de tills\n",stderr);
             FREE_RESOURCES_AND_QUIT
         }
 
@@ -74,21 +73,20 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
             case YAML_SCALAR_TOKEN:
                 if(nextIsKey){
                     // agrandissement de l'espace alloué
-                    config->countOfTills++;
-
-                    void* tmpAddress = realloc(config->map,sizeof(ImageConfig) * config->countOfTills);
+                    void* tmpAddress = realloc(config->map,sizeof(ImageConfig) * (config->countOfTills + 1));
 
                     if(tmpAddress == NULL){
-                        fputs("Echec de reallocation d'adresse lors du parsing de configuration de tills\n",stderr);
+                        fputs("\nEchec de reallocation d'adresse lors du parsing de configuration de tills\n",stderr);
                         FREE_RESOURCES_AND_QUIT
                     }
 
                     // création de la configuration
+                    config->countOfTills++;
                     config->map = tmpAddress;
-                    ImageConfig createdImage = createImageFromConfig(parser,parentConfigPath);
+                    ImageConfig createdImage = createImageFromConfig(parser, parentDirPath);
                     
                     if(createdImage.errorState){
-                        fputs("Echec de parsing de la configuration d'image lors du parsing de configuration de tills\n",stderr);
+                        fputs("\nEchec de parsing de la configuration d'image lors du parsing de configuration de tills\n",stderr);
                         FREE_RESOURCES_AND_QUIT
                     }
 

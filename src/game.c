@@ -26,8 +26,8 @@ void testLoadItems(){
 void testLoadHeroes(){
     HeroesConfig* heroesConfig = loadConfig(RESOURCES_PATH"/game-assets/heroes/config.yaml",loadHeroesConfig);
 
-//    printHeroesConfig(heroesConfig,NULL);
-//    freeHeroesConfig(heroesConfig);
+    printHeroesConfig(heroesConfig,NULL);
+    freeHeroesConfig(heroesConfig,true);
 }
 
 void testLoadEnnemies(){

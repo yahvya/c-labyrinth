@@ -10,7 +10,7 @@ void* loadConfig(char* path,void* (*treatmentFunction)(yaml_parser_t*,char*)){
     FILE* configFile = fopen(path,"r");
 
     if(configFile == NULL){
-        fputs("Echec de lecture d'ouverture du fichier de configuration\n",stderr);
+        fprintf(stderr,"\nEchec de lecture d'ouverture du fichier de configuration <%s>\n",path);
         return NULL;
     }
 
@@ -18,7 +18,7 @@ void* loadConfig(char* path,void* (*treatmentFunction)(yaml_parser_t*,char*)){
     yaml_parser_t parser;
 
     if(!yaml_parser_initialize(&parser)){
-        fputs("Echec d'initialisation du parser yaml\n",stderr);
+        fputs("\nEchec d'initialisation du parser yaml\n",stderr);
         fclose(configFile);
         return NULL;
     }

@@ -377,7 +377,7 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
 }
 
 void freeImageConfig(ImageConfig* config,bool freeContainer){
-    assert(config != NULL && "Configuration d'image NULL pour la libération");
+    assert(config != NULL && "Configuration d'image NULL pour la liberation");
 
     freeGenericList(&config->paths,true);
     

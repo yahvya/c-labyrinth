@@ -26,10 +26,10 @@
     /**
      * @brief Charge la configuration des tuiles de jeux
      * @param parser l'adresse du parseur initialisé
-     * @param parentConfigPath chemin du fichier de configuration parent
+     * @param parentDirPath chemin du dossier de configuration parent
      * @return TillsConfig la structure des tuiles ou null en cas
      */
-    void* loadItemsConfig(yaml_parser_t* parser, char* parentConfigPath);
+    void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath);
 
     /**
      * @brief Affiche la configuration des items

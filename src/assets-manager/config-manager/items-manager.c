@@ -6,8 +6,7 @@
 /**
  * @brief Macro de libération des ressources de parsing
  */
-#define FREE_RESOURCES_AND_QUIT free(config->map);\
-    free(config);\
+#define FREE_RESOURCES_AND_QUIT freeItemsConfig(config,true);\
     yaml_token_delete(&token);\
     return NULL;
 
@@ -21,16 +20,16 @@
  */
 #define SPACE_BUFFER_SIZE 20
 
-void* loadItemsConfig(yaml_parser_t* parser, char* parentConfigPath){
+void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath){
     assert(parser != NULL && "Le parser fourni pour la lecture de configuration des items est NULL");
-    assert(parentConfigPath != NULL && "Le chemin parent fourni pour la lecture de configuration des items est NULL");
-    assert(strlen(parentConfigPath) < SUPPOSED_PATH_MAX_LEN && "La longueur du chemin fourni est supérieur à celle supposée sur le chargement des items");
+    assert(parentDirPath != NULL && "Le chemin parent fourni pour la lecture de configuration des items est NULL");
+    assert(strlen(parentDirPath) < SUPPOSED_PATH_MAX_LEN && "La longueur du chemin fourni est supérieur à celle supposée sur le chargement des items");
 
     // allocation de base des données items et de map
     ItemsConfig* config = malloc(sizeof(ItemsConfig));
 
     if(config == NULL){
-        fputs("Echec d'allocation de la configuration d'items",stderr);
+        fputs("\nEchec d'allocation de la configuration d'items",stderr);
         return NULL;
     }
 
@@ -39,7 +38,7 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentConfigPath){
 
     if(config->map == NULL){
         free(config);
-        fputs("Echec d'allocation le map de la configuration d'items",stderr);
+        fputs("\nEchec d'allocation le map de la configuration d'items",stderr);
         return NULL;
     }
 
@@ -51,7 +50,7 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentConfigPath){
 
     while(true){
         if(!yaml_parser_scan(parser,&token)){
-            fputs("Echec de lecture de token lors du parsing de configuration des items\n",stderr);
+            fputs("\nEchec de lecture de token lors du parsing de configuration des items\n",stderr);
             FREE_RESOURCES_AND_QUIT
         }
 
@@ -76,15 +75,14 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentConfigPath){
             case YAML_SCALAR_TOKEN:
                 if(keyGetCount == 1){
                     // agrandissement d'allocation de map
-                    config->countOfItems++;
-
-                    void* tmpAddress = realloc(config->map,sizeof(ImageConfig) * config->countOfItems);
+                    void* tmpAddress = realloc(config->map,sizeof(ImageConfig) * (config->countOfItems + 1));
 
                     if(tmpAddress == NULL){
-                        fputs("Echec de reallocation d'adresse lors du parsing de configuration d'items\n",stderr);
+                        fputs("\nEchec de reallocation d'adresse lors du parsing de configuration d'items\n",stderr);
                         FREE_RESOURCES_AND_QUIT
                     }
 
+                    config->countOfItems++;
                     config->map = tmpAddress;
 
                     // stockage de l'id
@@ -99,11 +97,11 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentConfigPath){
 
                     char configFilePath[SUPPOSED_PATH_MAX_LEN];
                     memset(configFilePath, 0, SUPPOSED_PATH_MAX_LEN);
-                    strncpy(configFilePath, parentConfigPath, sizeof(char) * (SUPPOSED_PATH_MAX_LEN - 1));
+                    strncpy(configFilePath, parentDirPath, sizeof(char) * (SUPPOSED_PATH_MAX_LEN - 1));
                     strncat(
                             configFilePath,
                             (char*) token.data.scalar.value,
-                        sizeof(char) * (SUPPOSED_PATH_MAX_LEN - strlen(parentConfigPath) - 1)
+                        sizeof(char) * (SUPPOSED_PATH_MAX_LEN - strlen(parentDirPath) - 1)
                     );
 
                     // ouverture de la configuration
@@ -121,6 +119,7 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentConfigPath){
 
                     if(file == NULL){
                         fprintf(stderr,"Echec d'ouverture de la configuration sur le chemin suivant <%s> lors de la configuration des items",configFilePath);
+                        yaml_parser_delete(&internalParser);
                         FREE_RESOURCES_AND_QUIT
                     }
 
@@ -132,7 +131,7 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentConfigPath){
                     yaml_parser_delete(&internalParser);
 
                     if(createdImage.errorState){
-                        fputs("Echec de parsing de la configuration d'image lors du parsing de configuration des items\n",stderr);
+                        fputs("\nEchec de parsing de la configuration d'image lors du parsing de configuration des items\n",stderr);
                         fclose(file);
                         FREE_RESOURCES_AND_QUIT
                     }
