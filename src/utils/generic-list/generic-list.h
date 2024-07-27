@@ -37,7 +37,7 @@
         GenericListItem* listEnd;
 
         /**
-         * @brief Etat d'erreur de la derinère action sur la liste
+         * @brief Etat d'erreur de la dernière action sur la liste
          */
         bool errorState;
     }GenericList;
@@ -74,9 +74,9 @@
     bool listPrepend(GenericList* listManager,void* data);
 
     /**
-     * @brief Désaloue le contenu de la liste. La liste est re initialisé et est utilisable par les fonctions de liste
+     * @brief Libère le contenu de la liste. La liste est re initialisé et est utilisable par les fonctions de liste
      * @param list la liste
-     * @param freeContaineData si true libère la valeur contenue
+     * @param freeContainedData si true libère la valeur contenue
      */
     void freeGenericList(GenericList* list,bool freeContainedData);
 #endif

@@ -20,6 +20,8 @@ add_executable(game
     src/assets-manager/config-manager/tills-manager.h
     src/assets-manager/config-manager/image-config-manager.c
     src/assets-manager/config-manager/image-config-manager.h
+    src/assets-manager/config-manager/items-manager.c
+    src/assets-manager/config-manager/items-manager.h
     src/utils/generic-list/generic-list.c
     src/utils/generic-list/generic-list.h
 )

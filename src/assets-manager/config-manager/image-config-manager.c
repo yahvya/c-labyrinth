@@ -33,25 +33,25 @@ bool loadStaticPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirP
         if(!yaml_parser_scan(parser,&token))
             return false;
 
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            stop = true;
+            break;
+        }
+
         switch(token.type){
-            case YAML_STREAM_END_TOKEN:
-                stop = true;
-            ; break;
-
-            case YAML_DOCUMENT_END_TOKEN:
-                stop = true;
-            ; break;
-
             case YAML_VALUE_TOKEN:
                 nextIsValue = true;
-            ; break;
+            break;
 
             case YAML_SCALAR_TOKEN:
                 if(nextIsValue){
                     stop = true;
 
                     // ajout du chemin par copie du chemin parent + chemin image
-                    int len = strlen(parentDirPath);
+                    unsigned long long len = strlen(parentDirPath);
                     char* path = calloc(
                         (token.data.scalar.length / sizeof(char)) + (sizeof(char) * len) + 1,
                         sizeof(char)
@@ -61,7 +61,7 @@ bool loadStaticPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirP
                         break;
 
                     strncpy(path,parentDirPath,sizeof(char) * len);
-                    strncat(path,token.data.scalar.value,token.data.scalar.length);
+                    strncat(path,(char*) token.data.scalar.value,token.data.scalar.length);
 
                     if(listAppend(&inConfig->paths,path) ){
                         yaml_token_delete(&token);
@@ -70,7 +70,9 @@ bool loadStaticPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirP
                     else
                         stop = true;
                 }
-            ; break;
+            break;
+
+            default:;
         }
 
         yaml_token_delete(&token);
@@ -97,29 +99,28 @@ bool loadListPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPat
         if(!yaml_parser_scan(parser,&token))
             break;
 
+        if(
+                token.type == YAML_DOCUMENT_END_TOKEN ||
+                token.type == YAML_STREAM_END_TOKEN
+                ){
+            stop = true;
+            break;
+        }
+
         switch(token.type){
-            case YAML_STREAM_END_TOKEN:
-                stop = true;
-            ; break;
-
-            case YAML_DOCUMENT_END_TOKEN:
-                stop = true;
-            ; break;
-
             case YAML_FLOW_SEQUENCE_START_TOKEN:
                 startReadSequence = true;
-            ; break;
+            break;
 
             case YAML_FLOW_SEQUENCE_END_TOKEN:
                 return true;
-            ; break;
 
             case YAML_SCALAR_TOKEN:
                 if(!startReadSequence)
                     break;
 
                 // ajout du chemin par copie du chemin parent + chemin image
-                int len = strlen(parentDirPath);
+                unsigned long long len = strlen(parentDirPath);
                 char* path = calloc(
                     (token.data.scalar.length / sizeof(char)) + (sizeof(char) * len) + 1,
                     sizeof(char)
@@ -129,14 +130,16 @@ bool loadListPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPat
                     break;
 
                 strncpy(path,parentDirPath,sizeof(char) * len);
-                strncat(path,token.data.scalar.value,token.data.scalar.length);
+                strncat(path,(char*) token.data.scalar.value,token.data.scalar.length);
 
                 if(listAppend(&inConfig->paths,path) )
                     break;
 
                 stop = true;
                 freeGenericList(&inConfig->paths,true);
-            ; break;
+            break;
+
+            default:;
         }
 
         yaml_token_delete(&token);
@@ -171,34 +174,32 @@ bool loadDescription(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDir
     LOAD_FUNCTIONS_GUARD
 
     yaml_token_t token;
-    bool stop = false;
     bool nextIsValue = false;
 
-    while(!stop){
+    while(true){
         if(!yaml_parser_scan(parser,&token))
             return false;
 
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        )
+            break;
+
         switch(token.type){
-            case YAML_STREAM_END_TOKEN:
-                stop = true;
-            ; break;
-
-            case YAML_DOCUMENT_END_TOKEN:
-                stop = true;
-            ; break;
-
             case YAML_VALUE_TOKEN:
                 nextIsValue = true;
-            ; break;
+            break;
 
             case YAML_SCALAR_TOKEN:
                 if(!nextIsValue)
                     break;
 
-                strncpy(inConfig->description,token.data.scalar.value,sizeof(char) * (SUPPOSED_DESCRIPTION_MAX_LEN - 1));
+                strncpy(inConfig->description,(char*)token.data.scalar.value,sizeof(char) * (SUPPOSED_DESCRIPTION_MAX_LEN - 1));
                 yaml_token_delete(&token);
                 return true;
-            ; break;
+
+            default:;
         }
 
         yaml_token_delete(&token);
@@ -218,34 +219,32 @@ bool loadType(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPath){
     LOAD_FUNCTIONS_GUARD
 
     yaml_token_t token;
-    bool stop = false;
     bool nextIsValue = false;
 
-    while(!stop){
+    while(true){
         if(!yaml_parser_scan(parser,&token))
             return false;
 
+        if(
+        token.type == YAML_DOCUMENT_END_TOKEN ||
+        token.type == YAML_STREAM_END_TOKEN
+        )
+            break;
+
         switch(token.type){
-            case YAML_STREAM_END_TOKEN:
-                stop = true;
-            ; break;
-
-            case YAML_DOCUMENT_END_TOKEN:
-                stop = true;
-            ; break;
-
             case YAML_VALUE_TOKEN:
                 nextIsValue = true;
-            ; break;
+            break;
 
             case YAML_SCALAR_TOKEN:
                 if(!nextIsValue)
                     break;
 
-                inConfig->type = atoi(token.data.scalar.value);
+                inConfig->type = atoi((char*) token.data.scalar.value);
                 yaml_token_delete(&token);
                 return true;
-            ; break;
+
+            default:;
         }
 
         yaml_token_delete(&token);
@@ -265,34 +264,32 @@ bool loadRotation(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPat
     LOAD_FUNCTIONS_GUARD
 
     yaml_token_t token;
-    bool stop = false;
     bool nextIsValue = false;
 
-    while(!stop){
+    while(true){
         if(!yaml_parser_scan(parser,&token))
             return false;
 
-        switch(token.type){
-            case YAML_STREAM_END_TOKEN:
-                stop = true;
-            ; break;
-            
-            case YAML_DOCUMENT_END_TOKEN:
-                stop = true;
-            ; break;
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        )
+            break;
 
+        switch(token.type){
             case YAML_VALUE_TOKEN:
                 nextIsValue = true;
-            ; break;
+            break;
 
             case YAML_SCALAR_TOKEN:
                 if(!nextIsValue)
                     break;
 
-                inConfig->rotation = atoi(token.data.scalar.value);
+                inConfig->rotation = atoi((char*)token.data.scalar.value);
                 yaml_token_delete(&token);
                 return true;
-            ; break;
+
+            default:;
         }
 
         yaml_token_delete(&token);
@@ -322,11 +319,11 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
         switch(token.type){
             case YAML_DOCUMENT_END_TOKEN:
                 stop = true;
-            ; break;
+            break;
 
             case YAML_KEY_TOKEN:
                 nextIsKey = true;
-            ; break;
+            break;
 
             case YAML_SCALAR_TOKEN:
                 if(nextIsKey){
@@ -335,13 +332,13 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
                     // vérification de l'élément de comparaison à charger
                     bool (*loadFunction)(ImageConfig*,yaml_parser_t*,char*) = NULL;
 
-                    if(strcmp(token.data.scalar.value,"path") == 0)
+                    if(strcmp((char*)token.data.scalar.value,"path") == 0)
                         loadFunction = loadPath;
-                    else if(strcmp(token.data.scalar.value,"description") == 0)
+                    else if(strcmp((char*)token.data.scalar.value,"description") == 0)
                         loadFunction = loadDescription;
-                    else if(strcmp(token.data.scalar.value,"type") == 0)
+                    else if(strcmp((char*)token.data.scalar.value,"type") == 0)
                         loadFunction = loadType;
-                    else if(strcmp(token.data.scalar.value,"rotation") == 0)
+                    else if(strcmp((char*)token.data.scalar.value,"rotation") == 0)
                         loadFunction = loadRotation;
 
                     if(loadFunction == NULL)
@@ -355,7 +352,9 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
 
                     countOfElementsToLoad--;
                 }
-            ; break;
+            break;
+
+            default:;
         } 
 
         yaml_token_delete(&token);          

@@ -48,34 +48,35 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
 
     // parsing du fichier
     yaml_token_t readToken;
-    bool stop = false;
     bool nextIsKey = false;
 
-    while(!stop){
+    while(true){
         if(!yaml_parser_scan(parser,&readToken)){
             fputs("Echec de lecture de token lors du parsing de configuration de tills\n",stderr);
             FREE_RESOURCES_AND_QUIT
         }
 
-        switch(readToken.type){
-            case YAML_STREAM_END_TOKEN: 
-                stop = true;
-            ; break;
+        if(
+            readToken.type == YAML_DOCUMENT_END_TOKEN ||
+            readToken.type == YAML_STREAM_END_TOKEN
+        )
+            break;
 
+        switch(readToken.type){
             case YAML_KEY_TOKEN:
                 nextIsKey = true;
             break;
 
             case YAML_SCALAR_TOKEN:
                 if(nextIsKey){
-                    // aggrandissement de l'espace alloué
+                    // agrandissement de l'espace alloué
                     config->countOfTills++;
 
                     void* tmpAddress = realloc(config->map,sizeof(ImageConfig) * config->countOfTills);
 
                     if(tmpAddress == NULL){
                         fputs("Echec de reallocation d'adresse lors du parsing de configuration de tills\n",stderr);
-                        FREE_RESOURCES_AND_QUIT;
+                        FREE_RESOURCES_AND_QUIT
                     }
 
                     // création de la configuration
@@ -84,16 +85,18 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
                     
                     if(createdImage.errorState){
                         fputs("Echec de parsing de la configuration d'image lors du parsing de configuration de tills\n",stderr);
-                        FREE_RESOURCES_AND_QUIT;
+                        FREE_RESOURCES_AND_QUIT
                     }
 
-                    strncpy(createdImage.id,readToken.data.scalar.value,sizeof(char) * (SUPPOSED_ID_MAX_LEN - 1));
+                    strncpy(createdImage.id,(char*)readToken.data.scalar.value,sizeof(char) * (SUPPOSED_ID_MAX_LEN - 1));
                     memcpy(config->map + (atoi(createdImage.id) - 1),&createdImage,sizeof(ImageConfig));
 
                     // attente de la clé suivante
                     nextIsKey = false;
                 }
-            ;
+            break;
+
+            default:;
         }
     
         yaml_token_delete(&readToken);

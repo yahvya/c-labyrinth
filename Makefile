@@ -9,6 +9,6 @@ build:
 
 # lancement du projet
 launch: build
-	./build/game
+	cd build && ./game
 
 .PHONY: init build

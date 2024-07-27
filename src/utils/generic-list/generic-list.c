@@ -73,6 +73,7 @@ bool listPrepend(GenericList* listManager,void* data){
  * @brief Libérateur interne d'allocation de liste
  * @param item l'élément à libérer
  * @param freeContainedData si true libère la donnée contenue
+ * @
  */
 void internalFree(GenericListItem* item,bool freeContainedData){
     if(item == NULL)
