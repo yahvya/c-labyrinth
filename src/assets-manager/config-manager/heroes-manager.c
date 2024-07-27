@@ -1,0 +1,1 @@
+#include "./heroes-manager.h"

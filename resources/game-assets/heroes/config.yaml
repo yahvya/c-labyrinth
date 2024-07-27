@@ -1,3 +1,3 @@
-heroes:
-  - path: "/first/config.yaml"
-    name: "Hero 1"
+1:
+  path: "/first/config.yaml"
+  name: "Hero 1"

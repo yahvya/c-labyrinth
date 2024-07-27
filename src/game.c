@@ -1,8 +1,9 @@
 #include "./assets-manager/config-manager/config-manager.h"
 #include "./assets-manager/assets/assets.h"
 #include "./assets-manager/config-manager/tills-manager.h"
-#include <stdio.h>
 #include "./assets-manager/config-manager/items-manager.h"
+#include "./assets-manager/config-manager/heroes-manager.h"
+#include <stdio.h>
 
 void testTillsConfig(){
     TillsConfig* tillsConfig = (TillsConfig*) loadConfig(RESOURCES_PATH"/game-assets/tills/config.yaml",loadTillsConfig);
@@ -23,7 +24,10 @@ void testLoadItems(){
 }
 
 void testLoadHeroes(){
+    HeroesConfig* heroesConfig = loadConfig(RESOURCES_PATH"/game-assets/heroes/config.yaml",loadHeroesConfig);
 
+//    printHeroesConfig(heroesConfig,NULL);
+//    freeHeroesConfig(heroesConfig);
 }
 
 void testLoadEnnemies(){
@@ -32,8 +36,8 @@ void testLoadEnnemies(){
 
 int main(int argc,char ** argv){
 //     testTillsConfig();
-    testLoadItems();
-    // testLoadHeroes();
+//    testLoadItems();
+     testLoadHeroes();
     // testLoadEnnemies();
 
     return 0;

@@ -377,6 +377,8 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
 }
 
 void freeImageConfig(ImageConfig* config,bool freeContainer){
+    assert(config != NULL && "Configuration d'image NULL pour la libération");
+
     freeGenericList(&config->paths,true);
     
     if(freeContainer)
@@ -384,6 +386,8 @@ void freeImageConfig(ImageConfig* config,bool freeContainer){
 }
 
 void printImageConfig(ImageConfig* config,char* toPrintBefore){
+    assert(config != NULL && "Configuration d'image NULL pour l'affichage");
+
     printf(CC_BBLUE"\n%sConfiguration d'image :"CC_RESET,TO_PRINT);
     printf(CC_BWHITE"\n%s\tId: "CC_RESET"%s",TO_PRINT,config->id);
     printf(CC_BWHITE"\n%s\tType: "CC_RESET"%d",TO_PRINT,config->type);

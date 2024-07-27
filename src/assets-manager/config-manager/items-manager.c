@@ -155,6 +155,8 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentConfigPath){
 }
 
 void printItemsConfig(ItemsConfig * config,char* toPrintBefore){
+    assert(config != NULL && "Configuration d'items NULL pour l'affichage");
+
     printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);
     printf(CC_BBLUE"\n%sConfiguration des items\n"CC_RESET,TO_PRINT);
     printf(CC_BG_BLUE"\n%sNombre d'elements : %d\n",TO_PRINT,config->countOfItems);
@@ -180,6 +182,8 @@ void printItemsConfig(ItemsConfig * config,char* toPrintBefore){
 }
 
 void freeItemsConfig(ItemsConfig* config,bool freeContainer){
+    assert(config != NULL && "Configuration d'image NULL pour la libération");
+
     for(int i = 0; i < config->countOfItems; i++)
         freeImageConfig(&config->map[i],false);
 

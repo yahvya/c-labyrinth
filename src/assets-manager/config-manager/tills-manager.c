@@ -110,6 +110,8 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
 }
 
 void freeTillsConfig(TillsConfig* config,bool freeContainer){
+    assert(config != NULL && "Configuration d'image NULL pour la libération");
+
     for(int i = 0; i < config->countOfTills; i++)
         freeImageConfig(&config->map[i],false);
 
@@ -120,6 +122,8 @@ void freeTillsConfig(TillsConfig* config,bool freeContainer){
 }
 
 void printTillsConfig(TillsConfig* config,char* toPrintBefore){
+    assert(config != NULL && "Configuration d'image NULL pour l'affichage");
+
     printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);
     printf(CC_BBLUE"\n%sConfiguration de tills\n"CC_RESET,TO_PRINT);
     printf(CC_BG_BLUE"\n%sNombre d'elements : %d\n",TO_PRINT,config->countOfTills);
