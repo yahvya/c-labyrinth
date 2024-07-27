@@ -3,6 +3,7 @@
 #include "./assets-manager/config-manager/tills-manager.h"
 #include "./assets-manager/config-manager/items-manager.h"
 #include "./assets-manager/config-manager/heroes-manager.h"
+#include "./assets-manager/config-manager/ennemies-manager.h"
 #include <stdio.h>
 
 void testTillsConfig(){
@@ -31,14 +32,14 @@ void testLoadHeroes(){
 }
 
 void testLoadEnnemies(){
-
+    EnemiesConfig* ennemiesConfig = loadConfig(RESOURCES_PATH"/game-assets/ennemies/config.yaml",loadEnemies);
 }
 
 int main(int argc,char ** argv){
 //     testTillsConfig();
 //    testLoadItems();
-     testLoadHeroes();
-    // testLoadEnnemies();
+//     testLoadHeroes();
+     testLoadEnnemies();
 
     return 0;
 }
