@@ -15,6 +15,11 @@ void testTillsConfig(){
 
 void testLoadItems(){
     ItemsConfig* itemsConfig = loadConfig(RESOURCES_PATH"/game-assets/items/config.yaml",loadItemsConfig);
+
+    printItemsConfig(itemsConfig,NULL);
+    freeItemsConfig(itemsConfig,true);
+
+    printf("\nok");
 }
 
 void testLoadHeroes(){

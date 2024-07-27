@@ -37,7 +37,7 @@ bool loadStaticPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirP
             token.type == YAML_DOCUMENT_END_TOKEN ||
             token.type == YAML_STREAM_END_TOKEN
         ){
-            stop = true;
+            yaml_token_delete(&token);
             break;
         }
 
@@ -100,10 +100,10 @@ bool loadListPath(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPat
             break;
 
         if(
-                token.type == YAML_DOCUMENT_END_TOKEN ||
-                token.type == YAML_STREAM_END_TOKEN
-                ){
-            stop = true;
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
             break;
         }
 
@@ -183,8 +183,10 @@ bool loadDescription(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDir
         if(
             token.type == YAML_DOCUMENT_END_TOKEN ||
             token.type == YAML_STREAM_END_TOKEN
-        )
+        ){
+            yaml_token_delete(&token);
             break;
+        }
 
         switch(token.type){
             case YAML_VALUE_TOKEN:
@@ -226,10 +228,12 @@ bool loadType(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPath){
             return false;
 
         if(
-        token.type == YAML_DOCUMENT_END_TOKEN ||
-        token.type == YAML_STREAM_END_TOKEN
-        )
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
             break;
+        }
 
         switch(token.type){
             case YAML_VALUE_TOKEN:
@@ -273,8 +277,10 @@ bool loadRotation(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPat
         if(
             token.type == YAML_DOCUMENT_END_TOKEN ||
             token.type == YAML_STREAM_END_TOKEN
-        )
+        ){
+            yaml_token_delete(&token);
             break;
+        }
 
         switch(token.type){
             case YAML_VALUE_TOKEN:
@@ -316,11 +322,15 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
         if(!yaml_parser_scan(parser,&token))
             break;
 
-        switch(token.type){
-            case YAML_DOCUMENT_END_TOKEN:
-                stop = true;
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
             break;
+        }
 
+        switch(token.type){
             case YAML_KEY_TOKEN:
                 nextIsKey = true;
             break;

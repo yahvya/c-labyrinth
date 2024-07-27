@@ -1,7 +1,7 @@
 ennemies:
-  - path: "/first"
+  - path: "/first/config.yaml"
     name: "Ennemie 1"
     id: 1
-  - path: "/second"
+  - path: "/second/config/yaml"
     name: "Ennemie 2"
     id: 2

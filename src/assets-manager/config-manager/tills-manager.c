@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "custom-color.h"
+#include "../assets/assets.h"
 
 /**
  * @brief Taille du buffer d'écart
@@ -26,6 +27,7 @@
 void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
     assert(parser != NULL && "Le parser fourni pour la lecture de configuration des tills est NULL");
     assert(parentConfigPath != NULL && "Le chemin parent fourni pour la lecture de configuration des tills est NULL");
+    assert(strlen(parentConfigPath) < SUPPOSED_PATH_MAX_LEN && "La longueur du chemin fourni est supérieur à celle supposée sur le chargement des items");
 
     // allocation de base de la configuration
     TillsConfig* config = malloc(sizeof(TillsConfig)); 
@@ -59,8 +61,10 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
         if(
             readToken.type == YAML_DOCUMENT_END_TOKEN ||
             readToken.type == YAML_STREAM_END_TOKEN
-        )
+        ){
+            yaml_token_delete(&readToken);
             break;
+        }
 
         switch(readToken.type){
             case YAML_KEY_TOKEN:
@@ -89,7 +93,7 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentConfigPath){
                     }
 
                     strncpy(createdImage.id,(char*)readToken.data.scalar.value,sizeof(char) * (SUPPOSED_ID_MAX_LEN - 1));
-                    memcpy(config->map + (atoi(createdImage.id) - 1),&createdImage,sizeof(ImageConfig));
+                    memcpy(config->map + (config->countOfTills - 1),&createdImage,sizeof(ImageConfig));
 
                     // attente de la clé suivante
                     nextIsKey = false;

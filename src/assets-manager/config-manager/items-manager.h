@@ -30,4 +30,18 @@
      * @return TillsConfig la structure des tuiles ou null en cas
      */
     void* loadItemsConfig(yaml_parser_t* parser, char* parentConfigPath);
+
+    /**
+     * @brief Affiche la configuration des items
+     * @param config la configuration
+     * @param toPrintBefore chaine à afficher avant chaque ligne de configuration
+     */
+    void printItemsConfig(ItemsConfig* config,char* toPrintBefore);
+
+    /**
+     * @brief Libère les ressources de la configuration d'items
+     * @param config configuration
+     * @param freeContainer si true libère aussi le conteneur
+     */
+    void freeItemsConfig(ItemsConfig* config,bool freeContainer);
 #endif
