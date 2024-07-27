@@ -74,7 +74,7 @@
         /**
          * @brief If du héro
          */
-        char id[SUPPOSED_ID_MAX_LEN];
+        char id[SUPPOSED_HERO_ID_MAX_LEN];
     }HeroConfig;
 
     /**

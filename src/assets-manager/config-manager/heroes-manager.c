@@ -55,7 +55,7 @@ HeroAction getHeroActionIndexFromName(char* name){
 
 /**
  * @brief Charge les actions du héro dans la configuration fournie
- * @param heroConfig configuration du héros
+ * @param heroConfig configuration du héro
  * @param configFilePath chemin de configuration des actions
  * @return si le chargement réussi
  */
@@ -186,15 +186,13 @@ bool consumeHeroIn(yaml_parser_t* parser,yaml_token_t* token,HeroesConfig* confi
             return false;
         }
 
+        if(
+            token->type == YAML_KEY_TOKEN ||
+            token->type == YAML_VALUE_TOKEN
+        )
+            keyCount++;
+
         switch(token->type){
-            case YAML_KEY_TOKEN:
-                keyCount++;
-            break;
-
-            case YAML_VALUE_TOKEN:
-                keyCount++;
-            break;
-
             case YAML_SCALAR_TOKEN:
                 switch(keyCount){
                     case 1:

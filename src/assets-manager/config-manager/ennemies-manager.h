@@ -14,6 +14,11 @@
     #define SUPPOSED_ENEMY_ACTION_MAX_LEN 40
 
     /**
+     * @brief Longueur max supposée de l'id d'un ennemie
+     */
+    #define SUPPOSED_ENEMY_ID_MAX_LEN 15
+
+    /**
      * @brief Liste des actions ennemie
      */
     typedef enum{
@@ -24,7 +29,7 @@
         /**
          * @brief Clé max des actions ennemies
          */
-        ENEMIES_MAX_FOR_ARRAY_KEYS
+        ENEMY_MAX_FOR_ARRAY_KEYS
     }EnemyAction;
 
     /**
@@ -49,7 +54,7 @@
         /**
          * @brief Map des actions ennemies
          */
-        EnemyActionConfig actionsMap[ENEMIES_MAX_FOR_ARRAY_KEYS];
+        EnemyActionConfig actionsMap[ENEMY_MAX_FOR_ARRAY_KEYS];
 
         /**
          * @brief Nom de l'ennemie
@@ -57,9 +62,9 @@
         char name[SUPPOSED_ENEMY_NAME_MAX_LEN];
 
         /**
-         * @brief Longueur max supposée d'un id
+         * @brief Id ennemie
          */
-        char id[SUPPOSED_ID_MAX_LEN];
+        char id[SUPPOSED_ENEMY_ID_MAX_LEN];
     }EnemyConfig;
 
     /**
@@ -96,4 +101,18 @@
      * @return l'index de l'action ou -1 si non trouvé
      */
     EnemyAction getEnemyActionIndexFromName(char* name);
+
+    /**
+     * @brief Libère la configuration de l'ennemie
+     * @param config configuration
+     * @param freeContainer si true libère le conteneur
+     */
+    void freeEnemyConfig(EnemyConfig* config,bool freeContainer);
+
+    /**
+     * @brief Libère la configuration des ennemies
+     * @param config configuration
+     * @param freeContainer si true libère le conteneur
+     */
+    void freeEnemiesConfig(EnemiesConfig* config,bool freeContainer);
 #endif

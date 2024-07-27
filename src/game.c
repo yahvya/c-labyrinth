@@ -33,6 +33,8 @@ void testLoadHeroes(){
 
 void testLoadEnnemies(){
     EnemiesConfig* ennemiesConfig = loadConfig(RESOURCES_PATH"/game-assets/ennemies/config.yaml",loadEnemies);
+
+    freeEnemiesConfig(ennemiesConfig,true);
 }
 
 int main(int argc,char ** argv){
