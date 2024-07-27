@@ -122,4 +122,11 @@
      * @param freeContainer si true libère la config fournie
      */
     void freeHeroesConfig(HeroesConfig* config,bool freeContainer);
+
+    /**
+     * @brief Affiche la configuration des héros
+     * @param heroesConfig configuration
+     * @param toPrintBefore à afficher avant chaque ligne de configuration
+     */
+    void printHeroesConfig(HeroesConfig* heroesConfig, char* toPrintBefore);
 #endif

@@ -120,7 +120,7 @@ void freeTillsConfig(TillsConfig* config,bool freeContainer){
 }
 
 void printTillsConfig(TillsConfig* config,char* toPrintBefore){
-    assert(config != NULL && "Configuration d'image NULL pour l'affichage");
+    assert(config != NULL && "Configuration de tills NULL pour l'affichage");
 
     printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);
     printf(CC_BBLUE"\n%sConfiguration de tills\n"CC_RESET,TO_PRINT);
