@@ -24,8 +24,8 @@ add_executable(game
     src/assets-manager/config-manager/items-manager.h
     src/assets-manager/config-manager/heroes-manager.c
     src/assets-manager/config-manager/heroes-manager.h
-    src/assets-manager/config-manager/ennemies-manager.c
-    src/assets-manager/config-manager/ennemies-manager.h
+        src/assets-manager/config-manager/enemies-manager.c
+        src/assets-manager/config-manager/enemies-manager.h
     src/utils/generic-list/generic-list.c
     src/utils/generic-list/generic-list.h
 )

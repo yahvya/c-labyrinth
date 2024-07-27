@@ -1,7 +1,18 @@
-#include "./ennemies-manager.h"
+#include "./enemies-manager.h"
 #include "../assets/assets.h"
 #include <string.h>
 #include <assert.h>
+#include "custom-color.h"
+
+/**
+ * @brief Ternaire de choix de l'affichage
+ */
+#define TO_PRINT toPrintBefore == NULL ? "" : toPrintBefore
+
+/**
+ * @brief Taille du buffer d'écart
+ */
+#define SPACE_BUFFER_SIZE 20
 
 /**
  * @brief Libère les ressources et stoppe
@@ -304,4 +315,48 @@ void freeEnemiesConfig(EnemiesConfig* config,bool freeContainer){
 
     if(freeContainer)
         free(config);
+}
+
+void printEnemiesConfig(EnemiesConfig* enemiesConfig, char* toPrintBefore){
+    assert(enemiesConfig != NULL && "Configuration des ennemies NULL pour l'affichage");
+
+    printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);
+    printf(CC_BBLUE"\n%sConfiguration des ennemies\n"CC_RESET,TO_PRINT);
+    printf(CC_BG_BLUE"\n%sNombre d'ennemies : %d\n",TO_PRINT,enemiesConfig->countOfEnemies);
+    printf("\n%sListe des ennemies\n"CC_RESET,TO_PRINT);
+    printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
+
+    char spaceBuffer[SPACE_BUFFER_SIZE];
+    char spaceBufferImage[SPACE_BUFFER_SIZE];
+    memset(spaceBuffer,0,sizeof(char) * SPACE_BUFFER_SIZE);
+    memset(spaceBufferImage,0,sizeof(char) * SPACE_BUFFER_SIZE);
+
+    if(toPrintBefore != NULL)
+        strcpy(spaceBuffer,toPrintBefore);
+
+    strncat(
+        spaceBuffer,
+        "\t",
+        sizeof(char) * (SPACE_BUFFER_SIZE - (toPrintBefore != NULL ? strlen(toPrintBefore) : 0))
+    );
+
+    strncpy(spaceBufferImage,spaceBuffer,sizeof(char) * SPACE_BUFFER_SIZE);
+    strncpy(spaceBufferImage,"\t\t\t",sizeof(char) * (SPACE_BUFFER_SIZE - strlen(spaceBuffer)));
+
+    for(int i = 0; i < enemiesConfig->countOfEnemies; i++){
+        EnemyConfig enemy = enemiesConfig->map[i];
+
+        printf(CC_BWHITE"%sNom: "CC_RESET"%s\n",spaceBuffer,enemy.name);
+        printf(CC_BWHITE"%sId: "CC_RESET"%s\n",spaceBuffer,enemy.id);
+        printf(CC_BWHITE"%sActions: "CC_RESET"\n",spaceBuffer);
+
+        for(int j = 0; j < ENEMY_MAX_FOR_ARRAY_KEYS; j++){
+            printf(CC_BWHITE"%s\tNom de l'action: "CC_RESET"%s\n",spaceBuffer,enemy.actionsMap[j].actionName);
+            printImageConfig(enemy.actionsMap[j].framesConfig,spaceBufferImage);
+            printf("\n");
+        }
+
+        printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
+        printf("\n");
+    }
 }

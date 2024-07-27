@@ -115,4 +115,11 @@
      * @param freeContainer si true libère le conteneur
      */
     void freeEnemiesConfig(EnemiesConfig* config,bool freeContainer);
+
+    /**
+    * @brief Affiche la configuration des ennemies
+    * @param heroesConfig configuration
+    * @param toPrintBefore à afficher avant chaque ligne de configuration
+    */
+    void printEnemiesConfig(EnemiesConfig* enemiesConfig, char* toPrintBefore);
 #endif
