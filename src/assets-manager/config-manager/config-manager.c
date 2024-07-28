@@ -3,6 +3,15 @@
 #include <assert.h>
 #include <stdio.h>
 
+/**
+ * @brief Vérifie si la valeur fournie est NULL et libère les ressources au cas où
+ */
+#define CHECK_NULL_AND_QUIT(on,errorMessage)if(on == NULL){ \
+    freeGameConfig(config,true);\
+    fputs(errorMessage,stderr);\
+    return NULL;\
+}
+
 void* loadConfig(char* path,void* (*treatmentFunction)(yaml_parser_t*,char*)){
     assert(path != NULL && "Le chemin fourni pour le document à charger est NULL");
 
@@ -37,4 +46,54 @@ void* loadConfig(char* path,void* (*treatmentFunction)(yaml_parser_t*,char*)){
     fclose(configFile);
 
     return treatmentResult;
+}
+
+GameConfig* loadGameConfig(){
+    // allocation de la configuration de jeux
+    GameConfig* config = malloc(sizeof(GameConfig) );
+
+    if(config == NULL){
+        fputs("Echec d'allocation de la configuration de jeux",stderr);
+        return NULL;
+    }
+
+    // initialisation à NULL
+    config->enemiesConfig = NULL;
+    config->heroesConfig = NULL;
+    config->tillsConfig = NULL;
+    config->itemsConfig = NULL;
+
+    // chargement des configurations
+    config->enemiesConfig = loadConfig(ENEMIES_CONFIG_FILE_PATH,loadEnemies);
+    CHECK_NULL_AND_QUIT(config->enemiesConfig,"Echec de chargement de la configuration des ennemies")
+
+    config->heroesConfig = loadConfig(HEROES_CONFIG_FILE_PATH,loadHeroesConfig);
+    CHECK_NULL_AND_QUIT(config->heroesConfig,"Echec de chargement de la configuration des héros")
+
+    config->tillsConfig = loadConfig(TILLS_CONFIG_FILE_PATH,loadTillsConfig);
+    CHECK_NULL_AND_QUIT(config->tillsConfig,"Echec de chargement de la configuration des tills")
+
+    config->itemsConfig = loadConfig(ITEMS_CONFIG_FILE_PATH,loadItemsConfig);
+    CHECK_NULL_AND_QUIT(config->itemsConfig,"Echec de chargement de la configuration des items")
+
+    return config;
+}
+
+void freeGameConfig(GameConfig* config,bool freeContainer){
+    assert(config != NULL && "La configuration de jeux fournie est NULL pour la libération");
+
+    if(config->enemiesConfig != NULL)
+        freeEnemiesConfig(config->enemiesConfig,true);
+
+    if(config->heroesConfig != NULL)
+        freeHeroesConfig(config->heroesConfig,true);
+
+    if(config->itemsConfig != NULL)
+        freeItemsConfig(config->itemsConfig,true);
+
+    if(config->tillsConfig != NULL)
+        freeTillsConfig(config->tillsConfig,true);
+
+    if(freeContainer)
+        free(config);
 }

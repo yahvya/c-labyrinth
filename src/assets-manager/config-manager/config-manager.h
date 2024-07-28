@@ -1,6 +1,35 @@
 #if !defined(ASSETS_MANAGER_CONFIG_MANAGER_CONFIG_MANAGER_H)
 #define ASSETS_MANAGER_CONFIG_MANAGER_CONFIG_MANAGER_H
     #include <yaml.h>
+    #include "./enemies-manager.h"
+    #include "./heroes-manager.h"
+    #include "./items-manager.h"
+    #include "./tills-manager.h"
+
+    /**
+     * @brief Charge la configuration de jeux
+     */
+    typedef struct{
+        /**
+         * @brief Configuration des ennemies
+         */
+        EnemiesConfig* enemiesConfig;
+
+        /**
+         * @brief Configuration des héros
+         */
+        HeroesConfig* heroesConfig;
+
+        /**
+         * @brief Configuration des items
+         */
+        ItemsConfig* itemsConfig;
+
+        /**
+         * @brief Configuration des tills
+         */
+        TillsConfig* tillsConfig;
+    }GameConfig;
 
     /**
      * @brief Charge un fichier de configuration avec comme racine le dossier ressource
@@ -9,4 +38,17 @@
      * @return void* La structure chargée ou null en cas d'échec
      */
     void* loadConfig(char* path,void* (*treatmentFunction)(yaml_parser_t*,char*) );
+
+    /**
+     * @brief Charge la configuration du jeux
+     * @return la configuration ou null
+     */
+    GameConfig* loadGameConfig();
+
+    /**
+     * @brief Libère les ressources de la configuration de jeux
+     * @param config la configuration
+     * @param freeContainer si true libère le conteneur fourni
+     */
+    void freeGameConfig(GameConfig* config,bool freeContainer);
 #endif
