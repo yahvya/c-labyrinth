@@ -9,6 +9,7 @@ add_compile_options(-UNDEBUG)
 
 add_subdirectory("libs/libyaml")
 add_subdirectory("libs/custom-color")
+add_subdirectory("libs/raylib-5.0")
 
 add_executable(game 
     src/game.c
@@ -24,15 +25,16 @@ add_executable(game
     src/assets-manager/config-manager/items-manager.h
     src/assets-manager/config-manager/heroes-manager.c
     src/assets-manager/config-manager/heroes-manager.h
-        src/assets-manager/config-manager/enemies-manager.c
-        src/assets-manager/config-manager/enemies-manager.h
+    src/assets-manager/config-manager/enemies-manager.c
+    src/assets-manager/config-manager/enemies-manager.h
     src/utils/generic-list/generic-list.c
     src/utils/generic-list/generic-list.h
 )
 
 target_link_libraries(game 
     yaml
-    custom_color    
+    custom_color
+    raylib
 )
 
 add_custom_command(

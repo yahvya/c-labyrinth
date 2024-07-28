@@ -5,6 +5,7 @@
 #include "./assets-manager/config-manager/heroes-manager.h"
 #include "./assets-manager/config-manager/enemies-manager.h"
 #include <stdio.h>
+#include "raylib.h"
 
 void testTillsConfig(){
     TillsConfig* tillsConfig = (TillsConfig*) loadConfig(RESOURCES_PATH"/game-assets/tills/config.yaml",loadTillsConfig);
@@ -40,10 +41,15 @@ void testLoadEnnemies(){
 }
 
 int main(int argc,char ** argv){
-//     testTillsConfig();
-//    testLoadItems();
-//     testLoadHeroes();
-     testLoadEnnemies();
+    InitWindow(300,400,"Ajout raylib");
+
+    while(!WindowShouldClose()){
+        BeginDrawing();
+
+
+
+        EndDrawing();
+    }
 
     return 0;
 }
