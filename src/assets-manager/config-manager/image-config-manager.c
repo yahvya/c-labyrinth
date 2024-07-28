@@ -405,28 +405,28 @@ bool loadLinkedImages(ImageConfig* config){
         char* imagePath = (char*) config->paths.items->data;
 
         // création de l'image
-        Image* image = malloc(sizeof(Image));
+        Texture2D* texture = malloc(sizeof(Texture2D));
 
-        if(image == NULL){
+        if(texture == NULL){
             fputs("\nEchec d'allocation de l'espace image raylib",stderr);
             FREE_LOADING_RAYLIB_IMAGE_AND_QUIT
         }
 
-        Image loadedImage = LoadImage(imagePath);
+        Texture2D loadedTexture = LoadTexture(imagePath);
 
-        if(!IsImageReady(loadedImage)){
+        if(!IsTextureReady(loadedTexture)){
             fputs("\nEchec du chargement de l'image par raylib",stderr);
-            free(image);
+            free(texture);
             FREE_LOADING_RAYLIB_IMAGE_AND_QUIT
         }
 
-        memcpy(image,&loadedImage,sizeof(Image));
+        memcpy(texture,&loadedTexture,sizeof(Texture2D));
 
         // enregistrement de l'image
-        if(!listAppend(&config->linkedImages,image)){
+        if(!listAppend(&config->linkedImages,texture)){
             fputs("\nEchec d'enregistrement de l'image",stderr);
-            UnloadImage(loadedImage);
-            free(image);
+            UnloadTexture(loadedTexture);
+            free(texture);
             FREE_LOADING_RAYLIB_IMAGE_AND_QUIT
         }
 
@@ -447,10 +447,10 @@ void freeImageConfig(ImageConfig* config,bool freeContainer){
 
     if(!config->linkedImages.errorState){
         while(config->linkedImages.items != NULL){
-            Image* image = (Image*) config->linkedImages.items->data;
+            Texture2D* texture = (Texture2D*) config->linkedImages.items->data;
 
-            if(IsImageReady(*(image)))
-                UnloadImage(*(image));
+            if(IsTextureReady(*(texture)))
+                UnloadTexture(*(texture));
 
             config->linkedImages.items = config->linkedImages.items->nextItem;
         }
