@@ -86,6 +86,34 @@ bool loadItemsImages(GameConfig* gameConfig){
         if(!loadLinkedImages(gameConfig->itemsConfig->map + i))
             return false;
     }
+
+    return true;
+}
+
+bool loadTillsImages(GameConfig* gameConfig){
+    assert(gameConfig != NULL && gameConfig->tillsConfig != NULL && "La configuration du jeux passé est NULL");
+
+    for(int i = 0; i < gameConfig->tillsConfig->countOfTills; i++){
+        if(!loadLinkedImages(gameConfig->tillsConfig->map + 1))
+            return false;
+    }
+
+    return true;
+}
+
+bool loadEnemiesImages(GameConfig* gameConfig){
+    assert(gameConfig != NULL && gameConfig->enemiesConfig != NULL && "La configuration de jeux fourni est NULL");
+
+    for(int i = 0; i < gameConfig->heroesConfig->countOfHeroes; i++){
+        HeroConfig* config = gameConfig->heroesConfig->map + i;
+
+        for(int j = 0; j < HERO_MAX_FOR_ARRAY_KEYS; j++){
+            if(!loadLinkedImages(config->actionsConfigs[j].framesConfig))
+                return false;
+        }
+    }
+
+    return true;
 }
 
 void freeGameConfig(GameConfig* config,bool freeContainer){

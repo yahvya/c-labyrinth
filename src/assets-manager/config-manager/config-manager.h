@@ -46,10 +46,25 @@
     GameConfig* loadGameConfig();
 
     /**
-     * @brief Charge les images raylib dans la configuration
+     * @brief Charge les images raylib dans la configuration des items
      * @param gameConfig configuration de jeux
+     * @return si le chargement réussi
      */
     bool loadItemsImages(GameConfig* gameConfig);
+
+    /**
+     * @brief Charge les images raylib dans la configuration des tills
+     * @param gameConfig configuration de jeux
+     * @return si le chargement réussi
+     */
+    bool loadTillsImages(GameConfig* gameConfig);
+
+    /**
+     * @brief Charge les images raylib dans la configuration des ennemies
+     * @param gameConfig configuration de jeux
+     * @return si le chargement réussi
+     */
+    bool loadEnemiesImages(GameConfig* gameConfig);
 
     /**
      * @brief Libère les ressources de la configuration de jeux

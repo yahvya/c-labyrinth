@@ -5,6 +5,9 @@ int main(int argc,char ** argv){
     GameConfig* gameConfig = loadGameConfig();
 
     loadItemsImages(gameConfig);
+    loadTillsImages(gameConfig);
+    loadEnemiesImages(gameConfig);
+//    loadHeroesImages(gameConfig);
 
     freeGameConfig(gameConfig,true);
 
