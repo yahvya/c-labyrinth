@@ -46,6 +46,12 @@
     GameConfig* loadGameConfig();
 
     /**
+     * @brief Charge les images raylib dans la configuration
+     * @param gameConfig configuration de jeux
+     */
+    bool loadItemsImages(GameConfig* gameConfig);
+
+    /**
      * @brief Libère les ressources de la configuration de jeux
      * @param config la configuration
      * @param freeContainer si true libère le conteneur fourni

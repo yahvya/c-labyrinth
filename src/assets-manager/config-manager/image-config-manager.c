@@ -2,6 +2,7 @@
 #include <string.h>
 #include <assert.h>
 #include "custom-color.h"
+#include "raylib.h"
 
 /**
  * @brief Assertions sur les fonctions de chargement
@@ -14,6 +15,13 @@
  * @brief Ternaire de choix de l'affichage
  */
 #define TO_PRINT toPrintBefore == NULL ? "" : toPrintBefore
+
+/**
+ * @brief Libère les ressources lors du chargement raylib
+ */
+#define FREE_LOADING_RAYLIB_IMAGE_AND_QUIT freeGenericList(&config->linkedImages,true);\
+config->linkedImages.errorState = true;\
+return false;
 
 /**
  * @brief Charge la configuration de chemins sous forme statique
@@ -308,7 +316,11 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
     assert(parser != NULL && "Le parser fourni est NULL");
     assert(parentDirPath != NULL && "Le chemin parent fourni est NULL");
 
-    ImageConfig config = {.errorState = true};
+    ImageConfig config = {
+        .errorState = true,
+        .paths = {.errorState = true},
+        .linkedImages = {.errorState = true},
+    };
 
     memset(config.description,0,sizeof(char) * SUPPOSED_DESCRIPTION_MAX_LEN);
     memset(config.id,0,sizeof(char) * SUPPOSED_ID_MAX_LEN);
@@ -376,11 +388,78 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
     return config;
 }
 
+bool loadLinkedImages(ImageConfig* config){
+    assert(config != NULL && "La configuration fournie pour le chargement des images raylib est NULL");
+
+    if(config->paths.errorState)
+        return false;
+
+    // vérification de configuration non déjà chargée
+    if(!config->linkedImages.errorState)
+        return true;
+
+    newGenericListFrom(&config->linkedImages);
+
+    // chargement des images raylib
+    while(config->paths.items != NULL){
+        char* imagePath = (char*) config->paths.items->data;
+
+        // création de l'image
+        Image* image = malloc(sizeof(Image));
+
+        if(image == NULL){
+            fputs("\nEchec d'allocation de l'espace image raylib",stderr);
+            FREE_LOADING_RAYLIB_IMAGE_AND_QUIT
+        }
+
+        Image loadedImage = LoadImage(imagePath);
+
+        if(!IsImageReady(loadedImage)){
+            fputs("\nEchec du chargement de l'image par raylib",stderr);
+            free(image);
+            FREE_LOADING_RAYLIB_IMAGE_AND_QUIT
+        }
+
+        memcpy(image,&loadedImage,sizeof(Image));
+
+        // enregistrement de l'image
+        if(!listAppend(&config->linkedImages,image)){
+            fputs("\nEchec d'enregistrement de l'image",stderr);
+            UnloadImage(loadedImage);
+            free(image);
+            FREE_LOADING_RAYLIB_IMAGE_AND_QUIT
+        }
+
+        config->paths.items = config->paths.items->nextItem;
+    }
+
+    config->paths.items = config->paths.listStart;
+    config->linkedImages.errorState = false;
+
+    return true;
+}
+
 void freeImageConfig(ImageConfig* config,bool freeContainer){
     assert(config != NULL && "Configuration d'image NULL pour la liberation");
 
-    freeGenericList(&config->paths,true);
-    
+    if(!config->paths.errorState)
+        freeGenericList(&config->paths,true);
+
+    if(!config->linkedImages.errorState){
+        while(config->linkedImages.items != NULL){
+            Image* image = (Image*) config->linkedImages.items->data;
+
+            if(IsImageReady(*(image)))
+                UnloadImage(*(image));
+
+            config->linkedImages.items = config->linkedImages.items->nextItem;
+        }
+
+        config->linkedImages.items = config->linkedImages.listStart;
+        freeGenericList(&config->linkedImages,true);
+        config->linkedImages.errorState = true;
+    }
+
     if(freeContainer)
         free(config);
 }

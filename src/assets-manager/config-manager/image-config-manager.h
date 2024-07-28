@@ -34,8 +34,15 @@
     typedef struct{
         /**
          * @brief Liste des chemins ordonnés des images
+         * @attention état d'erreur à true par défaut tant que les valeurs ne sont pas chargées
          */
         GenericList paths;
+
+        /**
+         * @brief Liste des images chargées raylib
+         * @attention état d'erreur à true par défaut tant que les valeurs ne sont pas chargées
+         */
+        GenericList linkedImages;
 
         /**
          * @brief Id possible de l'image
@@ -68,6 +75,13 @@
      * @attention vérifier l'état d'erreur avant toute utilisation
      */
     ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath);
+
+    /**
+     * @brief Lance le chargement des images raylib contenues
+     * @param config
+     * @return
+     */
+    bool loadLinkedImages(ImageConfig* config);
 
     /**
      * @brief Libère les ressources de la configuration

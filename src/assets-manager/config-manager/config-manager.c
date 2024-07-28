@@ -79,6 +79,15 @@ GameConfig* loadGameConfig(){
     return config;
 }
 
+bool loadItemsImages(GameConfig* gameConfig){
+    assert(gameConfig != NULL && gameConfig->itemsConfig != NULL && "La configuration du jeux passée est NULL");
+
+    for(int i = 0; i < gameConfig->itemsConfig->countOfItems; i++){
+        if(!loadLinkedImages(gameConfig->itemsConfig->map + i))
+            return false;
+    }
+}
+
 void freeGameConfig(GameConfig* config,bool freeContainer){
     assert(config != NULL && "La configuration de jeux fournie est NULL pour la libération");
 

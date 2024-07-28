@@ -29,8 +29,6 @@ add_executable(game
         src/assets-manager/config-manager/enemies-manager.h
         src/utils/generic-list/generic-list.c
         src/utils/generic-list/generic-list.h
-        src/utils/logs/logs-manager.h
-        src/utils/logs/logs-manager.c
 )
 
 target_link_libraries(game 
