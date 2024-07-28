@@ -26,6 +26,11 @@
     #define TILLS_CONFIG_FILE_PATH RESOURCES_PATH"/game-assets/tills/config.yaml"
 
     /**
+     * @brief Chemin du fichier des logs d'erreur
+     */
+    #define ERROR_LOG_FILE_PATH RESOURCES_PATH"/logs/error.txt"
+
+    /**
      * @brief Longueur maximale supposée d'un chemin
      */
     #define SUPPOSED_PATH_MAX_LEN 300

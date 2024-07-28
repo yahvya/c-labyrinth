@@ -12,23 +12,25 @@ add_subdirectory("libs/custom-color")
 add_subdirectory("libs/raylib-5.0")
 
 add_executable(game 
-    src/game.c
-    src/assets-manager/assets/assets.h
-    src/assets-manager/assets/assets.c
-    src/assets-manager/config-manager/config-manager.c
-    src/assets-manager/config-manager/config-manager.h
-    src/assets-manager/config-manager/tills-manager.c
-    src/assets-manager/config-manager/tills-manager.h
-    src/assets-manager/config-manager/image-config-manager.c
-    src/assets-manager/config-manager/image-config-manager.h
-    src/assets-manager/config-manager/items-manager.c
-    src/assets-manager/config-manager/items-manager.h
-    src/assets-manager/config-manager/heroes-manager.c
-    src/assets-manager/config-manager/heroes-manager.h
-    src/assets-manager/config-manager/enemies-manager.c
-    src/assets-manager/config-manager/enemies-manager.h
-    src/utils/generic-list/generic-list.c
-    src/utils/generic-list/generic-list.h
+        src/game.c
+        src/assets-manager/assets/assets.h
+        src/assets-manager/assets/assets.c
+        src/assets-manager/config-manager/config-manager.c
+        src/assets-manager/config-manager/config-manager.h
+        src/assets-manager/config-manager/tills-manager.c
+        src/assets-manager/config-manager/tills-manager.h
+        src/assets-manager/config-manager/image-config-manager.c
+        src/assets-manager/config-manager/image-config-manager.h
+        src/assets-manager/config-manager/items-manager.c
+        src/assets-manager/config-manager/items-manager.h
+        src/assets-manager/config-manager/heroes-manager.c
+        src/assets-manager/config-manager/heroes-manager.h
+        src/assets-manager/config-manager/enemies-manager.c
+        src/assets-manager/config-manager/enemies-manager.h
+        src/utils/generic-list/generic-list.c
+        src/utils/generic-list/generic-list.h
+        src/utils/logs/logs-manager.h
+        src/utils/logs/logs-manager.c
 )
 
 target_link_libraries(game 
