@@ -10,14 +10,14 @@ init-unix:
 
 # build du projet
 build:
-	cd build && cmake .. && make && clear
+	cd build && cmake ..
 
 # lancement du projet
-launch: build
-	cd build && ./game
+launch:
+	cd build && make && clear && ./game
 
 # lancement le projet sous unix avec valgrind
-launch-unix: build
-	cd build && valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./game
+launch-unix:
+	cd build && make && clear && valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./game
 
 .PHONY: init build

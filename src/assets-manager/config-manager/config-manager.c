@@ -104,6 +104,21 @@ bool loadTillsImages(GameConfig* gameConfig){
 bool loadEnemiesImages(GameConfig* gameConfig){
     assert(gameConfig != NULL && gameConfig->enemiesConfig != NULL && "La configuration de jeux fourni est NULL");
 
+    for(int i = 0; i < gameConfig->enemiesConfig->countOfEnemies; i++){
+        EnemyConfig* config = gameConfig->enemiesConfig->map + i;
+
+        for(int j = 0; j < ENEMY_MAX_FOR_ARRAY_KEYS; j++){
+            if(!loadLinkedImages(config->actionsMap[j].framesConfig))
+                return false;
+        }
+    }
+
+    return true;
+}
+
+bool loadHeroesImages(GameConfig* gameConfig){
+    assert(gameConfig != NULL && gameConfig->heroesConfig != NULL && "La configuration de jeux fourni est NULL");
+
     for(int i = 0; i < gameConfig->heroesConfig->countOfHeroes; i++){
         HeroConfig* config = gameConfig->heroesConfig->map + i;
 

@@ -54,6 +54,10 @@ bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath){
     assert(enemyConfig != NULL && "La configuration ennemie fournie pour le chargement des actions est NULL");
     assert(configFilePath != NULL && "Le chemin fournie pour le chargement des actions est NULL");
 
+    char parentDirPath[SUPPOSED_PATH_MAX_LEN];
+
+    extractDirPathFrom(configFilePath,parentDirPath,sizeof(char) * SUPPOSED_PATH_MAX_LEN);
+
     yaml_parser_t parser;
 
     if(!yaml_parser_initialize(&parser)){
@@ -114,7 +118,7 @@ bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath){
                 }
 
                 // chargement de la configuration d'image de l'action et enregistrement
-                ImageConfig createdImage = createImageFromConfig(&parser,"ressources");
+                ImageConfig createdImage = createImageFromConfig(&parser,parentDirPath);
 
                 if(createdImage.errorState){
                     fputs("Echec de chargement d'une image lors du chargement des actions",stderr);
@@ -277,9 +281,9 @@ void* loadEnemies(yaml_parser_t* parser,char* parentDirPath){
         }
 
         if(
-                token.type == YAML_DOCUMENT_END_TOKEN ||
-                token.type == YAML_STREAM_END_TOKEN
-                ){
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
             yaml_token_delete(&token);
             break;
         }

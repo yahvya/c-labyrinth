@@ -7,7 +7,7 @@ int main(int argc,char ** argv){
     loadItemsImages(gameConfig);
     loadTillsImages(gameConfig);
     loadEnemiesImages(gameConfig);
-//    loadHeroesImages(gameConfig);
+    loadHeroesImages(gameConfig);
 
     freeGameConfig(gameConfig,true);
 
