@@ -1,5 +1,5 @@
 #include "./game.h"
-#include "../assets-manager/config-manager/config-manager.h"
+#include "../rendering/home-rendering.h"
 #include <stddef.h>
 #include "raylib.h"
 
@@ -39,12 +39,21 @@ bool initializeGame(){
 }
 
 void startGame(){
+    GameRenderingConfig gameRenderingConfig = {
+        .gameConfig = gameConfig,
+        .currentRenderingFunction = renderGameHome
+    };
+
+    RenderingConfig renderingConfig = {
+        .data = &gameRenderingConfig
+    };
+
+    // rendu du jeu
     while(!WindowShouldClose()){
-        BeginDrawing();
-
-            ClearBackground(RAYWHITE);
-
-        EndDrawing();
+        if(!renderWindow(&renderingConfig,gameRenderingConfig.currentRenderingFunction)){
+            fputs("Echec de rendu de fenêtre",stderr);
+            break;
+        }
     }
 }
 
