@@ -33,14 +33,14 @@ void freeGameMapConfig(GameMapConfig* mapConfig,bool freeContainer){
 void printMapConfig(GameMapConfig* config){
     assert(config != NULL && "La map de jeux à libérer est NULL");
 
-    printf(CC_BLUE"\n------------------------------------------------------------------------\n");
-    printf(CC_BBLUE"\nConfiguration de map\n"CC_RESET);
-    printf(CC_BG_BLUE"\nEchelle d'affichage : %d\n",config->scale);
-    printf(CC_BLUE"------------------------------------------------------------------------\n"CC_RESET);
+    printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
+    printf("\n"CC_BBLUE"Configuration de map"CC_RESET"\n");
+    printf("\n"CC_BG_BLUE"Echelle d'affichage : %d"CC_RESET"\n",config->scale);
+    printf(CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
 
 //    map des items
-    printf(CC_BBLUE"Configuration des tills\n"CC_RESET);
-    printf(CC_BG_BLUE"\nLignes x Colonnes : %d x %d\n",
+    printf(CC_BBLUE"Configuration des tills"CC_RESET"\n");
+    printf("\n"CC_BG_BLUE"Lignes x Colonnes : %d x %d"CC_RESET"\n",
        config->tillsMapConfig.countOfRows,
        config->tillsMapConfig.countOfCols
    );

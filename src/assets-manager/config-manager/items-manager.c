@@ -156,11 +156,11 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath){
 void printItemsConfig(ItemsConfig * config,char* toPrintBefore){
     assert(config != NULL && "Configuration d'items NULL pour l'affichage");
 
-    printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);
-    printf(CC_BBLUE"\n%sConfiguration des items\n"CC_RESET,TO_PRINT);
-    printf(CC_BG_BLUE"\n%sNombre d'elements : %d\n",TO_PRINT,config->countOfItems);
-    printf("\n%sListe des elements\n"CC_RESET,TO_PRINT);
-    printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
+    printf("\n"CC_BLUE"%s------------------------------------------------------------------------"CC_RESET,TO_PRINT);
+    printf("\n"CC_BBLUE"%sConfiguration des items"CC_RESET"\n",TO_PRINT);
+    printf("\n"CC_BG_BLUE"%sNombre d'elements : %d"CC_RESET"\n",TO_PRINT,config->countOfItems);
+    printf("\n"CC_BG_BLUE"%sListe des elements"CC_RESET"\n",TO_PRINT);
+    printf(CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);
 
     char spaceBuffer[SPACE_BUFFER_SIZE];
     memset(spaceBuffer,0,sizeof(char) * SPACE_BUFFER_SIZE);
@@ -175,7 +175,7 @@ void printItemsConfig(ItemsConfig * config,char* toPrintBefore){
     );
 
     for(int i = 0; i < config->countOfItems; i++){
-        printImageConfig(&config->map[i],toPrintBefore);
+        printImageConfig(&config->map[i],spaceBuffer);
         printf("\n");
     }
 }

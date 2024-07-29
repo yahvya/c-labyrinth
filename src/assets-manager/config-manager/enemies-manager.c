@@ -324,11 +324,11 @@ void freeEnemiesConfig(EnemiesConfig* config,bool freeContainer){
 void printEnemiesConfig(EnemiesConfig* enemiesConfig, char* toPrintBefore){
     assert(enemiesConfig != NULL && "Configuration des ennemies NULL pour l'affichage");
 
-    printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);
-    printf(CC_BBLUE"\n%sConfiguration des ennemies\n"CC_RESET,TO_PRINT);
-    printf(CC_BG_BLUE"\n%sNombre d'ennemies : %d\n",TO_PRINT,enemiesConfig->countOfEnemies);
-    printf("\n%sListe des ennemies\n"CC_RESET,TO_PRINT);
-    printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
+    printf("\n"CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);
+    printf("\n"CC_BBLUE"%sConfiguration des ennemies"CC_RESET"\n",TO_PRINT);
+    printf("\n"CC_BG_BLUE"%sNombre d'ennemies : %d"CC_RESET"\n",TO_PRINT,enemiesConfig->countOfEnemies);
+    printf("\n"CC_BG_BLUE"%sListe des ennemies"CC_RESET"\n",TO_PRINT);
+    printf(CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);
 
     char spaceBuffer[SPACE_BUFFER_SIZE];
     char spaceBufferImage[SPACE_BUFFER_SIZE];
@@ -360,7 +360,7 @@ void printEnemiesConfig(EnemiesConfig* enemiesConfig, char* toPrintBefore){
             printf("\n");
         }
 
-        printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
+        printf(CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);
         printf("\n");
     }
 }

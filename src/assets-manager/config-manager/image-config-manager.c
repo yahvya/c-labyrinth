@@ -467,13 +467,13 @@ void freeImageConfig(ImageConfig* config,bool freeContainer){
 void printImageConfig(ImageConfig* config,char* toPrintBefore){
     assert(config != NULL && "Configuration d'image NULL pour l'affichage");
 
-    printf(CC_BBLUE"\n%sConfiguration d'image :"CC_RESET,TO_PRINT);
-    printf(CC_BWHITE"\n%s\tId: "CC_RESET"%s",TO_PRINT,config->id);
-    printf(CC_BWHITE"\n%s\tType: "CC_RESET"%d",TO_PRINT,config->type);
-    printf(CC_BWHITE"\n%s\tDescription: "CC_RESET"%s",TO_PRINT,config->description);
-    printf(CC_BWHITE"\n%s\tRotation: "CC_RESET"%d",TO_PRINT,config->rotation);
-    printf(CC_BWHITE"\n%s\tContient une erreur: "CC_RESET"%s",TO_PRINT,config->errorState ? "Oui" : "Non");
-    printf(CC_BWHITE"\n%s\tListe des chemins: "CC_RESET,TO_PRINT);
+    printf("\n"CC_BBLUE"%sConfiguration d'image :"CC_RESET,TO_PRINT);
+    printf("\n"CC_BWHITE"%s\tId: "CC_RESET"%s",TO_PRINT,config->id);
+    printf("\n"CC_BWHITE"%s\tType: "CC_RESET"%d",TO_PRINT,config->type);
+    printf("\n"CC_BWHITE"%s\tDescription: "CC_RESET"%s",TO_PRINT,config->description);
+    printf("\n"CC_BWHITE"%s\tRotation: "CC_RESET"%d",TO_PRINT,config->rotation);
+    printf("\n"CC_BWHITE"%s\tContient une erreur: "CC_RESET"%s",TO_PRINT,config->errorState ? "Oui" : "Non");
+    printf("\n"CC_BWHITE"%s\tListe des chemins: "CC_RESET,TO_PRINT);
 
     while(config->paths.items != NULL){
         printf("\n%s\t\t=> %s",TO_PRINT,(char*) config->paths.items->data);

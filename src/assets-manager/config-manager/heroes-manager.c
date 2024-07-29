@@ -334,11 +334,11 @@ void freeHeroesConfig(HeroesConfig* config,bool freeContainer){
 void printHeroesConfig(HeroesConfig* heroesConfig, char* toPrintBefore){
     assert(heroesConfig != NULL && "Configuration de heros NULL pour l'affichage");
 
-    printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);
+    printf("\n"CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);
     printf(CC_BBLUE"\n%sConfiguration des heros\n"CC_RESET,TO_PRINT);
-    printf(CC_BG_BLUE"\n%sNombre de heros : %d\n",TO_PRINT,heroesConfig->countOfHeroes);
-    printf("\n%sListe des heros\n"CC_RESET,TO_PRINT);
-    printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
+    printf("\n"CC_BG_BLUE"%sNombre de heros : %d"CC_RESET"\n",TO_PRINT,heroesConfig->countOfHeroes);
+    printf("\n"CC_BG_BLUE"%sListe des heros"CC_RESET"\n",TO_PRINT);
+    printf(CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);
 
     char spaceBuffer[SPACE_BUFFER_SIZE];
     char spaceBufferImage[SPACE_BUFFER_SIZE];
@@ -370,7 +370,7 @@ void printHeroesConfig(HeroesConfig* heroesConfig, char* toPrintBefore){
             printf("\n");
         }
 
-        printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
+        printf(CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);
         printf("\n");
     }
 }
