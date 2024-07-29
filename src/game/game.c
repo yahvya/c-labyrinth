@@ -39,6 +39,7 @@ bool initializeGame(){
 }
 
 void startGame(){
+    printMapConfig(gameConfig->homeMapConfig);
     GameRenderingConfig gameRenderingConfig = {
         .gameConfig = gameConfig,
         .currentRenderingFunction = renderGameHome

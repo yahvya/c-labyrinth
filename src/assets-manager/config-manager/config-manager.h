@@ -5,6 +5,7 @@
     #include "./heroes-manager.h"
     #include "./items-manager.h"
     #include "./tills-manager.h"
+    #include "./game-map-manager.h"
 
     /**
      * @brief Charge la configuration de jeux
@@ -29,6 +30,11 @@
          * @brief Configuration des tills
          */
         TillsConfig* tillsConfig;
+
+        /**
+         * @brief Configuration de la map d'affichage de la page d'accueil
+         */
+        GameMapConfig* homeMapConfig;
     }GameConfig;
 
     /**

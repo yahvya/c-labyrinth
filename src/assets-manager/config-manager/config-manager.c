@@ -62,6 +62,7 @@ GameConfig* loadGameConfig(){
     config->heroesConfig = NULL;
     config->tillsConfig = NULL;
     config->itemsConfig = NULL;
+    config->homeMapConfig = NULL;
 
     // chargement des configurations
     config->enemiesConfig = loadConfig(ENEMIES_CONFIG_FILE_PATH,loadEnemies);
@@ -75,6 +76,9 @@ GameConfig* loadGameConfig(){
 
     config->itemsConfig = loadConfig(ITEMS_CONFIG_FILE_PATH,loadItemsConfig);
     CHECK_NULL_AND_QUIT(config->itemsConfig,"Echec de chargement de la configuration des items")
+
+    config->homeMapConfig = loadConfig(HOME_MAP_CONFIG_FILE_PATH,loadGameMapConfig);
+    CHECK_NULL_AND_QUIT(config->homeMapConfig,"Echec de chargement de la map d'accueil")
 
     return config;
 }
@@ -145,6 +149,9 @@ void freeGameConfig(GameConfig* config,bool freeContainer){
 
     if(config->tillsConfig != NULL)
         freeTillsConfig(config->tillsConfig,true);
+
+    if(config->homeMapConfig != NULL)
+        freeGameMapConfig(config->homeMapConfig,true);
 
     if(freeContainer)
         free(config);

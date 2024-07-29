@@ -4,6 +4,7 @@
 
 bool renderGameHome(RenderingConfig* renderingConfig){
     GameRenderingConfig* gameRenderingConfig = (GameRenderingConfig*) renderingConfig->data;
+    GameConfig* gameConfig = gameRenderingConfig->gameConfig;
 
     return true;
 }
