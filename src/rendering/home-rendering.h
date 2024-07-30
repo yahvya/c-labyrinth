@@ -1,5 +1,5 @@
-#if !defined(GAME_HOME_RENDERING_H)
-#define GAME_HOME_RENDERING_H
+#if !defined(RENDERING_HOME_RENDERING_H)
+#define RENDERING_HOME_RENDERING_H
     #include "../game/window-manager.h"
 
     /**

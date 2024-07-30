@@ -35,8 +35,10 @@ add_executable(game
         src/game/game.h
         src/game/window-manager.c
         src/game/window-manager.h
-        src/rendering/home-rendering.h
+        src/rendering/rendering.c
+        src/rendering/rendering.h
         src/rendering/home-rendering.c
+        src/rendering/home-rendering.h
 )
 
 target_link_libraries(game 

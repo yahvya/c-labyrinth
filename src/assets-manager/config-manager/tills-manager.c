@@ -122,11 +122,11 @@ void freeTillsConfig(TillsConfig* config,bool freeContainer){
 void printTillsConfig(TillsConfig* config,char* toPrintBefore){
     assert(config != NULL && "Configuration de tills NULL pour l'affichage");
 
-    printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);
-    printf(CC_BBLUE"\n%sConfiguration de tills\n"CC_RESET,TO_PRINT);
-    printf(CC_BG_BLUE"\n%sNombre d'elements : %d\n",TO_PRINT,config->countOfTills);
-    printf("\n%sListe des elements\n"CC_RESET,TO_PRINT);
-    printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
+    printf("\n"CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
+    printf("\n"CC_BBLUE"%sConfiguration de tills"CC_RESET"\n",TO_PRINT);
+    printf("\n"CC_BG_BLUE"%sNombre d'elements : %d"CC_RESET"\n",TO_PRINT,config->countOfTills);
+    printf("\n"CC_BG_BLUE"%sListe des elements"CC_RESET"\n",TO_PRINT);
+    printf(CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);
 
     char spaceBuffer[SPACE_BUFFER_SIZE];
     memset(spaceBuffer,0,sizeof(char) * SPACE_BUFFER_SIZE);
