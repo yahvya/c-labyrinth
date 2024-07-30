@@ -94,7 +94,17 @@
         /**
          * @brief Echelle d'affichage des éléments
          */
-        int scale;
+        float scale;
+
+        /**
+         * @brief Largeur de la fenêtre
+         */
+        int windowWidth;
+
+        /**
+         * @brief Hauteur de la fenêtre
+         */
+        int windowHeight;
 
         /**
          * @brief Configuration de la map des tills

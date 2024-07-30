@@ -1,21 +1,25 @@
 #include "./rendering.h"
 #include "raylib.h"
+#include "../game/window-manager.h"
 
 /**
  * @brief Affiche les tills
  * @param gameConfig configuration globale du jeux
- * @param tillsConfig configuration des tills
+ * @param mapConfig configuration de map
  * @return si l'affichage réussi
  */
-bool renderTills(GameConfig* gameConfig,GameTillsMap* tillsConfig){
+bool renderTills(GameConfig* gameConfig,GameMapConfig* mapConfig){
+    GameTillsMap* tillsConfig = &mapConfig->tillsMapConfig;
+
     for(int rowIndex = 0; rowIndex < tillsConfig->countOfRows; rowIndex++){
         for(int colIndex = 0; colIndex < tillsConfig->countOfCols; colIndex++){
             GameMapTillConfig config = tillsConfig->tillsMap[rowIndex][colIndex];
 
-            DrawTexture(
+            DrawTextureEx(
                 *((Texture2D*)gameConfig->tillsConfig->map[config.id - 1].linkedImages.items->data),
-                config.x,
-                config.y,
+                (Vector2){.x = (float)config.x,.y= (float)config.y},
+                gameConfig->tillsConfig->map[config.id - 1].rotation,
+                mapConfig->scale,
                 WHITE
             );
         }
@@ -27,17 +31,20 @@ bool renderTills(GameConfig* gameConfig,GameTillsMap* tillsConfig){
 /**
  * @brief Affiche les items
  * @param gameConfig configuration globale du jeux
- * @param tillsConfig configuration des items
+ * @param mapConfig configuration de map
  * @return si l'affichage réussi
  */
-bool renderItems(GameConfig* gameConfig,GenericList* itemsConfig){
+bool renderItems(GameConfig* gameConfig,GameMapConfig* mapConfig){
+    GenericList* itemsConfig = &mapConfig->itemsConfig;
+
     while(itemsConfig->items != NULL){
         GameMapItemConfig* itemConfig = (GameMapItemConfig*) itemsConfig->items->data;
 
-        DrawTexture(
+        DrawTextureEx(
             *((Texture2D*)gameConfig->itemsConfig->map[itemConfig->id].linkedImages.items->data),
-            itemConfig->x,
-            itemConfig->y,
+            (Vector2){.x = (float)itemConfig->x,.y = (float)itemConfig->y},
+            gameConfig->itemsConfig->map[itemConfig->id].rotation,
+            mapConfig->scale,
             WHITE
         );
 
@@ -52,19 +59,22 @@ bool renderItems(GameConfig* gameConfig,GenericList* itemsConfig){
 /**
  * @brief Affiche les ennemies
  * @param gameConfig configuration globale du jeux
- * @param tillsConfig configuration des ennemies
+ * @param mapConfig configuration de map
  * @return si l'affichage réussi
  */
-bool renderEnemies(GameConfig* gameConfig,GenericList* enemiesConfig){
+bool renderEnemies(GameConfig* gameConfig,GameMapConfig* mapConfig){
+    GenericList* enemiesConfig = &mapConfig->enemiesConfig;
+
     while(enemiesConfig->items != NULL){
         GameMapEnemyConfig* mapEnemyConfig = (GameMapEnemyConfig*) enemiesConfig->items->data;
         EnemyConfig enemyConfig = gameConfig->enemiesConfig->map[mapEnemyConfig->id - 1];
         EnemyActionConfig currentAction = enemyConfig.actionsMap[mapEnemyConfig->currentAction];
 
-        DrawTexture(
+        DrawTextureEx(
             *((Texture2D*)currentAction.framesConfig->linkedImages.items->data),
-            mapEnemyConfig->x,
-            mapEnemyConfig->y,
+            (Vector2){.x = (float)mapEnemyConfig->x,.y = (float)mapEnemyConfig->y,},
+            currentAction.framesConfig->rotation,
+            mapConfig->scale,
             WHITE
         );
 
@@ -77,8 +87,15 @@ bool renderEnemies(GameConfig* gameConfig,GenericList* enemiesConfig){
 }
 
 bool renderMap(GameConfig* gameConfig,GameMapConfig* mapConfig){
+    if(
+        renderTills(gameConfig,mapConfig) &&
+        renderItems(gameConfig,mapConfig) &&
+        renderEnemies(gameConfig,mapConfig)
+    ){
+        SetWindowSize(mapConfig->windowWidth,mapConfig->windowHeight);
+        centerWindow();
+        return true;
+    }
 
-    return renderTills(gameConfig,&mapConfig->tillsMapConfig) &&
-        renderItems(gameConfig,&mapConfig->itemsConfig) &&
-        renderEnemies(gameConfig,&mapConfig->enemiesConfig);
+    return false;
 }

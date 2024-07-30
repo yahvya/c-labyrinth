@@ -299,7 +299,7 @@ bool loadRotation(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPat
                 if(!nextIsValue)
                     break;
 
-                inConfig->rotation = atoi((char*)token.data.scalar.value);
+                inConfig->rotation = atof((char*)token.data.scalar.value);
                 yaml_token_delete(&token);
                 return true;
 

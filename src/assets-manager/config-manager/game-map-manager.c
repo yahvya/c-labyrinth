@@ -34,7 +34,83 @@ bool consumeScale(GameMapConfig* config,yaml_parser_t* parser){
 
         switch(token.type){
             case YAML_SCALAR_TOKEN:
-                config->scale = atoi((char*)token.data.scalar.value);
+                config->scale = atof((char*)token.data.scalar.value);
+                yaml_token_delete(&token);
+                return true;
+
+            default:;
+        }
+
+        yaml_token_delete(&token);
+    }
+
+    return false;
+}
+
+/**
+ * @brief Consume la largeur de fenêtre
+ * @param config la configuration
+ * @param parser le parser
+ * @return si la consumation réussie
+ */
+bool consumeWidth(GameMapConfig* config,yaml_parser_t* parser){
+    yaml_token_t token;
+
+    while(true){
+        if(!yaml_parser_scan(parser,&token)){
+            fputs("\nEchec de récupération du token lors de la consumation de largeur",stderr);
+            break;
+        }
+
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
+            break;
+        }
+
+        switch(token.type){
+            case YAML_SCALAR_TOKEN:
+                config->windowWidth = atoi((char*)token.data.scalar.value);
+                yaml_token_delete(&token);
+                return true;
+
+            default:;
+        }
+
+        yaml_token_delete(&token);
+    }
+
+    return false;
+}
+
+/**
+ * @brief Consume la largeur de fenêtre
+ * @param config la configuration
+ * @param parser le parser
+ * @return si la consumation réussie
+ */
+bool consumeHeight(GameMapConfig* config,yaml_parser_t* parser){
+    yaml_token_t token;
+
+    while(true){
+        if(!yaml_parser_scan(parser,&token)){
+            fputs("\nEchec de récupération du token lors de la consumation de hauteur",stderr);
+            break;
+        }
+
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
+            break;
+        }
+
+        switch(token.type){
+            case YAML_SCALAR_TOKEN:
+                config->windowHeight = atoi((char*)token.data.scalar.value);
                 yaml_token_delete(&token);
                 return true;
 
@@ -413,7 +489,7 @@ void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
     newGenericListFrom(&config->itemsConfig);
     newGenericListFrom(&config->enemiesConfig);
 
-    int countOfKeysToLoad = 4;
+    int countOfKeysToLoad = 6;
     bool nextIsKey = false;
 
     yaml_token_t token;
@@ -441,9 +517,23 @@ void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
                     break;
 
                 switch(countOfKeysToLoad){
-                    case 4:
+                    case 6:
                         if(!consumeScale(config,parser)){
                             fputs("\nEchec de lecture de l'echelle",stderr);
+                            FREE_AND_QUIT
+                        }
+                    break;
+
+                    case 5:
+                        if(!consumeWidth(config,parser)){
+                            fputs("\nEchec de lecture de la largeur",stderr);
+                            FREE_AND_QUIT
+                        }
+                    break;
+
+                    case 4:
+                        if(!consumeHeight(config,parser)){
+                            fputs("\nEchec de lecture de la hauteur",stderr);
                             FREE_AND_QUIT
                         }
                     break;
@@ -514,7 +604,7 @@ void printMapConfig(GameMapConfig* config){
 
     printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
     printf("\n"CC_BBLUE"Configuration de map"CC_RESET"\n");
-    printf("\n"CC_BG_BLUE"Echelle d'affichage : %d"CC_RESET"\n",config->scale);
+    printf("\n"CC_BG_BLUE"Echelle d'affichage : %f"CC_RESET"\n",config->scale);
     printf(CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
 
 //    map des items

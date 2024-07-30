@@ -62,7 +62,7 @@
         /**
          * @brief Valeur de rotation
          */
-        int rotation;
+        float rotation;
         /**
          * @brief Etat d'erreur
          */
