@@ -56,6 +56,23 @@ bool renderItems(GameConfig* gameConfig,GenericList* itemsConfig){
  * @return si l'affichage réussi
  */
 bool renderEnemies(GameConfig* gameConfig,GenericList* enemiesConfig){
+    while(enemiesConfig->items != NULL){
+        GameMapEnemyConfig* mapEnemyConfig = (GameMapEnemyConfig*) enemiesConfig->items->data;
+        EnemyConfig enemyConfig = gameConfig->enemiesConfig->map[mapEnemyConfig->id - 1];
+        EnemyActionConfig currentAction = enemyConfig.actionsMap[mapEnemyConfig->currentAction];
+
+        DrawTexture(
+            *((Texture2D*)currentAction.framesConfig->linkedImages.items->data),
+            mapEnemyConfig->x,
+            mapEnemyConfig->y,
+            WHITE
+        );
+
+        enemiesConfig->items = enemiesConfig->items->nextItem;
+    }
+
+    enemiesConfig->items = enemiesConfig->listStart;
+
     return true;
 }
 

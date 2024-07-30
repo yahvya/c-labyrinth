@@ -369,15 +369,20 @@ bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
                 switch(structValueCounter){
                     case 1:
                         newEnemyAddress->x = atoi((char*)token.data.scalar.value);
-                        break;
+                    break;
 
                     case 2:
                         newEnemyAddress->y = atoi((char*)token.data.scalar.value);
-                        break;
+                    break;
 
                     case 3:
                         newEnemyAddress->id = atoi((char*)token.data.scalar.value);
-                        break;
+                    break;
+
+                    case 4:
+                        newEnemyAddress->currentAction = atoi((char*)token.data.scalar.value);
+                    break;
+
                     default:;
                 }
                 break;

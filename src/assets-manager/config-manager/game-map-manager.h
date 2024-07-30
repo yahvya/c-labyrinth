@@ -80,6 +80,11 @@
          * @brief Id de l'ennemie
          */
         int id;
+
+        /**
+         * @brief action de l'ennemie
+         */
+        int currentAction;
     }GameMapEnemyConfig;
 
     /**
