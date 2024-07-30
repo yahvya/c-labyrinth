@@ -34,12 +34,14 @@
     typedef struct{
         /**
          * @brief Liste des chemins ordonnés des images
+         * char*
          * @attention état d'erreur à true par défaut tant que les valeurs ne sont pas chargées
          */
         GenericList paths;
 
         /**
          * @brief Liste des images chargées raylib
+         * Texture2D
          * @attention état d'erreur à true par défaut tant que les valeurs ne sont pas chargées
          */
         GenericList linkedImages;

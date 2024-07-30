@@ -178,6 +178,8 @@ void printItemsConfig(ItemsConfig * config,char* toPrintBefore){
         printImageConfig(&config->map[i],spaceBuffer);
         printf("\n");
     }
+
+    printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
 }
 
 void freeItemsConfig(ItemsConfig* config,bool freeContainer){

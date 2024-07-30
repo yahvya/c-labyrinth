@@ -144,4 +144,6 @@ void printTillsConfig(TillsConfig* config,char* toPrintBefore){
         printImageConfig(&config->map[i],toPrintBefore);
         printf("\n");
     }
+
+    printf(CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
 }

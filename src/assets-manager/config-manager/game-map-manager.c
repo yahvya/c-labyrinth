@@ -201,6 +201,96 @@ bool consumeTills(GameMapConfig* config,yaml_parser_t* parser){
  * @return si la consumation réussie
  */
 bool consumeItems(GameMapConfig* config,yaml_parser_t* parser){
+    yaml_token_t token;
+
+    GameMapItemConfig* newItemAddress = NULL;
+
+    bool firstBlocEncountered = false;
+    int blocMapCounter = 0;
+    int structValueCounter = 0;
+
+    while(true){
+        if(!yaml_parser_scan(parser,&token)){
+            fputs("\nEchec de recupération du token lors de la consumation des items",stderr);
+            return false;
+        }
+
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
+            return false;
+        }
+
+        switch(token.type){
+            case YAML_FLOW_SEQUENCE_START_TOKEN:
+                if(!firstBlocEncountered)
+                    firstBlocEncountered = true;
+
+                blocMapCounter++;
+            break;
+
+            case YAML_FLOW_SEQUENCE_END_TOKEN:
+                blocMapCounter--;
+
+                // ajout dans la liste de configuration
+                if(blocMapCounter == 1){
+                    structValueCounter = 0;
+
+                    if(!listAppend(&config->itemsConfig,newItemAddress)){
+                        fputs("\nEchec d'allocation de la configuration d'item",stderr);
+                        yaml_token_delete(&token);
+                        return false;
+                    }
+
+                    newItemAddress = NULL;
+                }
+            break;
+
+            case YAML_SCALAR_TOKEN:
+                if(blocMapCounter != 2)
+                    break;
+
+                // allocation d'une nouvelle configuration
+                if(newItemAddress == NULL){
+                    newItemAddress = malloc(sizeof(GameMapItemConfig));
+
+                    if(newItemAddress == NULL){
+                        fputs("\nEchec d'allocation de la configuration d'item",stderr);
+                        yaml_token_delete(&token);
+                        return false;
+                    }
+                }
+
+                // remplissage de la structure
+                structValueCounter++;
+
+                switch(structValueCounter){
+                    case 1:
+                        newItemAddress->x = atoi((char*)token.data.scalar.value);
+                    break;
+
+                    case 2:
+                        newItemAddress->y = atoi((char*)token.data.scalar.value);
+                    break;
+
+                    case 3:
+                        newItemAddress->id = atoi((char*)token.data.scalar.value);
+                    break;
+                    default:;
+                }
+            break;
+
+            default:;
+        }
+
+        yaml_token_delete(&token);
+
+        if(firstBlocEncountered && blocMapCounter == 0)
+            break;
+    }
+
     return true;
 }
 
@@ -211,6 +301,96 @@ bool consumeItems(GameMapConfig* config,yaml_parser_t* parser){
  * @return si la consumation réussie
  */
 bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
+    yaml_token_t token;
+
+    GameMapEnemyConfig* newEnemyAddress = NULL;
+
+    bool firstBlocEncountered = false;
+    int blocMapCounter = 0;
+    int structValueCounter = 0;
+
+    while(true){
+        if(!yaml_parser_scan(parser,&token)){
+            fputs("\nEchec de recupération du token lors de la consumation des ennemies",stderr);
+            return false;
+        }
+
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
+            return false;
+        }
+
+        switch(token.type){
+            case YAML_FLOW_SEQUENCE_START_TOKEN:
+                if(!firstBlocEncountered)
+                    firstBlocEncountered = true;
+
+                blocMapCounter++;
+                break;
+
+            case YAML_FLOW_SEQUENCE_END_TOKEN:
+                blocMapCounter--;
+
+                // ajout dans la liste de configuration
+                if(blocMapCounter == 1){
+                    structValueCounter = 0;
+
+                    if(!listAppend(&config->enemiesConfig, newEnemyAddress)){
+                        fputs("\nEchec d'allocation de la configuration d'ennemie",stderr);
+                        yaml_token_delete(&token);
+                        return false;
+                    }
+
+                    newEnemyAddress = NULL;
+                }
+                break;
+
+            case YAML_SCALAR_TOKEN:
+                if(blocMapCounter != 2)
+                    break;
+
+                // allocation d'une nouvelle configuration
+                if(newEnemyAddress == NULL){
+                    newEnemyAddress = malloc(sizeof(GameMapEnemyConfig));
+
+                    if(newEnemyAddress == NULL){
+                        fputs("\nEchec d'allocation de la configuration d'ennemie",stderr);
+                        yaml_token_delete(&token);
+                        return false;
+                    }
+                }
+
+                // remplissage de la structure
+                structValueCounter++;
+
+                switch(structValueCounter){
+                    case 1:
+                        newEnemyAddress->x = atoi((char*)token.data.scalar.value);
+                        break;
+
+                    case 2:
+                        newEnemyAddress->y = atoi((char*)token.data.scalar.value);
+                        break;
+
+                    case 3:
+                        newEnemyAddress->id = atoi((char*)token.data.scalar.value);
+                        break;
+                    default:;
+                }
+                break;
+
+            default:;
+        }
+
+        yaml_token_delete(&token);
+
+        if(firstBlocEncountered && blocMapCounter == 0)
+            break;
+    }
+
     return true;
 }
 
@@ -225,6 +405,8 @@ void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
 
     // pre allocation de la map de jeux
     config->tillsMapConfig.tillsMap = NULL;
+    newGenericListFrom(&config->itemsConfig);
+    newGenericListFrom(&config->enemiesConfig);
 
     int countOfKeysToLoad = 4;
     bool nextIsKey = false;
@@ -315,6 +497,9 @@ void freeGameMapConfig(GameMapConfig* mapConfig,bool freeContainer){
         free(mapConfig->tillsMapConfig.tillsMap);
     }
 
+    freeGenericList(&mapConfig->itemsConfig,true);
+    freeGenericList(&mapConfig->enemiesConfig,true);
+
     if(freeContainer)
         free(mapConfig);
 }
@@ -328,21 +513,57 @@ void printMapConfig(GameMapConfig* config){
     printf(CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
 
 //    map des items
-    printf(CC_BBLUE"Configuration des tills"CC_RESET"\n");
-    printf("\n"CC_BG_BLUE"Lignes x Colonnes : %d x %d"CC_RESET"\n",
+    printf("\t"CC_BBLUE"Configuration des tills"CC_RESET"\n");
+    printf("\n\t"CC_BG_BLUE"Lignes x Colonnes : %d x %d"CC_RESET"\n",
        config->tillsMapConfig.countOfRows,
        config->tillsMapConfig.countOfCols
    );
 
     for(int rowIndex = 0; rowIndex != config->tillsMapConfig.countOfRows; rowIndex++){
-        printf("\n"CC_BBLUE"Ligne %d"CC_RESET"\n\t",rowIndex + 1);
+        printf("\n\t\t"CC_BBLUE"Ligne %d"CC_RESET"\n\t\t\t",rowIndex + 1);
 
         for(int colIndex = 0; colIndex < config->tillsMapConfig.countOfCols; colIndex++){
             printf("[x= %d,y= %d,id= %d] ",
-                   config->tillsMapConfig.tillsMap[rowIndex][colIndex].x,
-                   config->tillsMapConfig.tillsMap[rowIndex][colIndex].y,
-                   config->tillsMapConfig.tillsMap[rowIndex][colIndex].id
+               config->tillsMapConfig.tillsMap[rowIndex][colIndex].x,
+               config->tillsMapConfig.tillsMap[rowIndex][colIndex].y,
+               config->tillsMapConfig.tillsMap[rowIndex][colIndex].id
             );
         }
     }
+
+    printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
+    printf("\t"CC_BBLUE"Configuration des items"CC_RESET"\n");
+
+    while(config->itemsConfig.items != NULL){
+        GameMapItemConfig* itemConfig = (GameMapItemConfig*) config->itemsConfig.items->data;
+
+        printf("\t\t[x= %d,y= %d,id= %d]\n",
+           itemConfig->x,
+           itemConfig->y,
+           itemConfig->id
+        );
+
+        config->itemsConfig.items = config->itemsConfig.items->nextItem;
+    }
+
+    config->itemsConfig.items = config->itemsConfig.listStart;
+
+    printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
+    printf("\t"CC_BBLUE"Configuration des ennemies"CC_RESET"\n");
+
+    while(config->enemiesConfig.items != NULL){
+        GameMapEnemyConfig* enemyConfig = (GameMapEnemyConfig*) config->enemiesConfig.items->data;
+
+        printf("\t\t[x= %d,y= %d,id= %d]\n",
+            enemyConfig->x,
+            enemyConfig->y,
+            enemyConfig->id
+        );
+
+        config->enemiesConfig.items = config->enemiesConfig.items->nextItem;
+    }
+
+    config->enemiesConfig.items = config->enemiesConfig.listStart;
+
+    printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
 }
