@@ -15,31 +15,32 @@
 static GameConfig* gameConfig = NULL;
 
 bool initializeGame(){
-    InitWindow(0,0,"Initialize raylib");
-
-    if(!IsWindowReady())
-        return false;
+//    InitWindow(0,0,"Initialize raylib");
+//
+//    if(!IsWindowReady())
+//        return false;
 
     gameConfig = loadGameConfig();
 
     if(gameConfig == NULL)
         return false;
 
-    LOAD_OR_QUIT(loadItemsImages,gameConfig)
-    LOAD_OR_QUIT(loadTillsImages,gameConfig)
-    LOAD_OR_QUIT(loadEnemiesImages,gameConfig)
-    LOAD_OR_QUIT(loadHeroesImages,gameConfig)
+    printMapConfig(gameConfig->homeMapConfig);
 
-    SetWindowTitle("Labyrinth");
-    SetWindowSize(WINDOW_DEFAULT_WIDTH,WINDOW_DEFAULT_HEIGHT);
-    SetWindowFocused();
-    centerWindow();
+//    LOAD_OR_QUIT(loadItemsImages,gameConfig)
+//    LOAD_OR_QUIT(loadTillsImages,gameConfig)
+//    LOAD_OR_QUIT(loadEnemiesImages,gameConfig)
+//    LOAD_OR_QUIT(loadHeroesImages,gameConfig)
+
+//    SetWindowTitle("Labyrinth");
+//    SetWindowSize(WINDOW_DEFAULT_WIDTH,WINDOW_DEFAULT_HEIGHT);
+//    SetWindowFocused();
+//    centerWindow();
 
     return true;
 }
 
 void startGame(){
-    printMapConfig(gameConfig->homeMapConfig);
     GameRenderingConfig gameRenderingConfig = {
         .gameConfig = gameConfig,
         .currentRenderingFunction = renderGameHome
@@ -59,6 +60,6 @@ void startGame(){
 }
 
 void closeGame(){
-    CloseWindow();
+//    CloseWindow();
     freeGameConfig(gameConfig,true);
 }

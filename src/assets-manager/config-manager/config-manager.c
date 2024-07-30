@@ -8,7 +8,7 @@
  */
 #define CHECK_NULL_AND_QUIT(on,errorMessage)if(on == NULL){ \
     freeGameConfig(config,true);\
-    fputs(errorMessage,stderr);\
+    fputs("\n"errorMessage,stderr);\
     return NULL;\
 }
 

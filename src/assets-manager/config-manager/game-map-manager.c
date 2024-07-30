@@ -2,6 +2,218 @@
 #include "custom-color.h"
 #include <assert.h>
 
+/**
+ * @brief Libère les ressources et stoppe le parsing
+ */
+#define FREE_AND_QUIT yaml_token_delete(&token);\
+    freeGameMapConfig(config,true);\
+    return NULL;
+
+/**
+ * @brief Consume l'echelle
+ * @param config la configuration
+ * @param parser le parser
+ * @return si la consumation réussie
+ */
+bool consumeScale(GameMapConfig* config,yaml_parser_t* parser){
+    yaml_token_t token;
+
+    while(true){
+        if(!yaml_parser_scan(parser,&token)){
+            fputs("\nEchec de récupération du token lors de la consumation de l'echelle",stderr);
+            break;
+        }
+
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
+            break;
+        }
+
+        switch(token.type){
+            case YAML_SCALAR_TOKEN:
+                config->scale = atoi((char*)token.data.scalar.value);
+                yaml_token_delete(&token);
+                return true;
+
+            default:;
+        }
+
+        yaml_token_delete(&token);
+    }
+
+    return false;
+}
+
+/**
+ * @brief Consume les tills
+ * @param config la configuration
+ * @param parser le parser
+ * @return si la consumation réussie
+ */
+bool consumeTills(GameMapConfig* config,yaml_parser_t* parser){
+    // allocation de base
+    config->tillsMapConfig.tillsMap = malloc(sizeof(GameMapTillConfig*));
+
+    if(config->tillsMapConfig.tillsMap == NULL){
+        fputs("\nEchec d'allocation de la map des tills sur la configuration de jeux",stderr);
+        return false;
+    }
+
+    config->tillsMapConfig.countOfRows = config->tillsMapConfig.countOfCols = 0;
+
+    // récupération des items
+    yaml_token_t token;
+
+    // nombre de blocs ouvert
+    bool firstBlocEncountered = false;
+    int blocTabCount = 0;
+    int countOfCurrentCols = 0;
+    int structValueCount = 0;
+    void* tmpAddress;
+
+    while(true){
+        if(!yaml_parser_scan(parser,&token)){
+            fputs("\nEchec de lecture du token sur la configuration de jeux lors de la récupération des tills",stderr);
+            break;
+        }
+
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
+            break;
+        }
+
+        switch(token.type){
+            case YAML_FLOW_SEQUENCE_START_TOKEN:
+                if(!firstBlocEncountered)
+                    firstBlocEncountered = true;
+
+                blocTabCount++;
+
+                switch(blocTabCount){
+                    case 2:
+                        // tab de nouvelle ligne
+                        tmpAddress = realloc(
+                            config->tillsMapConfig.tillsMap,
+                            (config->tillsMapConfig.countOfRows + 1) * sizeof(GameMapTillConfig*)
+                        );
+
+                        if(tmpAddress == NULL){
+                            fputs("\nEchec d'allocation d'une nouvelle ligne lors de la consumation de la map tills",stderr);
+                            yaml_token_delete(&token);
+                            return false;
+                        }
+
+                        config->tillsMapConfig.tillsMap = tmpAddress;
+                        config->tillsMapConfig.countOfRows++;
+                    break;
+
+                    case 3:
+                        // tab de nouvelle colonne
+                        if(countOfCurrentCols != 0){
+                            tmpAddress = realloc(
+                                config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1],
+                                (countOfCurrentCols + 1) * sizeof(GameMapTillConfig)
+                            );
+                        }
+                        else
+                            tmpAddress = malloc(sizeof(GameMapTillConfig));
+
+                        if(tmpAddress == NULL){
+                            fputs("\nEchec de reallocation de colonne",stderr);
+                            yaml_token_delete(&token);
+                            return false;
+                        }
+
+                        config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1] = tmpAddress;
+
+                        countOfCurrentCols++;
+                    break;
+
+                    default:;
+                }
+            break;
+
+            case YAML_FLOW_SEQUENCE_END_TOKEN:
+                blocTabCount--;
+
+                switch(blocTabCount){
+                    case 2:
+                        // fin d'une colonne
+                        structValueCount = 0;
+                    break;
+
+                    case 1:
+                        // fin d'une ligne
+                        if(countOfCurrentCols > config->tillsMapConfig.countOfCols)
+                            config->tillsMapConfig.countOfCols = countOfCurrentCols;
+
+                        countOfCurrentCols = 0;
+                    break;
+                    default:;
+                }
+            break;
+
+            case YAML_SCALAR_TOKEN:
+                structValueCount++;
+
+                switch(structValueCount){
+                    // valeur x
+                    case 1:
+                        config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1][countOfCurrentCols - 1].x = atoi((char*)token.data.scalar.value);
+                    break;
+
+                    case 2:
+                        // valeur y
+                        config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1][countOfCurrentCols - 1].y = atoi((char*)token.data.scalar.value);
+                    break;
+
+                    case 3:
+                        // valeur id
+                        config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1][countOfCurrentCols - 1].id = atoi((char*)token.data.scalar.value);
+                    break;
+
+                    default:;
+                }
+            break;
+
+            default:;
+        }
+
+        yaml_token_delete(&token);
+
+        if(firstBlocEncountered && blocTabCount == 0)
+            break;
+    }
+
+    return true;
+}
+
+/**
+ * @brief Consume les items
+ * @param config la configuration
+ * @param parser le parser
+ * @return si la consumation réussie
+ */
+bool consumeItems(GameMapConfig* config,yaml_parser_t* parser){
+    return true;
+}
+
+/**
+ * @brief Consume les ennemies
+ * @param config la configuration
+ * @param parser le parser
+ * @return si la consumation réussie
+ */
+bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
+    return true;
+}
+
 void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
     // allocation de la map
     GameMapConfig* config = malloc(sizeof(GameMapConfig));
@@ -11,11 +223,82 @@ void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
         return NULL;
     }
 
-
     // pre allocation de la map de jeux
-    config->scale = 10;
-    config->tillsMapConfig.countOfRows= 100;
-    config->tillsMapConfig.countOfCols= 80;
+    config->tillsMapConfig.tillsMap = NULL;
+
+    int countOfKeysToLoad = 4;
+    bool nextIsKey = false;
+
+    yaml_token_t token;
+
+    while(true){
+        if(!yaml_parser_scan(parser,&token)){
+            fputs("\nEchec de lecture du token lors de la lecture de configuration de map",stderr);
+            freeGameMapConfig(config,true);
+            return NULL;
+        }
+
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        )
+            break;
+
+        switch(token.type){
+            case YAML_KEY_TOKEN:
+                nextIsKey = true;
+            break;
+
+            case YAML_SCALAR_TOKEN:
+                if(!nextIsKey)
+                    break;
+
+                switch(countOfKeysToLoad){
+                    case 4:
+                        if(!consumeScale(config,parser)){
+                            fputs("\nEchec de lecture de l'echelle",stderr);
+                            FREE_AND_QUIT
+                        }
+                    break;
+
+                    case 3:
+                        if(!consumeTills(config,parser)){
+                            fputs("\nEchec de lecture des tills",stderr);
+                            FREE_AND_QUIT
+                        }
+                    break;
+
+                    case 2:
+                        if(!consumeItems(config,parser)){
+                            fputs("\nEchec de lecture des items",stderr);
+                            FREE_AND_QUIT
+                        }
+                    break;
+
+                    case 1:
+                        if(!consumeEnemies(config,parser)){
+                            fputs("\nEchec de lecture des noms",stderr);
+                            FREE_AND_QUIT
+                        }
+                    break;
+
+                    default:;
+                }
+
+                nextIsKey = false;
+                countOfKeysToLoad--;
+            break;
+
+            default:;
+        }
+
+        yaml_token_delete(&token);
+    }
+
+    if(countOfKeysToLoad != 0){
+        freeGameMapConfig(config,true);
+        return NULL;
+    }
 
     return config;
 }
@@ -23,8 +306,14 @@ void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
 void freeGameMapConfig(GameMapConfig* mapConfig,bool freeContainer){
     assert(mapConfig != NULL && "La map de jeux à libérer est NULL");
 
-    if(mapConfig->tillsMapConfig.tillsMap != NULL)
+    if(mapConfig->tillsMapConfig.tillsMap != NULL){
+        if(mapConfig->tillsMapConfig.countOfRows != 0){
+            for(int rowIndex = 0; rowIndex < mapConfig->tillsMapConfig.countOfRows; rowIndex++)
+                free(mapConfig->tillsMapConfig.tillsMap[rowIndex]);
+        }
+
         free(mapConfig->tillsMapConfig.tillsMap);
+    }
 
     if(freeContainer)
         free(mapConfig);
@@ -44,4 +333,16 @@ void printMapConfig(GameMapConfig* config){
        config->tillsMapConfig.countOfRows,
        config->tillsMapConfig.countOfCols
    );
+
+    for(int rowIndex = 0; rowIndex != config->tillsMapConfig.countOfRows; rowIndex++){
+        printf("\n"CC_BBLUE"Ligne %d"CC_RESET"\n\t",rowIndex + 1);
+
+        for(int colIndex = 0; colIndex < config->tillsMapConfig.countOfCols; colIndex++){
+            printf("[x= %d,y= %d,id= %d] ",
+                   config->tillsMapConfig.tillsMap[rowIndex][colIndex].x,
+                   config->tillsMapConfig.tillsMap[rowIndex][colIndex].y,
+                   config->tillsMapConfig.tillsMap[rowIndex][colIndex].id
+            );
+        }
+    }
 }

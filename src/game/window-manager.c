@@ -1,6 +1,7 @@
 #include "./window-manager.h"
 #include "raylib.h"
 #include <assert.h>
+#include <stddef.h>
 
 void centerWindow(){
     int currentMonitorId = GetCurrentMonitor();
