@@ -8,17 +8,14 @@
  * @return si l'affichage réussi
  */
 bool renderTills(GameConfig* gameConfig,GameTillsMap* tillsConfig){
-    TillsMap* tillsMap = &gameConfig->tillsConfig->map;
-
     for(int rowIndex = 0; rowIndex < tillsConfig->countOfRows; rowIndex++){
         for(int colIndex = 0; colIndex < tillsConfig->countOfCols; colIndex++){
-            GameMapTillConfig tillConfig = tillsConfig->tillsMap[rowIndex][colIndex];
-            ImageConfig* tillToShowConfig = tillsMap[tillConfig.id - 1];
+            GameMapTillConfig config = tillsConfig->tillsMap[rowIndex][colIndex];
 
             DrawTexture(
-                *((Texture2D*)tillToShowConfig->linkedImages.items->data),
-                tillConfig.x,
-                tillConfig.y,
+                *((Texture2D*)gameConfig->tillsConfig->map[config.id - 1].linkedImages.items->data),
+                config.x,
+                config.y,
                 WHITE
             );
         }
@@ -63,6 +60,7 @@ bool renderEnemies(GameConfig* gameConfig,GenericList* enemiesConfig){
 }
 
 bool renderMap(GameConfig* gameConfig,GameMapConfig* mapConfig){
+
     return renderTills(gameConfig,&mapConfig->tillsMapConfig) &&
         renderItems(gameConfig,&mapConfig->itemsConfig) &&
         renderEnemies(gameConfig,&mapConfig->enemiesConfig);

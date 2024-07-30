@@ -2,7 +2,7 @@
 #include "../assets/assets.h"
 #include <assert.h>
 #include <stdio.h>
-
+#include "raylib.h"
 /**
  * @brief Vérifie si la valeur fournie est NULL et libère les ressources au cas où
  */
