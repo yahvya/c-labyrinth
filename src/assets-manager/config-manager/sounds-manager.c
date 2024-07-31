@@ -105,11 +105,7 @@ void* loadSoundsConfig(yaml_parser_t* parser,char* parentDirPath){
 void freeSoundsConfig(SoundsConfig* config,bool freeContainer){
     assert(config != NULL && "La configuration de son fournie à la libération est NULL");
 
-    // libération des sounds raylib
-    for(int i = 0; i < config->countOfSounds; i++){
-        if(config->map[i].isCurrentlyLoaded)
-            UnloadSound(config->map[i].sound);
-    }
+    unloadMarkedSounds(config);
 
     if(config->map != NULL)
         free(config->map);
@@ -135,4 +131,30 @@ void printSoundsConfig(SoundsConfig* config,char* toPrintBefore){
     }
 
     printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
+}
+
+bool loadMarkedSounds(SoundsConfig* config){
+    for(int i = 0; i < config->countOfSounds; i++){
+        if(!config->map[i].haveToBeLoaded)
+            continue;
+
+        Sound loadedSound = LoadSound(config->map[i].path);
+
+        if(!IsSoundReady(loadedSound))
+            return false;
+
+        memcpy(&config->map[i].sound,&loadedSound,sizeof(Sound));
+        config->map[i].haveToBeLoaded = false;
+        config->map[i].isCurrentlyLoaded = true;
+    }
+
+    return true;
+}
+
+void unloadMarkedSounds(SoundsConfig* config){
+    // libération des sounds raylib
+    for(int i = 0; i < config->countOfSounds; i++){
+        if(config->map[i].isCurrentlyLoaded)
+            UnloadSound(config->map[i].sound);
+    }
 }

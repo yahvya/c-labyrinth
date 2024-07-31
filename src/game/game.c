@@ -15,41 +15,41 @@
 static GameConfig* gameConfig = NULL;
 
 bool initializeGame(){
-//    SetConfigFlags(FLAG_WINDOW_HIDDEN);
-//    InitWindow(0,0,"Initialize raylib");
-//    InitAudioDevice();
-//
-//    SetTargetFPS(60);
-//    SetTraceLogLevel(LOG_ERROR);
-//
-//    bool isWindowReady = IsWindowReady();
-//    bool isAudioDeviceReady = IsAudioDeviceReady();
-//
-//    if(!isWindowReady || !isAudioDeviceReady){
-//        if(isWindowReady)
-//            CloseWindow();
-//
-//        if(isAudioDeviceReady)
-//            CloseAudioDevice();
-//
-//        return false;
-//    }
+    SetConfigFlags(FLAG_WINDOW_HIDDEN);
+    InitWindow(0,0,"Initialize raylib");
+    InitAudioDevice();
+
+    SetTargetFPS(60);
+    SetTraceLogLevel(LOG_ERROR);
+
+    bool isWindowReady = IsWindowReady();
+    bool isAudioDeviceReady = IsAudioDeviceReady();
+
+    if(!isWindowReady || !isAudioDeviceReady){
+        if(isWindowReady)
+            CloseWindow();
+
+        if(isAudioDeviceReady)
+            CloseAudioDevice();
+
+        return false;
+    }
 
     gameConfig = loadGameConfig();
 
     if(gameConfig == NULL)
         return false;
 
-//    LOAD_OR_QUIT(loadItemsImages,gameConfig)
-//    LOAD_OR_QUIT(loadTillsImages,gameConfig)
-//    LOAD_OR_QUIT(loadEnemiesImages,gameConfig)
-//    LOAD_OR_QUIT(loadHeroesImages,gameConfig)
-//
-//    SetWindowTitle("Labyrinth");
-//    SetWindowSize(WINDOW_DEFAULT_WIDTH,WINDOW_DEFAULT_HEIGHT);
-//    SetWindowFocused();
-//    centerWindow();
-    printSoundsConfig(gameConfig->soundsConfig,NULL);
+    LOAD_OR_QUIT(loadItemsImages,gameConfig)
+    LOAD_OR_QUIT(loadTillsImages,gameConfig)
+    LOAD_OR_QUIT(loadEnemiesImages,gameConfig)
+    LOAD_OR_QUIT(loadHeroesImages,gameConfig)
+
+    SetWindowTitle("Labyrinth");
+    SetWindowSize(WINDOW_DEFAULT_WIDTH,WINDOW_DEFAULT_HEIGHT);
+    SetWindowFocused();
+    centerWindow();
+
     return true;
 }
 
@@ -75,7 +75,7 @@ void startGame(){
 }
 
 void closeGame(){
-//    CloseWindow();
-//    CloseAudioDevice();
+    CloseWindow();
+    CloseAudioDevice();
     freeGameConfig(gameConfig,true);
 }

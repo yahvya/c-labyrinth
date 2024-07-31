@@ -4,3 +4,5 @@
   path: "/sounds/enemy-one-attack.mp3"
 3:
   path: "/sounds/enemy-two-attack.mp3"
+4:
+  path: "/sounds/explosion.mp3"

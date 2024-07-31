@@ -8,12 +8,15 @@ items: [
 enemies: [
 ]
 sounds-collision-map:
+#  [id son,id item]
   items: [
-    ["id_son","id_item"]
+    [1,1]
   ]
+#  [id son, id ennemie]
   enemies: [
-    ["id_son","id_ennemie"]
+    [2,1]
   ]
+#  [id son, id tills]
   tills: [
-    ["id_son","id_till"]
+    [1,1]
   ]

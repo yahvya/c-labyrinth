@@ -71,4 +71,13 @@
      * @param freeContainer si true libère le conteneur fourni
      */
     void freeSoundsConfig(SoundsConfig* config,bool freeContainer);
+
+    /**
+     * @brief Charge les sons étant marqué comme étant à charger
+     * @param config configuration de sons
+     * @return Si les chargements ont réussis
+     */
+    bool loadMarkedSounds(SoundsConfig* config);
+
+    void unloadMarkedSounds(SoundsConfig* config);
 #endif
