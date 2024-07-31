@@ -570,6 +570,9 @@ void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
         }
 
         yaml_token_delete(&token);
+
+        if(countOfKeysToLoad == 0)
+            break;
     }
 
     if(countOfKeysToLoad != 0){

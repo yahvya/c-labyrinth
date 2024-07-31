@@ -2,12 +2,18 @@ scale: 1
 width: 700
 height: 400
 tills: [
- [[0,0,1]]
 ]
 items: [
-  [0,0,2]
 ]
 enemies: [
- [60,60,1,0],
- [120,60,2,0]
 ]
+sounds-collision-map:
+  items: [
+    ["id_son","id_item"]
+  ]
+  enemies: [
+    ["id_son","id_ennemie"]
+  ]
+  tills: [
+    ["id_son","id_till"]
+  ]
