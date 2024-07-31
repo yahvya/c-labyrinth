@@ -3,13 +3,21 @@
 #include "../game/window-manager.h"
 
 /**
- * @brief Vérifie si l'image peut être passé à la suivante automatiquement
+ * @brief Vérifie si l'image peut être passé à la suivante automatiquement et le fait si oui
+ * @attention Conditions de bases: temps de frame
  * @attention actuellement vérifie que le type d'image n'est pas lié à une action
+ * @attention Met à jour le temps de frame
  * @param config configuration d'image
- * @return si l'image peut être passé à la suivante automatiquement
  */
-bool checkCanBeSetToNext(ImageConfig* config){
-    return config->type != IMAGES_ON_ACTION;
+void setToNextImageIfAllowed(ImageConfig* config){
+    config->frameDelayingTime += GetFrameTime();
+
+    if(config->type == IMAGES_ON_ACTION || config->frameDelayingTime < config->timeBetweenFrames)
+        return;
+
+    config->frameDelayingTime = 0;
+
+    config->linkedImages.items = config->linkedImages.items->nextItem == NULL ? config->linkedImages.listStart : config->linkedImages.items->nextItem;
 }
 
 /**
@@ -35,9 +43,7 @@ bool renderTills(GameConfig* gameConfig,GameMapConfig* mapConfig){
                 WHITE
             );
 
-            // passage à l'image de till suivante si possible
-            if(checkCanBeSetToNext(gameConfig->tillsConfig->map + config.id - 1))
-                linkedImages->items = linkedImages->items->nextItem == NULL ? linkedImages->listStart : linkedImages->items->nextItem;
+            setToNextImageIfAllowed(gameConfig->tillsConfig->map + (config.id - 1));
         }
     }
 
@@ -66,9 +72,7 @@ bool renderItems(GameConfig* gameConfig,GameMapConfig* mapConfig){
             WHITE
         );
 
-        // passage à l'image suivante de l'item si possible
-        if(checkCanBeSetToNext(gameConfig->itemsConfig->map + (itemConfig->id - 1)))
-            linkedImages->items = linkedImages->items->nextItem == NULL ? linkedImages->listStart : linkedImages->items->nextItem;
+        setToNextImageIfAllowed(gameConfig->itemsConfig->map + (itemConfig->id - 1));
 
         itemsConfig->items = itemsConfig->items->nextItem;
     }
@@ -100,8 +104,7 @@ bool renderEnemies(GameConfig* gameConfig,GameMapConfig* mapConfig){
             WHITE
         );
 
-        if(checkCanBeSetToNext(currentAction.framesConfig))
-            currentAction.framesConfig->linkedImages.items = currentAction.framesConfig->linkedImages.items->nextItem == NULL ? currentAction.framesConfig->linkedImages.listStart : currentAction.framesConfig->linkedImages.items->nextItem ;
+        setToNextImageIfAllowed(currentAction.framesConfig);
 
         enemiesConfig->items = enemiesConfig->items->nextItem;
     }

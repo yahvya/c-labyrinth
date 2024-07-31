@@ -70,6 +70,11 @@
         float timeBetweenFrames;
 
         /**
+         * @brief Temps actuel de delay de frame
+         */
+        float frameDelayingTime;
+
+        /**
          * @brief Etat d'erreur
          */
         bool errorState;

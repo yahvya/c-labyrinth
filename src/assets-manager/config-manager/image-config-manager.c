@@ -371,6 +371,7 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
 
     memset(config.description,0,sizeof(char) * SUPPOSED_DESCRIPTION_MAX_LEN);
     memset(config.id,0,sizeof(char) * SUPPOSED_ID_MAX_LEN);
+    config.frameDelayingTime = 0;
 
     int countOfElementsToLoad = 5;
     bool nextIsKey = false;
@@ -521,7 +522,8 @@ void printImageConfig(ImageConfig* config,char* toPrintBefore){
     printf("\n"CC_BWHITE"%s\tType: "CC_RESET"%d",TO_PRINT,config->type);
     printf("\n"CC_BWHITE"%s\tDescription: "CC_RESET"%s",TO_PRINT,config->description);
     printf("\n"CC_BWHITE"%s\tRotation: "CC_RESET"%lf",TO_PRINT,config->rotation);
-    printf("\n"CC_BWHITE"%s\tTemps entre frame: "CC_RESET"%lf",TO_PRINT,config->timeBetweenFrames);
+    printf("\n"CC_BWHITE"%s\tTemps entre frames: "CC_RESET"%lf",TO_PRINT,config->timeBetweenFrames);
+    printf("\n"CC_BWHITE"%s\tTemps actuel de delay: "CC_RESET"%lf",TO_PRINT,config->frameDelayingTime);
     printf("\n"CC_BWHITE"%s\tContient une erreur: "CC_RESET"%s",TO_PRINT,config->errorState ? "Oui" : "Non");
     printf("\n"CC_BWHITE"%s\tListe des chemins: "CC_RESET,TO_PRINT);
 

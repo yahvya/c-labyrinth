@@ -17,6 +17,7 @@ static GameConfig* gameConfig = NULL;
 bool initializeGame(){
     InitWindow(0,0,"Initialize raylib");
 
+    SetTargetFPS(60);
     SetTraceLogLevel(LOG_ERROR);
 
     if(!IsWindowReady())
