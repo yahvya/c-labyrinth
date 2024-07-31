@@ -6,10 +6,11 @@
     #include "./items-manager.h"
     #include "./tills-manager.h"
     #include "./game-map-manager.h"
+    #include "sounds-manager.h"
 
-    /**
-     * @brief Charge la configuration de jeux
-     */
+/**
+ * @brief Charge la configuration de jeux
+ */
     typedef struct{
         /**
          * @brief Configuration des ennemies
@@ -35,6 +36,11 @@
          * @brief Configuration de la map d'affichage de la page d'accueil
          */
         GameMapConfig* homeMapConfig;
+
+        /**
+         * @brief Configuration des sons
+         */
+        SoundsConfig* soundsConfig;
     }GameConfig;
 
     /**

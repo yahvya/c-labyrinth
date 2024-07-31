@@ -31,6 +31,11 @@
     #define HOME_MAP_CONFIG_FILE_PATH RESOURCES_PATH"/home-config/map.yaml"
 
     /**
+     * @brief Chemin du fichier de configuration de la map des sons
+     */
+    #define SOUNDS_MAP_CONFIG_FILE_PATH RESOURCES_PATH"/game-assets/sounds/config.yaml"
+
+    /**
      * @brief Longueur maximale supposée d'un chemin
      */
     #define SUPPOSED_PATH_MAX_LEN 300

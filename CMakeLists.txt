@@ -39,6 +39,8 @@ add_executable(game
         src/rendering/rendering.h
         src/rendering/home-rendering.c
         src/rendering/home-rendering.h
+        src/assets-manager/config-manager/sounds-manager.c
+        src/assets-manager/config-manager/sounds-manager.h
 )
 
 target_link_libraries(game 

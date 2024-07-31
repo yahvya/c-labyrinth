@@ -63,6 +63,7 @@ GameConfig* loadGameConfig(){
     config->tillsConfig = NULL;
     config->itemsConfig = NULL;
     config->homeMapConfig = NULL;
+    config->soundsConfig = NULL;
 
     // chargement des configurations
     config->enemiesConfig = loadConfig(ENEMIES_CONFIG_FILE_PATH,loadEnemies);
@@ -79,6 +80,9 @@ GameConfig* loadGameConfig(){
 
     config->homeMapConfig = loadConfig(HOME_MAP_CONFIG_FILE_PATH,loadGameMapConfig);
     CHECK_NULL_AND_QUIT(config->homeMapConfig,"Echec de chargement de la map d'accueil")
+
+    config->soundsConfig = loadConfig(SOUNDS_MAP_CONFIG_FILE_PATH,loadSoundsConfig);
+    CHECK_NULL_AND_QUIT(config->soundsConfig,"Echec de chargement de la map des sons")
 
     return config;
 }
@@ -152,6 +156,9 @@ void freeGameConfig(GameConfig* config,bool freeContainer){
 
     if(config->homeMapConfig != NULL)
         freeGameMapConfig(config->homeMapConfig,true);
+
+    if(config->soundsConfig != NULL)
+        freeSoundsConfig(config->soundsConfig,true);
 
     if(freeContainer)
         free(config);
