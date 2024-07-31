@@ -118,6 +118,21 @@ void freeSoundsConfig(SoundsConfig* config,bool freeContainer){
         free(config);
 }
 
-void printSoundsConfig(SoundConfig* config,char* toPrintBefore){
+void printSoundsConfig(SoundsConfig* config,char* toPrintBefore){
+    assert(config != NULL && "Configuration de sons NULL pour l'affichage");
 
+    printf("\n"CC_BLUE"%s------------------------------------------------------------------------"CC_RESET,TO_PRINT);
+    printf("\n"CC_BBLUE"%sConfiguration des sons"CC_RESET"\n",TO_PRINT);
+    printf("\n"CC_BG_BLUE"%sNombre de sons : %d"CC_RESET"\n",TO_PRINT,config->countOfSounds);
+    printf("\n"CC_BG_BLUE"%sListe des sons"CC_RESET"\n",TO_PRINT);
+
+    for(int i = 0; i < config->countOfSounds; i++){
+        printf("\n%s"CC_BWHITE">> Chemin : %s - Actuellement chargé : %s",
+           TO_PRINT,
+           config->map[i].path,
+           config->map[i].isCurrentlyLoaded ? "Oui" : "Non"
+       );
+    }
+
+    printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
 }

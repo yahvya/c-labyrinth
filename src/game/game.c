@@ -49,7 +49,7 @@ bool initializeGame(){
 //    SetWindowSize(WINDOW_DEFAULT_WIDTH,WINDOW_DEFAULT_HEIGHT);
 //    SetWindowFocused();
 //    centerWindow();
-
+    printSoundsConfig(gameConfig->soundsConfig,NULL);
     return true;
 }
 

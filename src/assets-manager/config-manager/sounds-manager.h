@@ -63,7 +63,7 @@
      * @param config configuration de sons
      * @param toPrintBefore chaine à afficher avant chaque ligne de configuration
      */
-    void printSoundsConfig(SoundConfig* config,char* toPrintBefore);
+    void printSoundsConfig(SoundsConfig* config,char* toPrintBefore);
 
     /**
      * @brief Libère les ressources de la configuration de sons
