@@ -53,7 +53,7 @@ void startGame(){
     // rendu du jeu
     while(!WindowShouldClose()){
         if(!renderWindow(&renderingConfig,gameRenderingConfig.currentRenderingFunction)){
-            fputs("Echec de rendu de fenêtre",stderr);
+            fputs("\nEchec de rendu de fenêtre",stderr);
             break;
         }
     }

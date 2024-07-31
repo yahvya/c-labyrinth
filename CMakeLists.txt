@@ -47,9 +47,11 @@ target_link_libraries(game
     raylib
 )
 
-add_custom_command(
-    TARGET game PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/resources"
-    "${CMAKE_BINARY_DIR}/resources"
+add_custom_target(copy_resources ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/resources"
+        "${CMAKE_BINARY_DIR}/resources"
+        COMMENT "Copie du dossier ressources"
 )
+
+add_dependencies(game copy_resources)
