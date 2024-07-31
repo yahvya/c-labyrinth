@@ -15,13 +15,25 @@
 static GameConfig* gameConfig = NULL;
 
 bool initializeGame(){
+    SetConfigFlags(FLAG_WINDOW_HIDDEN);
     InitWindow(0,0,"Initialize raylib");
+    InitAudioDevice();
 
     SetTargetFPS(60);
     SetTraceLogLevel(LOG_ERROR);
 
-    if(!IsWindowReady())
+    bool isWindowReady = IsWindowReady();
+    bool isAudioDeviceReady = IsAudioDeviceReady();
+
+    if(!isWindowReady || !isAudioDeviceReady){
+        if(isWindowReady)
+            CloseWindow();
+
+        if(isAudioDeviceReady)
+            CloseAudioDevice();
+
         return false;
+    }
 
     gameConfig = loadGameConfig();
 
@@ -42,6 +54,8 @@ bool initializeGame(){
 }
 
 void startGame(){
+    ClearWindowState(FLAG_WINDOW_HIDDEN);
+
     GameRenderingConfig gameRenderingConfig = {
         .gameConfig = gameConfig,
         .currentRenderingFunction = renderGameHome
@@ -62,5 +76,6 @@ void startGame(){
 
 void closeGame(){
     CloseWindow();
+    CloseAudioDevice();
     freeGameConfig(gameConfig,true);
 }
