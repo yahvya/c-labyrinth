@@ -63,6 +63,12 @@
          * @brief Valeur de rotation
          */
         float rotation;
+
+        /**
+         * @brief Temps entre les frames
+         */
+        float timeBetweenFrames;
+
         /**
          * @brief Etat d'erreur
          */

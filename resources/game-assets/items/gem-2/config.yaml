@@ -16,3 +16,4 @@ path: [
 ]
 rotation: 1
 description: "Gemme niveau 2"
+timeBetweenFrames: 0.3

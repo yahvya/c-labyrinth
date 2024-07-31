@@ -312,6 +312,53 @@ bool loadRotation(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPat
     return false;  
 }
 
+/**
+ * @brief Charge la configuration de temps entre frames lors du parsing
+ * @param inConfig la configuration dans laquelle placer le résultat
+ * @param parser le parser
+ * @param parentDirPath chemin du dossier parent de la configuration
+ * @return si l'élément à bien été chargé
+ */
+bool loadTimeBetweenFrames(ImageConfig* inConfig,yaml_parser_t* parser,char* parentDirPath){
+    LOAD_FUNCTIONS_GUARD
+
+    yaml_token_t token;
+    bool nextIsValue = false;
+
+    while(true){
+        if(!yaml_parser_scan(parser,&token))
+            return false;
+
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
+            break;
+        }
+
+        switch(token.type){
+            case YAML_VALUE_TOKEN:
+                nextIsValue = true;
+                break;
+
+            case YAML_SCALAR_TOKEN:
+                if(!nextIsValue)
+                    break;
+
+                inConfig->timeBetweenFrames = atof((char*)token.data.scalar.value);
+                yaml_token_delete(&token);
+                return true;
+
+            default:;
+        }
+
+        yaml_token_delete(&token);
+    }
+
+    return false;
+}
+
 ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
     assert(parser != NULL && "Le parser fourni est NULL");
     assert(parentDirPath != NULL && "Le chemin parent fourni est NULL");
@@ -325,7 +372,7 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
     memset(config.description,0,sizeof(char) * SUPPOSED_DESCRIPTION_MAX_LEN);
     memset(config.id,0,sizeof(char) * SUPPOSED_ID_MAX_LEN);
 
-    int countOfElementsToLoad = 4;
+    int countOfElementsToLoad = 5;
     bool nextIsKey = false;
     bool stop = false;
     yaml_token_t token;
@@ -362,6 +409,8 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
                         loadFunction = loadType;
                     else if(strcmp((char*)token.data.scalar.value,"rotation") == 0)
                         loadFunction = loadRotation;
+                    else if(strcmp((char*)token.data.scalar.value,"timeBetweenFrames") == 0)
+                        loadFunction = loadTimeBetweenFrames;
 
                     if(loadFunction == NULL)
                         break;
@@ -471,7 +520,8 @@ void printImageConfig(ImageConfig* config,char* toPrintBefore){
     printf("\n"CC_BWHITE"%s\tId: "CC_RESET"%s",TO_PRINT,config->id);
     printf("\n"CC_BWHITE"%s\tType: "CC_RESET"%d",TO_PRINT,config->type);
     printf("\n"CC_BWHITE"%s\tDescription: "CC_RESET"%s",TO_PRINT,config->description);
-    printf("\n"CC_BWHITE"%s\tRotation: "CC_RESET"%d",TO_PRINT,config->rotation);
+    printf("\n"CC_BWHITE"%s\tRotation: "CC_RESET"%lf",TO_PRINT,config->rotation);
+    printf("\n"CC_BWHITE"%s\tTemps entre frame: "CC_RESET"%lf",TO_PRINT,config->timeBetweenFrames);
     printf("\n"CC_BWHITE"%s\tContient une erreur: "CC_RESET"%s",TO_PRINT,config->errorState ? "Oui" : "Non");
     printf("\n"CC_BWHITE"%s\tListe des chemins: "CC_RESET,TO_PRINT);
 

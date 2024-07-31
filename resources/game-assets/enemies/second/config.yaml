@@ -18,6 +18,7 @@ front-walk:
   ]
   description: "Marche vers le bas"
   rotation: 1
+  timeBetweenFrames: 0.3
 right-walk:
   type: 2
   path: [
@@ -38,6 +39,7 @@ right-walk:
   ]
   description: "Marche vers la droite"
   rotation: 1
+  timeBetweenFrames: 0.3
 left-walk:
   type: 2
   path: [
@@ -58,6 +60,7 @@ left-walk:
   ]
   description: "Marche vers la gauche"
   rotation: 1
+  timeBetweenFrames: 0.3
 back-walk:
   type: 2
   path: [
@@ -78,3 +81,4 @@ back-walk:
   ]
   description: "Marche vers le haut"
   rotation: 1
+  timeBetweenFrames: 0.3

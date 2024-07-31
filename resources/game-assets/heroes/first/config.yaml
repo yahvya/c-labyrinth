@@ -18,6 +18,7 @@ back-animation:
   ]
   description: "Animation vers le haut"
   rotation: 1
+  timeBetweenFrames: 0.3
 death-animation:
   type: 2
   path: [
@@ -31,6 +32,7 @@ death-animation:
   ]
   description: "Mort"
   rotation: 1
+  timeBetweenFrames: 0.3
 front-animation:
   type: 2
   path: [
@@ -51,6 +53,7 @@ front-animation:
   ]
   description: "Animation vers le bas"
   rotation: 1
+  timeBetweenFrames: 0.3
 left-animation:
   type: 2
   path: [
@@ -71,6 +74,7 @@ left-animation:
   ]
   description: "Animation vers la gauche"
   rotation: 1
+  timeBetweenFrames: 0.3
 right-animation:
   type: 2
   path: [
@@ -91,6 +95,7 @@ right-animation:
   ]
   description: "Animation vers la droite"
   rotation: 1
+  timeBetweenFrames: 0.3
 victory-animation:
   type: 2
   path: [
@@ -114,6 +119,7 @@ victory-animation:
   ]
   description: "Animation de victoire"
   rotation: 1
+  timeBetweenFrames: 0.3
 idle-front-animation:
   type: 2
   path: [
@@ -137,6 +143,7 @@ idle-front-animation:
   ]
   description: "Animation de position statique de face"
   rotation: 1
+  timeBetweenFrames: 0.3
 idle-back-animation:
   type: 2
   path: [
@@ -160,6 +167,7 @@ idle-back-animation:
   ]
   description: "Animation de position statique de dos"
   rotation: 1
+  timeBetweenFrames: 0.3
 idle-left-animation:
   type: 2
   path: [
@@ -183,6 +191,7 @@ idle-left-animation:
   ]
   description: "Animation de position statique sur le profil gauche"
   rotation: 1
+  timeBetweenFrames: 0.3
 idle-right-animation:
   type: 2
   path: [
@@ -206,6 +215,7 @@ idle-right-animation:
   ]
   description: "Animation de position statique sur le profil droit"
   rotation: 1
+  timeBetweenFrames: 0.3
 front-walk:
   type: 3
   path: [
@@ -229,6 +239,7 @@ front-walk:
   ]
   description: "Marche vers le bas"
   rotation: 1
+  timeBetweenFrames: 0.3
 right-walk:
   type: 3
   path: [
@@ -252,6 +263,7 @@ right-walk:
   ]
   description: "Marche vers la droite"
   rotation: 1
+  timeBetweenFrames: 0.3
 left-walk:
   type: 3
   path: [
@@ -275,6 +287,7 @@ left-walk:
   ]
   description: "Marche vers la gauche"
   rotation: 1
+  timeBetweenFrames: 0.3
 back-walk:
   type: 3
   path: [
@@ -298,3 +311,4 @@ back-walk:
   ]
   description: "Marche vers le haut"
   rotation: 1
+  timeBetweenFrames: 0.3
