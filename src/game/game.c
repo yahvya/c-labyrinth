@@ -50,6 +50,9 @@ bool initializeGame(){
     SetWindowFocused();
     centerWindow();
 
+    gameConfig->soundsConfig->map[0].haveToBeLoaded = true;
+    loadMarkedSounds(gameConfig->soundsConfig);
+
     return true;
 }
 

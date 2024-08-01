@@ -9,5 +9,8 @@ bool renderGameHome(RenderingConfig* renderingConfig){
     if(!renderMap(gameConfig,gameConfig->homeMapConfig))
         return false;
 
+    if(IsKeyDown(KEY_SPACE))
+        PlaySound(gameConfig->soundsConfig->map[0].sound);
+
     return true;
 }

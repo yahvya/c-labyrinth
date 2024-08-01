@@ -11,14 +11,12 @@ void testGameConfig(){
 }
 
 int main(int argc,char ** argv){
-    testGameConfig();
+    if(initializeGame()){
+        startGame();
+        closeGame();
 
-//    if(initializeGame()){
-//        startGame();
-//        closeGame();
-//
-//        return 0;
-//    }
+        return 0;
+    }
 
     fputs("\nEchec de lancement du jeux",stderr);
 
