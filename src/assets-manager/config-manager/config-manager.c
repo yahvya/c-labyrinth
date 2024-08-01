@@ -65,6 +65,7 @@ GameConfig* loadGameConfig(){
     config->homeMapConfig = NULL;
     config->soundsConfig = NULL;
     config->homeSoundIsLoaded = false;
+    config->specialFontIsLoaded = false;
 
     // chargement des configurations
     config->homePageSound = LoadSound(HOME_PAGE_SOUND_FILE_PATH);
@@ -76,6 +77,16 @@ GameConfig* loadGameConfig(){
     }
 
     config->homeSoundIsLoaded = true;
+
+    config->specialFont = LoadFont(SPECIAL_FONT_PATH);
+
+    if(!IsFontReady(config->specialFont)){
+        fputs("\nEchec de chargement de la police spéciale",stderr);
+        freeGameConfig(config,true);
+        return false;
+    }
+
+    config->specialFontIsLoaded = true;
 
     config->enemiesConfig = loadConfig(ENEMIES_CONFIG_FILE_PATH,loadEnemies);
     CHECK_NULL_AND_QUIT(config->enemiesConfig,"Echec de chargement de la configuration des ennemies")
@@ -173,6 +184,9 @@ void freeGameConfig(GameConfig* config,bool freeContainer){
 
     if(config->homeSoundIsLoaded)
         UnloadSound(config->homePageSound);
+
+    if(config->specialFontIsLoaded)
+        UnloadFont(config->specialFont);
 
     if(freeContainer)
         free(config);

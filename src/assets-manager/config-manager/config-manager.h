@@ -51,6 +51,16 @@
          * @brief Si le son de l'accueil est chargé
          */
         bool homeSoundIsLoaded;
+
+        /**
+         * @brief Police d'écriture spéciale
+         */
+        Font specialFont;
+
+        /**
+         * @brief Si la police spéciale est chargée
+         */
+        bool specialFontIsLoaded;
     }GameConfig;
 
     /**
