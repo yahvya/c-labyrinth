@@ -41,6 +41,8 @@ add_executable(game
         src/rendering/home-rendering.h
         src/assets-manager/config-manager/sounds-manager.c
         src/assets-manager/config-manager/sounds-manager.h
+        src/components/text/text-component.c
+        src/components/text/text-component.h
 )
 
 target_link_libraries(game 

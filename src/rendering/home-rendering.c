@@ -1,6 +1,7 @@
 #include "./home-rendering.h"
 #include "../game/game.h"
 #include "./rendering.h"
+#include "../components/text/text-component.h"
 
 bool renderGameHome(RenderingConfig* renderingConfig){
     GameRenderingConfig* gameRenderingConfig = (GameRenderingConfig*) renderingConfig->data;
@@ -11,6 +12,26 @@ bool renderGameHome(RenderingConfig* renderingConfig){
 
     if(!renderMap(gameConfig,gameConfig->homeMapConfig))
         return false;
+
+    drawAndCenterTextIn(
+        (Rectangle){.x = 0,.y = 0,.width = gameConfig->homeMapConfig->windowWidth,.height = gameConfig->homeMapConfig->windowHeight},
+        "C labyrinth",
+        WHITE,
+        58,
+        3,
+        gameConfig->specialFont
+    );
+
+    drawAndCenterTextWithGapIn(
+        (Rectangle){.x = 0,.y = 0,.width = gameConfig->homeMapConfig->windowWidth,.height = gameConfig->homeMapConfig->windowHeight},
+        "Appuyez sur \"entrer\"",
+        WHITE,
+        23,
+        3,
+        gameConfig->specialFont,
+        0,
+        90
+    );
 
     return true;
 }

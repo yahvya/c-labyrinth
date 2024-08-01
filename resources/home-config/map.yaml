@@ -46,7 +46,7 @@ items: [
 enemies: [
   [825,400,1,2],
   [120,400,1,1],
-  [480,355,2,0]
+  [480,375,2,0]
 ]
 sounds-collision-map:
 #  [id son,id item]
