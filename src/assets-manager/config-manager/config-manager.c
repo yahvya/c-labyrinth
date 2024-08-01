@@ -64,8 +64,19 @@ GameConfig* loadGameConfig(){
     config->itemsConfig = NULL;
     config->homeMapConfig = NULL;
     config->soundsConfig = NULL;
+    config->homeSoundIsLoaded = false;
 
     // chargement des configurations
+    config->homePageSound = LoadSound(HOME_PAGE_SOUND_FILE_PATH);
+
+    if(!IsSoundReady(config->homePageSound)){
+        fputs("\nEchec de chargement du son d'accueil",stderr);
+        freeGameConfig(config,true);
+        return false;
+    }
+
+    config->homeSoundIsLoaded = true;
+
     config->enemiesConfig = loadConfig(ENEMIES_CONFIG_FILE_PATH,loadEnemies);
     CHECK_NULL_AND_QUIT(config->enemiesConfig,"Echec de chargement de la configuration des ennemies")
 
@@ -159,6 +170,9 @@ void freeGameConfig(GameConfig* config,bool freeContainer){
 
     if(config->soundsConfig != NULL)
         freeSoundsConfig(config->soundsConfig,true);
+
+    if(config->homeSoundIsLoaded)
+        UnloadSound(config->homePageSound);
 
     if(freeContainer)
         free(config);

@@ -41,6 +41,16 @@
          * @brief Configuration des sons
          */
         SoundsConfig* soundsConfig;
+
+        /**
+         * @brief Son de la page d'accueil
+         */
+        Sound homePageSound;
+
+        /**
+         * @brief Si le son de l'accueil est chargé
+         */
+        bool homeSoundIsLoaded;
     }GameConfig;
 
     /**

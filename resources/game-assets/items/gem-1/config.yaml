@@ -14,6 +14,6 @@ path: [
   "/images/12.png",
   "/images/13.png",
 ]
-rotation: 1
+rotation: 0
 description: "Gemme niveau 1"
 timeBetweenFrames: 0.04

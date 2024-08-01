@@ -36,6 +36,11 @@
     #define SOUNDS_MAP_CONFIG_FILE_PATH RESOURCES_PATH"/game-assets/sounds/config.yaml"
 
     /**
+     * @brief Musique de la page d'accueil
+     */
+    #define HOME_PAGE_SOUND_FILE_PATH RESOURCES_PATH "/game-assets/sounds/sounds/home.mp3"
+
+    /**
      * @brief Longueur maximale supposée d'un chemin
      */
     #define SUPPOSED_PATH_MAX_LEN 300

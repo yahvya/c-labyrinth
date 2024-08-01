@@ -135,7 +135,7 @@ void printSoundsConfig(SoundsConfig* config,char* toPrintBefore){
 
 bool loadMarkedSounds(SoundsConfig* config){
     for(int i = 0; i < config->countOfSounds; i++){
-        if(!config->map[i].haveToBeLoaded)
+        if(!config->map[i].haveToBeLoaded || config->map[i].isCurrentlyLoaded)
             continue;
 
         Sound loadedSound = LoadSound(config->map[i].path);

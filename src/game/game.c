@@ -15,7 +15,7 @@
 static GameConfig* gameConfig = NULL;
 
 bool initializeGame(){
-    SetConfigFlags(FLAG_WINDOW_HIDDEN);
+    SetConfigFlags(FLAG_WINDOW_HIDDEN | FLAG_WINDOW_UNDECORATED);
     InitWindow(0,0,"Initialize raylib");
     InitAudioDevice();
 
@@ -49,9 +49,6 @@ bool initializeGame(){
     SetWindowSize(WINDOW_DEFAULT_WIDTH,WINDOW_DEFAULT_HEIGHT);
     SetWindowFocused();
     centerWindow();
-
-    gameConfig->soundsConfig->map[0].haveToBeLoaded = true;
-    loadMarkedSounds(gameConfig->soundsConfig);
 
     return true;
 }

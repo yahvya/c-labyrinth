@@ -1,5 +1,5 @@
 type: 1
 path: "/images/bomb.png"
 description: "Bombe"
-rotation: 1
+rotation: 0
 timeBetweenFrames: 0.04

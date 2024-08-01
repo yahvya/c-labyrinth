@@ -17,7 +17,7 @@ front-walk:
     "/images/front-walk/14.png"
   ]
   description: "Marche vers le bas"
-  rotation: 1
+  rotation: 0
   timeBetweenFrames: 0.025
 right-walk:
   type: 2
@@ -38,7 +38,7 @@ right-walk:
     "/images/right-walk/14.png"
   ]
   description: "Marche vers la droite"
-  rotation: 1
+  rotation: 0
   timeBetweenFrames: 0.025
 left-walk:
   type: 2
@@ -59,7 +59,7 @@ left-walk:
     "/images/left-walk/14.png"
   ]
   description: "Marche vers la gauche"
-  rotation: 1
+  rotation: 0
   timeBetweenFrames: 0.025
 back-walk:
   type: 2
@@ -80,5 +80,5 @@ back-walk:
     "/images/back-walk/14.png"
   ]
   description: "Marche vers le haut"
-  rotation: 1
+  rotation: 0
   timeBetweenFrames: 0.025
