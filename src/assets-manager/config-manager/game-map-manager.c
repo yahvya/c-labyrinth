@@ -475,6 +475,144 @@ bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
     return true;
 }
 
+bool consumeASoundConfigMapConfig(GenericList* soundCollisionConfig,yaml_parser_t* parser){
+    assert(soundCollisionConfig != NULL && "La configuration fournie pour la map de sons de collisions est NULL");
+    assert(parser != NULL && "Le parser fournie pour la map de sons de collisions est NULL");
+
+    yaml_token_t token;
+    int dataTabCounter = 0;
+    bool firstTabIsEncountered = false;
+    int tmpSoundId = -1;
+
+    while(true){
+        if(!yaml_parser_scan(parser,&token)){
+            fputs("\nEchec de récupération du token sur le parsing sur la map de collision de sons",stderr);
+            return false;
+        }
+
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
+            break;
+        }
+
+        switch(token.type){
+            case YAML_FLOW_SEQUENCE_START_TOKEN:
+                if(!firstTabIsEncountered)
+                    firstTabIsEncountered = true;
+
+                dataTabCounter++;
+            break;
+
+            case YAML_FLOW_SEQUENCE_END_TOKEN:
+                dataTabCounter--;
+            break;
+
+            case YAML_SCALAR_TOKEN:
+                if(tmpSoundId != -1){
+                    // sauvegarde dans la map
+                    GameMapSoundCollisionConfig* newElement = malloc(sizeof(GameMapSoundCollisionConfig));
+
+                    if(newElement == NULL){
+                        fputs("\nEchec d'allocation d'une nouvelle configuration de son de collision",stderr);
+                        yaml_token_delete(&token);
+                        return false;
+                    }
+
+                    newElement->soundId = tmpSoundId;
+                    newElement->elementId = atoi((char*) token.data.scalar.value);
+
+                    if(!listAppend(soundCollisionConfig,newElement)){
+                        free(newElement);
+                        fputs("\nEchec d'ajout dans la liste d'une nouvelle configuration de son de collision",stderr);
+                        yaml_token_delete(&token);
+                        return false;
+                    }
+
+                    tmpSoundId = -1;
+                }
+                else
+                    tmpSoundId = atoi((char*) token.data.scalar.value);
+            break;
+
+            default:;
+        }
+
+        yaml_token_delete(&token);
+
+        if(firstTabIsEncountered && dataTabCounter == 0)
+            break;
+    }
+
+    return true;
+}
+
+/**
+ * @brief Consume les configurations de sons sur collisions
+ * @param config la configuration
+ * @param parser le parser
+ * @return si la consumation réussie
+ */
+bool consumeSoundsCollisionConfig(GameMapConfig* config,yaml_parser_t* parser){
+    assert(config != NULL && "La configuration fournie pour la map de sons de collisions est NULL");
+    assert(parser != NULL && "Le parser fournie pour la map de sons de collisions est NULL");
+
+    yaml_token_t token;
+    bool stop = false;
+    GenericList* toLoad;
+
+    while(!stop){
+        if(!yaml_parser_scan(parser,&token)){
+            fputs("\nEchec de récupération du token lors de la consumation de la map de sons",stderr);
+            return false;
+        }
+
+        if(
+            token.type == YAML_DOCUMENT_END_TOKEN ||
+            token.type == YAML_STREAM_END_TOKEN
+        ){
+            yaml_token_delete(&token);
+            break;
+        }
+
+        switch(token.type){
+            case YAML_BLOCK_END_TOKEN:
+                stop = true;
+            break;
+
+            case YAML_SCALAR_TOKEN:
+                toLoad = NULL;
+
+                if(strcmp((char*) token.data.scalar.value,"items") == 0)
+                    toLoad = &config->itemsSoundCollisionConfig;
+                else if(strcmp((char*) token.data.scalar.value,"tills") == 0)
+                    toLoad = &config->tillsSoundCollisionConfig;
+                else if(strcmp((char*) token.data.scalar.value,"enemies") == 0)
+                    toLoad = &config->enemiesSoundCollisionConfig;
+
+                if(toLoad == NULL){
+                    fputs("\nClé de configuration de sons de collisions inconnue",stderr);
+                    yaml_token_delete(&token);
+                    return false;
+                }
+
+                if(!consumeASoundConfigMapConfig(toLoad,parser)){
+                    fputs("\nEchec de consumation d'une map de configuration de sons de collisions",stderr);
+                    yaml_token_delete(&token);
+                    return false;
+                }
+            break;
+            default:;
+        }
+
+        yaml_token_delete(&token);
+    }
+
+    return true;
+}
+
 void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
     // allocation de la map
     GameMapConfig* config = malloc(sizeof(GameMapConfig));
@@ -488,8 +626,11 @@ void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
     config->tillsMapConfig.tillsMap = NULL;
     newGenericListFrom(&config->itemsConfig);
     newGenericListFrom(&config->enemiesConfig);
+    newGenericListFrom(&config->itemsSoundCollisionConfig);
+    newGenericListFrom(&config->enemiesSoundCollisionConfig);
+    newGenericListFrom(&config->tillsSoundCollisionConfig);
 
-    int countOfKeysToLoad = 6;
+    int countOfKeysToLoad = 7;
     bool nextIsKey = false;
 
     yaml_token_t token;
@@ -517,44 +658,51 @@ void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
                     break;
 
                 switch(countOfKeysToLoad){
-                    case 6:
+                    case 7:
                         if(!consumeScale(config,parser)){
                             fputs("\nEchec de lecture de l'echelle",stderr);
                             FREE_AND_QUIT
                         }
                     break;
 
-                    case 5:
+                    case 6:
                         if(!consumeWidth(config,parser)){
                             fputs("\nEchec de lecture de la largeur",stderr);
                             FREE_AND_QUIT
                         }
                     break;
 
-                    case 4:
+                    case 5:
                         if(!consumeHeight(config,parser)){
                             fputs("\nEchec de lecture de la hauteur",stderr);
                             FREE_AND_QUIT
                         }
                     break;
 
-                    case 3:
+                    case 4:
                         if(!consumeTills(config,parser)){
                             fputs("\nEchec de lecture des tills",stderr);
                             FREE_AND_QUIT
                         }
                     break;
 
-                    case 2:
+                    case 3:
                         if(!consumeItems(config,parser)){
                             fputs("\nEchec de lecture des items",stderr);
                             FREE_AND_QUIT
                         }
                     break;
 
-                    case 1:
+                    case 2:
                         if(!consumeEnemies(config,parser)){
-                            fputs("\nEchec de lecture des noms",stderr);
+                            fputs("\nEchec de lecture des ennemies",stderr);
+                            FREE_AND_QUIT
+                        }
+                    break;
+
+                    case 1:
+                        if(!consumeSoundsCollisionConfig(config,parser)){
+                            fputs("\nEchec de lecture des configurations de collision de son",stderr);
                             FREE_AND_QUIT
                         }
                     break;
@@ -597,6 +745,9 @@ void freeGameMapConfig(GameMapConfig* mapConfig,bool freeContainer){
 
     freeGenericList(&mapConfig->itemsConfig,true);
     freeGenericList(&mapConfig->enemiesConfig,true);
+    freeGenericList(&mapConfig->tillsSoundCollisionConfig,true);
+    freeGenericList(&mapConfig->itemsSoundCollisionConfig,true);
+    freeGenericList(&mapConfig->enemiesSoundCollisionConfig,true);
 
     if(freeContainer)
         free(mapConfig);
@@ -662,6 +813,54 @@ void printMapConfig(GameMapConfig* config){
     }
 
     config->enemiesConfig.items = config->enemiesConfig.listStart;
+
+    printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
+    printf("\t"CC_BBLUE"Configuration des sons de collision tills"CC_RESET"\n");
+
+    while(config->tillsSoundCollisionConfig.items != NULL){
+        GameMapSoundCollisionConfig* soundConfig = (GameMapSoundCollisionConfig*) config->tillsSoundCollisionConfig.items->data;
+
+        printf("\t\tId son : %d - Id till : %d\n",
+           soundConfig->soundId,
+           soundConfig->elementId
+        );
+
+        config->tillsSoundCollisionConfig.items = config->tillsSoundCollisionConfig.items->nextItem;
+    }
+
+    config->tillsSoundCollisionConfig.items = config->tillsSoundCollisionConfig.listStart;
+
+    printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
+    printf("\t"CC_BBLUE"Configuration des sons de collision items"CC_RESET"\n");
+
+    while(config->itemsSoundCollisionConfig.items != NULL){
+        GameMapSoundCollisionConfig* soundConfig = (GameMapSoundCollisionConfig*) config->itemsSoundCollisionConfig.items->data;
+
+        printf("\t\tId son : %d - Id item : %d\n",
+           soundConfig->soundId,
+           soundConfig->elementId
+        );
+
+        config->itemsSoundCollisionConfig.items = config->itemsSoundCollisionConfig.items->nextItem;
+    }
+
+    config->itemsSoundCollisionConfig.items = config->itemsSoundCollisionConfig.listStart;
+
+    printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
+    printf("\t"CC_BBLUE"Configuration des sons de collision ennemies"CC_RESET"\n");
+
+    while(config->enemiesSoundCollisionConfig.items != NULL){
+        GameMapSoundCollisionConfig* soundConfig = (GameMapSoundCollisionConfig*) config->enemiesSoundCollisionConfig.items->data;
+
+        printf("\t\tId son : %d - Id item : %d\n",
+           soundConfig->soundId,
+           soundConfig->elementId
+        );
+
+        config->enemiesSoundCollisionConfig.items = config->enemiesSoundCollisionConfig.items->nextItem;
+    }
+
+    config->enemiesSoundCollisionConfig.items = config->enemiesSoundCollisionConfig.listStart;
 
     printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
 }

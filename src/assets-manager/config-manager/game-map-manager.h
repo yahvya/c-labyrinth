@@ -88,6 +88,21 @@
     }GameMapEnemyConfig;
 
     /**
+     * @brief Configuration de son de collision avec un élement
+     */
+    typedef struct{
+        /**
+         * @brief Id du son
+         */
+        int soundId;
+
+        /**
+         * @brief Id de l'élément
+         */
+        int elementId;
+    }GameMapSoundCollisionConfig;
+
+    /**
      * @brief Configuration de map
      */
     typedef struct{
@@ -122,6 +137,24 @@
          * GameMapEnemyConfig
          */
          GenericList enemiesConfig;
+
+         /**
+          * @brief Configuration des sons sur collision d'items
+          * GameMapSoundCollisionConfig
+          */
+         GenericList itemsSoundCollisionConfig;
+
+        /**
+         * @brief Configuration des sons sur collision d'ennemies
+         * GameMapSoundCollisionConfig
+         */
+        GenericList enemiesSoundCollisionConfig;
+
+        /**
+          * @brief Configuration des sons sur collision de tills
+          * GameMapSoundCollisionConfig
+          */
+        GenericList tillsSoundCollisionConfig;
     }GameMapConfig;
 
     /**

@@ -10,13 +10,10 @@ enemies: [
 sounds-collision-map:
 #  [id son,id item]
   items: [
-    [1,1]
   ]
 #  [id son, id ennemie]
   enemies: [
-    [2,1]
   ]
 #  [id son, id tills]
   tills: [
-    [1,1]
   ]
