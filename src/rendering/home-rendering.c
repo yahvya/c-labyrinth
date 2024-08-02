@@ -2,8 +2,11 @@
 #include "../game/game.h"
 #include "./rendering.h"
 #include "../components/text/text-component.h"
+#include "./level-list-rendering.h"
 
 bool renderGameHome(RenderingConfig* renderingConfig){
+    // récupération des configurations
+
     GameRenderingConfig* gameRenderingConfig = (GameRenderingConfig*) renderingConfig->data;
     GameConfig* gameConfig = gameRenderingConfig->gameConfig;
 
@@ -12,6 +15,8 @@ bool renderGameHome(RenderingConfig* renderingConfig){
 
     if(!renderMap(gameConfig,gameConfig->homeMapConfig))
         return false;
+
+    // texte d'affichage
 
     drawAndCenterTextIn(
         (Rectangle){.x = 0,.y = 0,.width = gameConfig->homeMapConfig->windowWidth,.height = gameConfig->homeMapConfig->windowHeight},
@@ -32,6 +37,9 @@ bool renderGameHome(RenderingConfig* renderingConfig){
         0,
         90
     );
+
+    if(IsKeyDown(KEY_ENTER))
+        gameRenderingConfig->currentRenderingFunction = renderLevelsList;
 
     return true;
 }

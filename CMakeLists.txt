@@ -39,6 +39,8 @@ add_executable(game
         src/rendering/rendering.h
         src/rendering/home-rendering.c
         src/rendering/home-rendering.h
+        src/rendering/level-list-rendering.c
+        src/rendering/level-list-rendering.h
         src/assets-manager/config-manager/sounds-manager.c
         src/assets-manager/config-manager/sounds-manager.h
         src/components/text/text-component.c
