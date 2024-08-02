@@ -26,6 +26,16 @@
          * @brief Fonction de rendu
          */
         bool (*currentRenderingFunction)(RenderingConfig*);
+
+        /**
+         * @brief Configuration supplémentaire
+         */
+        void* supplementaryConfig;
+
+        /**
+         * @brief Défini si la donnée supplémentaire doit être libérée en cas de fermeture
+         */
+        bool supplementaryDataHaveToBeFree;
     }GameRenderingConfig;
 
     /**

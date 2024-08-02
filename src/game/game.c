@@ -58,7 +58,9 @@ void startGame(){
 
     GameRenderingConfig gameRenderingConfig = {
         .gameConfig = gameConfig,
-        .currentRenderingFunction = renderGameHome
+        .currentRenderingFunction = renderGameHome,
+        .supplementaryConfig = NULL,
+        .supplementaryDataHaveToBeFree = false
     };
 
     RenderingConfig renderingConfig = {
@@ -72,6 +74,9 @@ void startGame(){
             break;
         }
     }
+
+    if(gameRenderingConfig.supplementaryDataHaveToBeFree && gameRenderingConfig.supplementaryConfig != NULL)
+        free(gameRenderingConfig.supplementaryConfig);
 }
 
 void closeGame(){

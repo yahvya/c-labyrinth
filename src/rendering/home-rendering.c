@@ -38,8 +38,10 @@ bool renderGameHome(RenderingConfig* renderingConfig){
         90
     );
 
-    if(IsKeyDown(KEY_ENTER))
+    if(IsKeyDown(KEY_ENTER)){
         gameRenderingConfig->currentRenderingFunction = renderLevelsList;
+        gameRenderingConfig->supplementaryConfig = NULL;
+    }
 
     return true;
 }

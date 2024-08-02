@@ -29,6 +29,8 @@ add_executable(game
         src/assets-manager/config-manager/enemies-manager.h
         src/assets-manager/config-manager/game-map-manager.c
         src/assets-manager/config-manager/game-map-manager.h
+        src/assets-manager/config-manager/levels-manager.c
+        src/assets-manager/config-manager/levels-manager.h
         src/utils/generic-list/generic-list.c
         src/utils/generic-list/generic-list.h
         src/game/game.c

@@ -46,6 +46,11 @@
     #define SPECIAL_FONT_PATH RESOURCES_PATH"/game-assets/fonts/super-pixel-font/SuperPixel-m2L8j.ttf"
 
     /**
+     * @brief Chemin du dossier des niveaux
+     */
+    #define LEVELS_DIR_PATH RESOURCES_PATH "/levels-config"
+
+    /**
      * @brief Longueur maximale supposée d'un chemin
      */
     #define SUPPOSED_PATH_MAX_LEN 300
