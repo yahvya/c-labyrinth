@@ -50,9 +50,9 @@ add_executable(game
 )
 
 target_link_libraries(game 
-    yaml
-    custom_color
-    raylib
+        yaml
+        custom_color
+        raylib
 )
 
 add_custom_target(copy_resources ALL

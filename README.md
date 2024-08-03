@@ -16,6 +16,13 @@
 
 > **Utilisez les commandes du fichier Makefile**
 
+**Outils requis :**
+
+- make
+- gcc (pour windows via mingw64)
+- make
+- https://github.com/DynamoRIO/drmemory/releases/download/release_2.6.0/DrMemory-Windows-2.6.0.msi ou valgrind en fonction de l'environnement
+
 ## Configuration
 
 > Les ids d'association sont au possible, des entiers ordonnées à intervalle de 1, partant de 1 à X
@@ -26,7 +33,7 @@
     - 2 : Liste d'images pour animation continu
     - 3 : Liste d'images pour animation suite à une action
 
-### Personnage
+### Personnages
 
 #### Positions possibles
 

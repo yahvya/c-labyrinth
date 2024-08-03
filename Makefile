@@ -1,11 +1,11 @@
 #initialise le projet
 init:
-	mkdir build
+	mkdir -p build
 	cd build && cmake .. -G "MinGW Makefiles"
 
 # initialise le projet sous unix
 init-unix:
-	mkdir build
+	mkdir -p build
 	cd build && cmake ..
 
 # build du projet
@@ -14,10 +14,10 @@ build:
 
 # lancement du projet
 launch:
-	cd build && make && clear && ./game
+	cd build && make -j && clear && drmemory -show_reachable -- ./game
 
 # lancement le projet sous unix avec valgrind
 launch-unix:
-	cd build && make && clear && valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./game
+	cd build && make -j && clear && valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./game
 
 .PHONY: init build
