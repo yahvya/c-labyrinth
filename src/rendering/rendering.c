@@ -115,12 +115,13 @@ bool renderEnemies(GameConfig* gameConfig,GameMapConfig* mapConfig){
 }
 
 bool renderMap(GameConfig* gameConfig,GameMapConfig* mapConfig){
+    SetWindowSize(mapConfig->windowWidth,mapConfig->windowHeight);
+
     if(
         renderTills(gameConfig,mapConfig) &&
         renderItems(gameConfig,mapConfig) &&
         renderEnemies(gameConfig,mapConfig)
     ){
-        SetWindowSize(mapConfig->windowWidth,mapConfig->windowHeight);
         centerWindow();
         return true;
     }
