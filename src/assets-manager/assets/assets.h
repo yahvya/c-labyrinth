@@ -36,9 +36,9 @@
     #define SOUNDS_MAP_CONFIG_FILE_PATH RESOURCES_PATH"/game-assets/sounds/config.yaml"
 
     /**
-     * @brief Musique de la page d'accueil
+     * @brief Chemin de la musique de fond du jeux
      */
-    #define HOME_PAGE_SOUND_FILE_PATH RESOURCES_PATH "/game-assets/sounds/sounds/home.mp3"
+    #define BACKGROUND_MUSIC_FILE_PATH RESOURCES_PATH "/game-assets/musics/musics/background.mp3"
 
     /**
      * @brief Chemin du fichier de la police spéciale

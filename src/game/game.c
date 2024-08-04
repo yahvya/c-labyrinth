@@ -45,6 +45,8 @@ bool initializeGame(){
     LOAD_OR_QUIT(loadEnemiesImages,gameConfig)
     LOAD_OR_QUIT(loadHeroesImages,gameConfig)
 
+    SetMusicVolume(gameConfig->backgroundMusic,1);
+
     SetWindowTitle("Labyrinth");
     SetWindowSize(WINDOW_DEFAULT_WIDTH,WINDOW_DEFAULT_HEIGHT);
     SetWindowFocused();
@@ -66,6 +68,8 @@ void startGame(){
     RenderingConfig renderingConfig = {
         .data = &gameRenderingConfig
     };
+
+    PlayMusicStream(gameConfig->backgroundMusic);
 
     // rendu du jeu
     while(!WindowShouldClose()){

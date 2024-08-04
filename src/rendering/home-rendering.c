@@ -10,8 +10,8 @@ bool renderGameHome(RenderingConfig* renderingConfig){
     GameRenderingConfig* gameRenderingConfig = (GameRenderingConfig*) renderingConfig->data;
     GameConfig* gameConfig = gameRenderingConfig->gameConfig;
 
-    if(!IsSoundPlaying(gameConfig->homePageSound))
-        PlaySound(gameConfig->homePageSound);
+    if(gameConfig->backgroundMusicIsLoaded)
+        UpdateMusicStream(gameConfig->backgroundMusic);
 
     if(!renderMap(gameConfig,gameConfig->homeMapConfig))
         return false;

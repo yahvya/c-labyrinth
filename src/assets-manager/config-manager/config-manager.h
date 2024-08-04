@@ -43,14 +43,14 @@
         SoundsConfig* soundsConfig;
 
         /**
-         * @brief Son de la page d'accueil
+         * @brief Musique de fond du jeux
          */
-        Sound homePageSound;
+        Music backgroundMusic;
 
         /**
-         * @brief Si le son de l'accueil est chargé
+         * @brief Si la musique de fond est chargée
          */
-        bool homeSoundIsLoaded;
+        bool backgroundMusicIsLoaded;
 
         /**
          * @brief Police d'écriture spéciale

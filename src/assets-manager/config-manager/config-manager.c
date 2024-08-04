@@ -64,19 +64,19 @@ GameConfig* loadGameConfig(){
     config->itemsConfig = NULL;
     config->homeMapConfig = NULL;
     config->soundsConfig = NULL;
-    config->homeSoundIsLoaded = false;
+    config->backgroundMusicIsLoaded = false;
     config->specialFontIsLoaded = false;
 
     // chargement des configurations
-    config->homePageSound = LoadSound(HOME_PAGE_SOUND_FILE_PATH);
+    config->backgroundMusic = LoadMusicStream(BACKGROUND_MUSIC_FILE_PATH);
 
-    if(!IsSoundReady(config->homePageSound)){
+    if(!IsMusicReady(config->backgroundMusic)){
         fputs("\nEchec de chargement du son d'accueil",stderr);
         freeGameConfig(config,true);
         return false;
     }
 
-    config->homeSoundIsLoaded = true;
+    config->backgroundMusicIsLoaded = true;
 
     config->specialFont = LoadFont(SPECIAL_FONT_PATH);
 
@@ -182,8 +182,8 @@ void freeGameConfig(GameConfig* config,bool freeContainer){
     if(config->soundsConfig != NULL)
         freeSoundsConfig(config->soundsConfig,true);
 
-    if(config->homeSoundIsLoaded)
-        UnloadSound(config->homePageSound);
+    if(config->backgroundMusicIsLoaded)
+        UnloadMusicStream(config->backgroundMusic);
 
     if(config->specialFontIsLoaded)
         UnloadFont(config->specialFont);
