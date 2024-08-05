@@ -37,7 +37,7 @@
      * @brief Charge la configuration de la liste des niveaux
      * @param levelsDirPath Chemin du dossier des niveaux
      * @return la configuration des niveaux ou null en cas d'erreur
-     * @attention les niveaux eux même ne seront pas chargés
+     * @attention les niveaux eux même ne seront pas chargés, seulement les informations de présentation (nom, ordre du niveau)
      * LevelConfig
      */
     GenericList* loadLevelsConfig(char* levelsDirPath);

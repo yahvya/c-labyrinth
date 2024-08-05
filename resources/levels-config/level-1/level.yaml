@@ -1,8 +1,24 @@
+# données générales de configuration de niveau
 level-name: "1"
 level-order: 1
 level-sound-id: -1
-enemies-intelligence: 1
+
+# configuration customisée des tills
 tills-custom-config:
+
+# configuration customisée des items
 items-custom-config:
+
+# configuration customisée des ennemies
 enemies-custom-config:
+  1:
+    intelligence: 1
+    speed: 1
+  2:
+    intelligence: 1
+    speed: 1
+
+# configuration du héros choisi
 hero-config:
+  position: [0,0]
+  speed: 1

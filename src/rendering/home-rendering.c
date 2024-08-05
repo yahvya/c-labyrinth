@@ -19,7 +19,7 @@ bool renderGameHome(RenderingConfig* renderingConfig){
     // texte d'affichage
 
     drawAndCenterTextIn(
-        (Rectangle){.x = 0,.y = 0,.width = gameConfig->homeMapConfig->windowWidth,.height = gameConfig->homeMapConfig->windowHeight},
+        (Rectangle){.x = 0,.y = 0,.width =(float)gameConfig->homeMapConfig->windowWidth,.height =(float) gameConfig->homeMapConfig->windowHeight},
         "C labyrinth",
         WHITE,
         58,
@@ -28,7 +28,7 @@ bool renderGameHome(RenderingConfig* renderingConfig){
     );
 
     drawAndCenterTextWithGapIn(
-        (Rectangle){.x = 0,.y = 0,.width = gameConfig->homeMapConfig->windowWidth,.height = gameConfig->homeMapConfig->windowHeight},
+        (Rectangle){.x = 0,.y = 0,.width =(float) gameConfig->homeMapConfig->windowWidth,.height =(float) gameConfig->homeMapConfig->windowHeight},
         "Appuyez sur \"entrer\"",
         WHITE,
         23,

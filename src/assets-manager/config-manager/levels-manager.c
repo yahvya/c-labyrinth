@@ -11,7 +11,21 @@ void unloadLevel(GameConfig* gameConfig,LevelConfig* levelConfig){
 }
 
 GenericList* loadLevelsConfig(char* levelsDirPath){
+    /**
+     * @brief Format attendu des éléments
+     * dossier-de-niveau/
+     *  - level.yaml fichier de configuration du niveau
+     *  - map.yaml configuration de la map du niveau
+     */
 
+    // lecture des éléments du dossier
+
+
+    /**
+     * @brief récupération partielle des données globales utiles à la présentation du niveau
+     * nom
+     * ordre du niveau
+     */
 
     return NULL;
 }
