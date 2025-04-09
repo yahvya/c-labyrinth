@@ -1,0 +1,35 @@
+1:
+  type: 1
+  path: "/images/wallstone.png"
+  description: "Pierre de mur"
+  rotation: 1
+2:
+  type: 1
+  path: "/images/wallstone-fence.png"
+  description: "Pierre de clotûre"
+  rotation: 1
+3:
+  type: 1
+  path: "/images/wall-breakable.png"
+  description: "Mur cassable"
+  rotation: 1
+4:
+  type: 1
+  path: "/images/wall-breakable-fence.png"
+  description: "Clotûre de mur cassable"
+  rotation: 1
+5:
+  type: 1
+  path: "/images/stair.png"
+  description: "Escalier de sortie"
+  rotation: 1
+6:
+  type: 1
+  path: "/images/small-wallstone.png"
+  description: "Petite pierre"
+  rotation: 1
+7:
+  type: 1
+  path: "/images/ground-earth.png"
+  description: "Herbe de sol"
+  rotation: 1
