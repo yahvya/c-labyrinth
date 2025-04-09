@@ -4,8 +4,8 @@
 
 ## Important informations
 
-**Licence** : License MIT
-**Creation date** : 24.07.2024
+- **Licence** : License MIT
+- **Creation date** : 24.07.2024
 
 ## Team
 
