@@ -1,6 +1,6 @@
 #[ DEVTOOLS
 
-PROJECT_NAME=
+PROJECT_NAME=C labyrinth
 GITHUB_ORIGIN=master
 
 #]
