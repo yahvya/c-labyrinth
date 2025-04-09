@@ -133,7 +133,19 @@
 // Type required before windows.h inclusion
 typedef struct tagMSG *LPMSG;
 
+// Éviter les conflits de noms avec Windows
+#if defined(_WIN32)
+    #define CloseWindow RaylibCloseWindow
+    #define ShowCursor RaylibShowCursor
+#endif
+
+
 #include <windows.h>        // Windows functionality (miniaudio)
+
+#if defined(_WIN32)
+    #undef CloseWindow
+    #undef ShowCursor
+#endif
 
 // Type required by some unused function...
 typedef struct tagBITMAPINFOHEADER {

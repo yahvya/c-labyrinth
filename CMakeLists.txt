@@ -7,7 +7,7 @@ project(c_labyrinth
 
 add_compile_options(-UNDEBUG)
 
-add_subdirectory("libs/libyaml")
+add_subdirectory("libs/libyaml-0.2.5")
 add_subdirectory("libs/custom-color")
 add_subdirectory("libs/raylib-5.0")
 

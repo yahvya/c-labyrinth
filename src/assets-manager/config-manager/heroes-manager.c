@@ -182,6 +182,8 @@ bool consumeHeroIn(yaml_parser_t* parser,yaml_token_t* token,HeroesConfig* confi
     HeroConfig hero;
 
     do{
+        char configFilePath[SUPPOSED_PATH_MAX_LEN];
+
         if(
             token->type == YAML_DOCUMENT_END_TOKEN ||
             token->type == YAML_STREAM_END_TOKEN
@@ -207,7 +209,6 @@ bool consumeHeroIn(yaml_parser_t* parser,yaml_token_t* token,HeroesConfig* confi
 
                     case 4:
                         // récupération du chemin
-                        char configFilePath[SUPPOSED_PATH_MAX_LEN];
                         memset(configFilePath, 0, SUPPOSED_PATH_MAX_LEN);
                         strncpy(configFilePath, parentDirPath, sizeof(char) * (SUPPOSED_PATH_MAX_LEN - 1));
                         strncat(
