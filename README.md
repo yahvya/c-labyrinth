@@ -4,7 +4,7 @@
 
 ## Important informations
 
-**Licence** : Licene MIT
+**Licence** : License MIT
 **Creation date** : 24.07.2024
 
 ## Team
@@ -38,10 +38,10 @@
 
 Each commit line is prefixed by :
 
-ADD : for new code
-FIX : for changes due to a problem
-MODIFY : for changes
-DELETE : for deletion
+- ADD : for new code
+- FIX : for changes due to a problem
+- MODIFY : for changes
+- DELETE : for deletion
 
 ## Prerequisites
 
