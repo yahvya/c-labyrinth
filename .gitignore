@@ -1,5 +1,20 @@
-build
-.vscode
-.idea
-.cache
-custom-launch-wsl.sh
+# editors
+
+*.vscode
+*.idea
+*.cache
+
+# sensible file
+
+*.env
+*.env.*
+*.secret
+
+# un useful files
+
+**/coverage
+**/build
+**/custom-launch-wsl.sh
+
+
+# programming langage file

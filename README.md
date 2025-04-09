@@ -1,44 +1,66 @@
-# Jeux de labyrinthe
+# C labyrinth
 
-> Mini jeux de labyrinthe 2D
+> C labyrinth game in old style
+
+## Important informations
+
+**Licence** : Licene MIT
+**Creation date** : 24.07.2024
+
+## Team
+
+- Bathily Yahaya : Developer
+
+## GitHub Structure
+
+### Branch
+
+- master (complete versions) - PROTECTED BY PULL REQUEST
+- dev (developed features) - PROTECTED BY PULL REQUEST
+- documentation (developed documentation) - PROTECTED BY PULL REQUEST
+- features/<branch_name>/<feature_name>
+
+### Folder structure
+
+- dev (application code)
+- documentation (documentation elements)
+- versions (application versions)
+- devtools (custom development tools)
+- .github/workflows (github action configs)
+
+### GitHub Flow
+
+- main : the main branch merge elements from (dev, documentation)
+- (dev, documentation) : these branches merge elements from feature branches
+- features/<branch_name>/<feature_name> : features branches are created from the <branch_name> branch
+
+### Commit norm
+
+Each commit line is prefixed by :
+
+ADD : for new code
+FIX : for changes due to a problem
+MODIFY : for changes
+DELETE : for deletion
+
+## Prerequisites
+
+- Git
+- Make
+- Docker
 
 ## Technologies
 
-- C
-- CMake 3.30.1
-- Raylib
+- GitHub : Code version manager
+- Make : Quick commands for utilities
+- Docker
 
-## Assets
+## Quick launch process
 
-[Lien des assets](https://devilsworkshop.itch.io/low-poly-2d-arcade-maze-based-game-assets)
+### For the project
 
-## Lancement du projet
+- Launch the makefile command "project-print-init"
 
-> **Utilisez les commandes du fichier Makefile**
+## Util links 
 
-## Configuration
-
-> Les ids d'association sont au possible, des entiers ordonnées à intervalle de 1, partant de 1 à X
-
-### Type d'assets:
-
-    - 1 : Image fixe
-    - 2 : Liste d'images pour animation continu
-    - 3 : Liste d'images pour animation suite à une action
-
-### Personnage
-
-#### Positions possibles
-
-- back-walk (marche vers le haut)
-- front-walk (marche vers le bas)
-- left-walk (marche vers la gauche)
-- right-walk (marche vers la droite)
-
-#### Animations possibles
-
-- back-animation (animation de dos)
-- front-animation(animation de face)
-- left-animation(animation de profil vers la gauche)
-- right-animation(animation de profil vers la droite)
-- death-animation (animation de tombe)
+- [GitHub Project](https://github.com/users/<github_pseudo>/projects/<github_project_id>)
